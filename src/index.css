@@ -171,46 +171,11 @@ All colors MUST be HSL.
   100% { transform: rotate(180deg) scale(1); }
 }
 
-/* Enhanced Designer Profile with Minimalistic Animations */
-.designer-profile-section {
-  @apply py-16 bg-gradient-to-r from-purple-50 to-blue-50 dark:from-purple-900/20 dark:to-blue-900/20;
-  @apply transition-all duration-500 ease-out;
-}
-
-.designer-card-3d {
-  @apply relative w-32 h-32 mx-auto cursor-pointer;
-  perspective: 1000px;
-  transition: transform 0.2s ease-out;
-}
-
-.designer-card-3d:hover {
-  transform: translateY(-2px);
-}
-
-.designer-card-inner {
-  @apply relative w-full h-full transition-transform duration-700 ease-out;
-  transform-style: preserve-3d;
-}
-
-.designer-card-inner.flipped {
-  transform: rotateY(180deg);
-}
-
-.designer-card-front,
-.designer-card-back {
-  @apply absolute inset-0 w-full h-full rounded-full shadow-lg;
-  @apply border-4 border-purple-500 dark:border-purple-400;
-  -webkit-backface-visibility: hidden;
-  backface-visibility: hidden;
-  @apply bg-white dark:bg-gray-800 transition-all duration-300;
-}
-
-.designer-card-back {
-  transform: rotateY(180deg);
-}
-
-.designer-card-3d:hover .designer-card-inner {
-  animation-play-state: paused;
+/* Stable shuffle text animation */
+.shuffle-text-container {
+  display: inline-block;
+  position: relative;
+  overflow: hidden;
 }
 
 /* Subtle Fade-in Animations */
@@ -285,7 +250,7 @@ All colors MUST be HSL.
   @apply hover:scale-[1.02] active:scale-[0.98];
 }
 
-/* Enhanced Tab Animations */
+/* Enhanced Tab Animations with Theme Colors */
 .tab-trigger {
   @apply transition-all duration-200 ease-out;
   @apply hover:bg-accent/80 hover:text-accent-foreground;
@@ -332,34 +297,6 @@ All colors MUST be HSL.
   animation: minimalistFloat 4s ease-in-out infinite;
 }
 
-/* Responsive Mobile Optimizations */
-@media (max-width: 768px) {
-  .container {
-    padding-left: 1rem;
-    padding-right: 1rem;
-  }
-  
-  .theme-toggle-button {
-    @apply top-2 right-2 w-10 h-10;
-  }
-  
-  .designer-card-3d {
-    @apply w-24 h-24;
-  }
-}
-
-/* Focus States for Accessibility */
-.focus-visible {
-  outline: 2px solid hsl(var(--ring));
-  outline-offset: 2px;
-  transition: outline 0.2s ease-out;
-}
-
-/* Smooth Page Transitions */
-.page-transition {
-  @apply transition-all duration-300 ease-out;
-}
-
 /* Enhanced Slide Animation */
 @keyframes slideInRight {
   from {
@@ -374,26 +311,6 @@ All colors MUST be HSL.
 
 .animate-slide-in-right {
   animation: slideInRight 1.2s ease-out forwards;
-}
-
-/* Enhanced existing animations */
-.animate-fade-in {
-  animation: subtleFadeIn 0.6s ease-out forwards;
-}
-
-.animate-slide-up {
-  animation: gentleSlide 0.8s ease-out forwards;
-}
-
-/* Smooth scroll behavior */
-html {
-  scroll-behavior: smooth;
-}
-
-/* Enhanced button hover effects */
-.btn-minimal {
-  @apply transition-all duration-200 ease-out;
-  @apply hover:scale-[1.02] active:scale-[0.98];
 }
 
 /* Bounce animation for arrow */
@@ -414,4 +331,104 @@ html {
 
 .animate-bounce {
   animation: bounce 2s infinite;
+}
+
+/* Mobile Optimizations */
+@media (max-width: 768px) {
+  .container {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+  
+  .theme-toggle-button {
+    @apply top-2 right-2 w-10 h-10;
+  }
+  
+  /* Mobile hero adjustments */
+  .animate-slide-in-right h1 {
+    @apply text-3xl;
+  }
+  
+  /* Mobile tab adjustments */
+  .tab-trigger {
+    @apply text-xs px-2;
+  }
+  
+  /* Mobile card spacing */
+  .card-hover {
+    @apply mb-4;
+  }
+  
+  /* Mobile search */
+  .search-mobile {
+    @apply w-full;
+  }
+}
+
+@media (max-width: 640px) {
+  .animate-slide-in-right h1 {
+    @apply text-2xl;
+  }
+  
+  .grid-cols-4 {
+    @apply grid-cols-2 gap-2;
+  }
+  
+  .animate-marquee {
+    @apply text-xs;
+  }
+}
+
+/* Tablet Optimizations */
+@media (min-width: 768px) and (max-width: 1024px) {
+  .container {
+    @apply px-6;
+  }
+  
+  .animate-slide-in-right h1 {
+    @apply text-5xl;
+  }
+}
+
+/* Desktop Optimizations */
+@media (min-width: 1024px) {
+  .hover-scale:hover {
+    transform: translateY(-2px) scale(1.03);
+  }
+}
+
+/* Focus States for Accessibility */
+.focus-visible {
+  outline: 2px solid hsl(var(--ring));
+  outline-offset: 2px;
+  transition: outline 0.2s ease-out;
+}
+
+/* Smooth Page Transitions */
+.page-transition {
+  @apply transition-all duration-300 ease-out;
+}
+
+/* High Contrast Mode Support */
+@media (prefers-contrast: high) {
+  .theme-toggle-button {
+    border: 2px solid;
+  }
+  
+  .tab-trigger {
+    border: 1px solid;
+  }
+}
+
+/* Reduced Motion Support */
+@media (prefers-reduced-motion: reduce) {
+  .animate-marquee,
+  .floating-icon,
+  .animate-bounce {
+    animation: none;
+  }
+  
+  .hover-scale:hover {
+    transform: none;
+  }
 }
