@@ -245,12 +245,24 @@ All colors MUST be HSL.
   @apply hover:scale-[1.05] active:scale-[0.98];
 }
 
-/* Enhanced Tab Animations with Dynamic Colors */
+/* Enhanced 3D Tab Animations with Dynamic Colors */
 .tab-trigger {
   @apply transition-all duration-300 ease-out;
   @apply hover:bg-accent/80 hover:text-accent-foreground;
   position: relative;
   border-radius: 0.5rem;
+  transform-style: preserve-3d;
+  perspective: 1000px;
+}
+
+.tab-trigger:hover {
+  transform: translateY(-2px) rotateX(5deg);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.tab-trigger[data-state="active"] {
+  transform: translateY(-3px) rotateX(2deg);
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.2);
 }
 
 .tab-trigger::after {
@@ -275,29 +287,46 @@ All colors MUST be HSL.
   background: linear-gradient(90deg, hsl(var(--muted-foreground)), hsl(var(--primary)));
 }
 
-/* Enhanced Floating Icons Animation */
-@keyframes minimalistFloat {
+/* Enhanced Floating Icons Animation with 3D Effect */
+@keyframes minimalistFloat3D {
   0%, 100% { 
-    transform: translateY(0px) rotate(0deg);
+    transform: translateY(0px) rotateY(0deg) rotateX(0deg);
     opacity: 0.4;
+    filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.1));
   }
   25% { 
-    transform: translateY(-12px) rotate(3deg);
+    transform: translateY(-12px) rotateY(90deg) rotateX(15deg);
     opacity: 0.7;
+    filter: drop-shadow(0 8px 20px rgba(0, 0, 0, 0.2));
   }
   50% { 
-    transform: translateY(-18px) rotate(0deg);
+    transform: translateY(-18px) rotateY(180deg) rotateX(0deg);
     opacity: 0.6;
+    filter: drop-shadow(0 12px 30px rgba(0, 0, 0, 0.25));
   }
   75% { 
-    transform: translateY(-8px) rotate(-3deg);
+    transform: translateY(-8px) rotateY(270deg) rotateX(-15deg);
     opacity: 0.8;
+    filter: drop-shadow(0 6px 15px rgba(0, 0, 0, 0.15));
   }
 }
 
 .floating-icon {
-  animation: minimalistFloat 5s ease-in-out infinite;
-  filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.1));
+  animation: minimalistFloat3D 6s ease-in-out infinite;
+  transform-style: preserve-3d;
+  perspective: 1000px;
+}
+
+/* Enhanced Movie/TV Card Stickers */
+.movie-rating-sticker {
+  @apply absolute -top-2 -right-2 bg-gradient-to-r from-purple-500 to-pink-500 text-white text-xs font-bold px-2 py-1 rounded-full shadow-lg;
+  transform: rotate(15deg);
+  z-index: 10;
+  border: 2px solid white;
+}
+
+.movie-rating-sticker.dark {
+  border-color: hsl(var(--background));
 }
 
 /* Enhanced Slide Animation */
@@ -355,6 +384,10 @@ All colors MUST be HSL.
     @apply text-xs px-2 py-2;
   }
   
+  .tab-trigger:hover {
+    transform: translateY(-1px) rotateX(2deg);
+  }
+  
   .card-hover {
     @apply mb-4;
   }
@@ -366,6 +399,10 @@ All colors MUST be HSL.
   .animate-marquee {
     @apply text-xs;
     animation: marquee 15s linear infinite;
+  }
+  
+  .floating-icon {
+    animation: minimalistFloat3D 4s ease-in-out infinite;
   }
 }
 
@@ -401,7 +438,7 @@ All colors MUST be HSL.
   }
   
   .tab-trigger:hover {
-    transform: translateY(-1px);
+    transform: translateY(-2px) rotateX(5deg);
   }
 }
 
@@ -436,7 +473,9 @@ All colors MUST be HSL.
     animation: none;
   }
   
-  .hover-scale:hover {
+  .hover-scale:hover,
+  .tab-trigger:hover,
+  .tab-trigger[data-state="active"] {
     transform: none;
   }
   
@@ -451,4 +490,16 @@ All colors MUST be HSL.
 .backdrop-blur-custom {
   backdrop-filter: blur(12px) saturate(180%);
   -webkit-backdrop-filter: blur(12px) saturate(180%);
+}
+
+/* 3D Card Effects */
+.card-3d {
+  transform-style: preserve-3d;
+  perspective: 1000px;
+  transition: all 0.3s ease-out;
+}
+
+.card-3d:hover {
+  transform: rotateY(5deg) rotateX(5deg) translateZ(10px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
 }
