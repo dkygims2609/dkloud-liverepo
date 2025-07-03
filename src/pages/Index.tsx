@@ -84,7 +84,7 @@ const Index = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-purple-50/30 to-blue-50/30 dark:from-background dark:via-purple-900/10 dark:to-blue-900/10">
+    <div className="min-h-screen bg-white">
       {/* Floating Icons - Only on landing page */}
       {showFloatingIcons && (
         <div className="fixed inset-0 pointer-events-none z-10">
@@ -99,8 +99,8 @@ const Index = () => {
       )}
 
       {/* Hero Section */}
-      <div className="relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-r from-purple-600/20 via-blue-600/20 to-indigo-600/20 animate-pulse"></div>
+      <div className="relative overflow-hidden bg-white">
+        <div className="absolute inset-0 bg-gradient-to-r from-purple-600/10 via-blue-600/10 to-indigo-600/10"></div>
         
         <div className="relative z-10 container mx-auto px-4 py-20 text-center">
           <div className="mb-8 flex justify-center">
@@ -118,17 +118,17 @@ const Index = () => {
             dKloud.in
           </h1>
           
-          <p className="text-2xl md:text-3xl font-medium mb-4 text-muted-foreground animate-slide-up">
+          <p className="text-2xl md:text-3xl font-medium mb-4 text-gray-600 animate-slide-up">
             Decoding Knowledge
           </p>
           
           <div className="mb-8 animate-scale-in">
-            <Badge variant="secondary" className="text-lg px-6 py-2 bg-gradient-to-r from-purple-100 to-blue-100 dark:from-purple-900 dark:to-blue-900 text-purple-800 dark:text-purple-200">
+            <Badge variant="secondary" className="text-lg px-6 py-2 bg-gradient-to-r from-purple-100 to-blue-100 text-purple-800">
               by dKloud Tech
             </Badge>
           </div>
 
-          <div className="max-w-4xl mx-auto space-y-6 text-lg text-muted-foreground mb-12">
+          <div className="max-w-4xl mx-auto space-y-6 text-lg text-gray-600 mb-12">
             <p className="animate-fade-in" style={{ animationDelay: '0.2s' }}>
               <span className="text-2xl font-semibold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
                 A passionate creative techy's knowledge space
@@ -151,17 +151,17 @@ const Index = () => {
           </div>
 
           <div className="flex flex-wrap justify-center gap-4 mb-16 animate-slide-up" style={{ animationDelay: '0.8s' }}>
-            <div className="flex items-center gap-2 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-full px-4 py-2 shadow-lg">
+            <div className="flex items-center gap-2 bg-white/90 backdrop-blur-sm rounded-full px-4 py-2 shadow-lg border border-gray-200">
               <Star className="h-5 w-5 text-yellow-500" />
-              <span className="text-sm font-medium">Curated Content</span>
+              <span className="text-sm font-medium text-gray-700">Curated Content</span>
             </div>
-            <div className="flex items-center gap-2 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-full px-4 py-2 shadow-lg">
+            <div className="flex items-center gap-2 bg-white/90 backdrop-blur-sm rounded-full px-4 py-2 shadow-lg border border-gray-200">
               <Heart className="h-5 w-5 text-red-500" />
-              <span className="text-sm font-medium">Community Driven</span>
+              <span className="text-sm font-medium text-gray-700">Community Driven</span>
             </div>
-            <div className="flex items-center gap-2 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-full px-4 py-2 shadow-lg">
-              <Github className="h-5 w-5 text-gray-700 dark:text-gray-300" />
-              <span className="text-sm font-medium">Open Source</span>
+            <div className="flex items-center gap-2 bg-white/90 backdrop-blur-sm rounded-full px-4 py-2 shadow-lg border border-gray-200">
+              <Github className="h-5 w-5 text-gray-700" />
+              <span className="text-sm font-medium text-gray-700">Open Source</span>
             </div>
           </div>
         </div>
@@ -171,9 +171,9 @@ const Index = () => {
       <HowItWorksSection />
 
       {/* Main Content */}
-      <div className="container mx-auto px-4 py-8">
+      <div className="container mx-auto px-4 py-8 bg-white">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-3 lg:grid-cols-6 mb-8 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm">
+          <TabsList className="grid w-full grid-cols-3 lg:grid-cols-6 mb-8 bg-white/90 backdrop-blur-sm border border-gray-200">
             <TabsTrigger value="movies" className="text-sm">Movies & TV</TabsTrigger>
             <TabsTrigger value="youtube" className="text-sm">YouTube Picks</TabsTrigger>
             <TabsTrigger value="ai" className="text-sm">AI Tools</TabsTrigger>
