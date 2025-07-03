@@ -5,12 +5,15 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Star, Play, Calendar, Globe, Award, Search, Filter } from 'lucide-react';
+import { Star, Play, Calendar, Globe, Award, Search, Filter, Film, Tv } from 'lucide-react';
 
 const MoviesTab = () => {
   const [movies, setMovies] = useState([]);
+  const [tvSeries, setTvSeries] = useState([]);
   const [filteredMovies, setFilteredMovies] = useState([]);
+  const [filteredTvSeries, setFilteredTvSeries] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [activeType, setActiveType] = useState('movies');
   const [searchTerm, setSearchTerm] = useState('');
   const [genreFilter, setGenreFilter] = useState('all');
   const [platformFilter, setPlatformFilter] = useState('all');
@@ -19,41 +22,62 @@ const MoviesTab = () => {
   const [awardsFilter, setAwardsFilter] = useState('all');
 
   useEffect(() => {
-    fetchMovies();
+    fetchMoviesAndTvSeries();
   }, []);
 
-  const fetchMovies = async () => {
+  const fetchMoviesAndTvSeries = async () => {
     try {
       setLoading(true);
-      const response = await fetch('https://api.sheetbest.com/sheets/3b0b1e82-2a3c-4301-a5fc-8bd48c45ec09');
-      const data = await response.json();
-      console.log('Movies data:', data);
       
-      if (Array.isArray(data)) {
-        setMovies(data);
-        setFilteredMovies(data);
+      // Fetch Movies
+      const moviesResponse = await fetch('https://script.google.com/macros/s/AKfycbzO53FfgLV-2Kq5pP0fYF7yjFw1CQlZkZoc5TEIn3rDcPSxv8MB8koOasYlf6BuXXCQ/exec');
+      const moviesData = await moviesResponse.json();
+      console.log('Movies data:', moviesData);
+      
+      // Fetch TV Series
+      const tvResponse = await fetch('https://script.google.com/macros/s/AKfycbxr64a2W4VL2ymbigPXUB3EQmMULCmUhMuDDwvhGNaG4lSwgqAQitXO_hTY2lhh3n1f/exec');
+      const tvData = await tvResponse.json();
+      console.log('TV Series data:', tvData);
+      
+      if (Array.isArray(moviesData)) {
+        setMovies(moviesData);
+        setFilteredMovies(moviesData);
       } else {
-        console.error('Invalid data format:', data);
+        console.error('Invalid movies data format:', moviesData);
         setMovies([]);
         setFilteredMovies([]);
       }
+
+      if (Array.isArray(tvData)) {
+        setTvSeries(tvData);
+        setFilteredTvSeries(tvData);
+      } else {
+        console.error('Invalid TV series data format:', tvData);
+        setTvSeries([]);
+        setFilteredTvSeries([]);
+      }
     } catch (error) {
-      console.error('Error fetching movies:', error);
+      console.error('Error fetching movies and TV series:', error);
       setMovies([]);
+      setTvSeries([]);
       setFilteredMovies([]);
+      setFilteredTvSeries([]);
     } finally {
       setLoading(false);
     }
   };
 
   useEffect(() => {
-    let filtered = movies.filter(movie => {
-      const name = movie.Name || movie.name || '';
-      const genre = movie.Genre || movie.genre || '';
-      const platform = movie.Platform || movie.platform || '';
-      const rating = movie['Dkloud Rating'] || movie.rating || '';
-      const language = movie.Language || movie.language || '';
-      const awards = movie.Awards || movie.awards || '';
+    const currentData = activeType === 'movies' ? movies : tvSeries;
+    const setCurrentFiltered = activeType === 'movies' ? setFilteredMovies : setFilteredTvSeries;
+
+    let filtered = currentData.filter(item => {
+      const name = item.Name || item.name || '';
+      const genre = item.Genre || item.genre || '';
+      const platform = item.Platform || item.platform || '';
+      const rating = item['Dkloud Rating'] || item.rating || '';
+      const language = item.Language || item.language || '';
+      const awards = item.Awards || item.awards || '';
 
       const matchesSearch = typeof name === 'string' && name.toLowerCase().includes(searchTerm.toLowerCase());
       const matchesGenre = genreFilter === 'all' || (typeof genre === 'string' && genre.toLowerCase().includes(genreFilter.toLowerCase()));
@@ -65,8 +89,8 @@ const MoviesTab = () => {
       return matchesSearch && matchesGenre && matchesPlatform && matchesRating && matchesLanguage && matchesAwards;
     });
 
-    setFilteredMovies(filtered);
-  }, [movies, searchTerm, genreFilter, platformFilter, ratingFilter, languageFilter, awardsFilter]);
+    setCurrentFiltered(filtered);
+  }, [movies, tvSeries, activeType, searchTerm, genreFilter, platformFilter, ratingFilter, languageFilter, awardsFilter]);
 
   if (loading) {
     return (
@@ -76,6 +100,8 @@ const MoviesTab = () => {
     );
   }
 
+  const currentData = activeType === 'movies' ? filteredMovies : filteredTvSeries;
+
   return (
     <div className="space-y-6">
       <div className="text-center">
@@ -83,6 +109,34 @@ const MoviesTab = () => {
           Movies & TV Series
         </h2>
         <p className="text-muted-foreground">Curated collection of entertainment content</p>
+      </div>
+
+      {/* Type Switcher */}
+      <div className="flex justify-center mb-6">
+        <div className="flex bg-white rounded-lg p-1 border border-gray-200">
+          <button
+            onClick={() => setActiveType('movies')}
+            className={`flex items-center gap-2 px-4 py-2 rounded-md transition-colors ${
+              activeType === 'movies' 
+                ? 'bg-purple-600 text-white' 
+                : 'text-gray-600 hover:text-purple-600'
+            }`}
+          >
+            <Film className="h-4 w-4" />
+            Movies ({movies.length})
+          </button>
+          <button
+            onClick={() => setActiveType('tv')}
+            className={`flex items-center gap-2 px-4 py-2 rounded-md transition-colors ${
+              activeType === 'tv' 
+                ? 'bg-purple-600 text-white' 
+                : 'text-gray-600 hover:text-purple-600'
+            }`}
+          >
+            <Tv className="h-4 w-4" />
+            TV Series ({tvSeries.length})
+          </button>
+        </div>
       </div>
 
       {/* Search and Filters */}
@@ -170,61 +224,62 @@ const MoviesTab = () => {
         </CardContent>
       </Card>
 
-      {/* Movies Grid */}
+      {/* Content Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {filteredMovies.map((movie, index) => (
+        {currentData.map((item, index) => (
           <Card key={index} className="bg-white shadow-sm border border-gray-200 hover:shadow-md transition-shadow">
             <CardHeader>
-              <CardTitle className="text-lg text-gray-900">
-                {movie.Name || movie.name || 'Untitled'}
+              <CardTitle className="text-lg text-gray-900 flex items-center gap-2">
+                {activeType === 'movies' ? <Film className="h-4 w-4" /> : <Tv className="h-4 w-4" />}
+                {item.Name || item.name || 'Untitled'}
               </CardTitle>
               <CardDescription>
-                {movie.Description || movie.description || 'No description available'}
+                {item.Description || item.description || 'No description available'}
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-3">
               <div className="flex flex-wrap gap-2">
-                {movie.Genre && (
+                {item.Genre && (
                   <Badge variant="secondary" className="bg-purple-100 text-purple-700">
-                    {movie.Genre}
+                    {item.Genre}
                   </Badge>
                 )}
-                {movie.Platform && (
+                {item.Platform && (
                   <Badge variant="outline" className="border-blue-200 text-blue-700">
                     <Globe className="h-3 w-3 mr-1" />
-                    {movie.Platform}
+                    {item.Platform}
                   </Badge>
                 )}
-                {movie.Language && (
+                {item.Language && (
                   <Badge variant="outline" className="border-indigo-200 text-indigo-700">
-                    {movie.Language}
+                    {item.Language}
                   </Badge>
                 )}
               </div>
 
               <div className="flex items-center justify-between">
-                {movie['Dkloud Rating'] && (
+                {item['Dkloud Rating'] && (
                   <div className="flex items-center">
                     <Star className="h-4 w-4 text-yellow-500 mr-1" />
-                    <span className="text-sm font-medium">{movie['Dkloud Rating']}/5</span>
+                    <span className="text-sm font-medium">{item['Dkloud Rating']}/5</span>
                   </div>
                 )}
-                {movie.Awards && (
+                {item.Awards && (
                   <div className="flex items-center">
                     <Award className="h-4 w-4 text-gold-500 mr-1" />
-                    <span className="text-xs text-muted-foreground">{movie.Awards}</span>
+                    <span className="text-xs text-muted-foreground">{item.Awards}</span>
                   </div>
                 )}
               </div>
 
-              {movie['IMDb Link'] && (
+              {item['IMDb Link'] && (
                 <Button 
                   variant="outline" 
                   size="sm" 
                   className="w-full border-purple-200 text-purple-700 hover:bg-purple-50"
                   asChild
                 >
-                  <a href={movie['IMDb Link']} target="_blank" rel="noopener noreferrer">
+                  <a href={item['IMDb Link']} target="_blank" rel="noopener noreferrer">
                     <Play className="h-4 w-4 mr-2" />
                     View on IMDb
                   </a>
@@ -235,9 +290,11 @@ const MoviesTab = () => {
         ))}
       </div>
 
-      {filteredMovies.length === 0 && !loading && (
+      {currentData.length === 0 && !loading && (
         <div className="text-center py-12">
-          <p className="text-muted-foreground">No movies found matching your criteria.</p>
+          <p className="text-muted-foreground">
+            No {activeType === 'movies' ? 'movies' : 'TV series'} found matching your criteria.
+          </p>
         </div>
       )}
     </div>

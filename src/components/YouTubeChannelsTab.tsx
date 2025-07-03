@@ -5,18 +5,11 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Youtube, ExternalLink, Users, Search } from 'lucide-react';
-import { toast } from "@/hooks/use-toast";
-
-interface YouTubeChannel {
-  Name: string;
-  Category: string;
-  Description: string;
-  "YouTube Link": string;
-}
+import { Youtube, ExternalLink, Users, Search, Filter, Play } from 'lucide-react';
 
 const YouTubeChannelsTab = () => {
-  const [channels, setChannels] = useState<YouTubeChannel[]>([]);
+  const [channels, setChannels] = useState([]);
+  const [filteredChannels, setFilteredChannels] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [categoryFilter, setCategoryFilter] = useState('all');
@@ -27,107 +20,140 @@ const YouTubeChannelsTab = () => {
 
   const fetchChannels = async () => {
     try {
-      const response = await fetch('https://api.sheetbest.com/sheets/c66a0da1-d347-44f8-adc7-dc02c8627799');
+      setLoading(true);
+      const response = await fetch('https://api.sheetbest.com/sheets/65f34b49-7b92-4a44-be4c-ba8d1bca6a48');
       const data = await response.json();
       console.log('YouTube channels data:', data);
-      setChannels(data);
+      
+      if (Array.isArray(data)) {
+        setChannels(data);
+        setFilteredChannels(data);
+      } else {
+        console.error('Invalid data format:', data);
+        setChannels([]);
+        setFilteredChannels([]);
+      }
     } catch (error) {
       console.error('Error fetching YouTube channels:', error);
-      toast({
-        title: "Error",
-        description: "Failed to fetch YouTube channels data",
-        variant: "destructive",
-      });
+      setChannels([]);
+      setFilteredChannels([]);
     } finally {
       setLoading(false);
     }
   };
 
-  const filteredChannels = channels.filter(channel => {
-    const matchesSearch = channel.Name?.toLowerCase().includes(searchTerm.toLowerCase()) || 
-                         channel.Description?.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesCategory = categoryFilter === 'all' || channel.Category === categoryFilter;
-    
-    return matchesSearch && matchesCategory;
-  });
+  useEffect(() => {
+    let filtered = channels.filter(channel => {
+      const name = channel.Name || channel.name || '';
+      const category = channel.Category || channel.category || '';
+      const description = channel.Description || channel.description || '';
 
-  const uniqueCategories = [...new Set(channels.map(channel => channel.Category).filter(Boolean))];
+      const matchesSearch = (
+        (typeof name === 'string' && name.toLowerCase().includes(searchTerm.toLowerCase())) ||
+        (typeof description === 'string' && description.toLowerCase().includes(searchTerm.toLowerCase()))
+      );
+      
+      const matchesCategory = categoryFilter === 'all' || 
+        (typeof category === 'string' && category.toLowerCase().includes(categoryFilter.toLowerCase()));
+
+      return matchesSearch && matchesCategory;
+    });
+
+    setFilteredChannels(filtered);
+  }, [channels, searchTerm, categoryFilter]);
+
+  // Extract unique categories for filter
+  const categories = [...new Set(channels.map(channel => channel.Category || channel.category).filter(Boolean))];
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center py-20">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+      <div className="flex justify-center items-center h-64">
+        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-red-600"></div>
       </div>
     );
   }
 
   return (
     <div className="space-y-6">
-      <div className="text-center mb-8">
-        <h2 className="text-3xl font-bold mb-4 bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
-          📺 YouTube Picks
+      <div className="text-center">
+        <h2 className="text-3xl font-bold mb-4 bg-gradient-to-r from-red-600 to-purple-600 bg-clip-text text-transparent">
+          YouTube Channel Picks
         </h2>
-        <p className="text-lg text-muted-foreground">
-          Curated collection of amazing YouTube channels
-        </p>
+        <p className="text-muted-foreground">Curated collection of educational and entertaining YouTube channels</p>
       </div>
 
-      <div className="flex flex-col sm:flex-row gap-4 mb-6">
-        <div className="relative flex-1">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-          <Input
-            placeholder="Search channels..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="pl-10"
-          />
-        </div>
-        <Select value={categoryFilter} onValueChange={setCategoryFilter}>
-          <SelectTrigger className="w-full sm:w-48">
-            <SelectValue placeholder="Filter by category" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">All Categories</SelectItem>
-            {uniqueCategories.map(category => (
-              <SelectItem key={category} value={category}>{category}</SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-      </div>
+      {/* Search and Filters */}
+      <Card className="bg-white shadow-sm border border-gray-200">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <Filter className="h-5 w-5 text-red-600" />
+            Search & Filters
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="relative">
+            <Search className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+            <Input
+              placeholder="Search channels by name or description..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="pl-10"
+            />
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <Select value={categoryFilter} onValueChange={setCategoryFilter}>
+              <SelectTrigger>
+                <SelectValue placeholder="Select Category" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All Categories</SelectItem>
+                {categories.map((category) => (
+                  <SelectItem key={category} value={category.toLowerCase()}>
+                    {category}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            
+            <div className="flex items-center gap-2 text-sm text-muted-foreground">
+              <Youtube className="h-4 w-4 text-red-600" />
+              <span>Showing {filteredChannels.length} of {channels.length} channels</span>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
 
+      {/* Channels Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {filteredChannels.map((channel, index) => (
-          <Card key={index} className="hover:shadow-lg transition-shadow duration-300 bg-gradient-to-br from-background to-purple-50/20 dark:to-purple-900/10 border-purple-200/50 dark:border-purple-800/50">
-            <CardHeader className="pb-3">
-              <CardTitle className="text-lg mb-2 flex items-center gap-2">
-                <Youtube className="h-5 w-5 text-red-600" />
-                <span className="line-clamp-1">{channel.Name}</span>
-              </CardTitle>
-              <div className="flex flex-wrap gap-2 mb-2">
-                <Badge variant="secondary" className="bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200">
-                  {channel.Category}
-                </Badge>
+          <Card key={index} className="bg-white shadow-sm border border-gray-200 hover:shadow-md transition-shadow">
+            <CardHeader>
+              <div className="flex items-start justify-between mb-2">
+                <div className="flex items-center gap-2">
+                  <Youtube className="h-5 w-5 text-red-600" />
+                  <Badge variant="secondary" className="bg-red-100 text-red-700">
+                    {channel.Category || channel.category || 'General'}
+                  </Badge>
+                </div>
               </div>
-            </CardHeader>
-            <CardContent className="pt-0">
-              <CardDescription className="mb-4 line-clamp-3">
-                {channel.Description}
+              <CardTitle className="text-lg text-gray-900">
+                {channel.Name || channel.name || 'Untitled Channel'}
+              </CardTitle>
+              <CardDescription className="line-clamp-3">
+                {channel.Description || channel.description || 'No description available'}
               </CardDescription>
-              
-              {channel["YouTube Link"] && (
+            </CardHeader>
+            <CardContent className="space-y-3">
+              {channel['YouTube Link'] && (
                 <Button 
                   variant="outline" 
                   size="sm" 
-                  className="w-full bg-gradient-to-r from-purple-600 to-blue-600 text-white border-0 hover:from-purple-700 hover:to-blue-700"
+                  className="w-full border-red-200 text-red-700 hover:bg-red-50"
                   asChild
                 >
-                  <a 
-                    href={channel["YouTube Link"]} 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="flex items-center gap-2"
-                  >
-                    <ExternalLink className="h-4 w-4" />
+                  <a href={channel['YouTube Link']} target="_blank" rel="noopener noreferrer">
+                    <Play className="h-4 w-4 mr-2" />
                     Visit Channel
                   </a>
                 </Button>
@@ -137,10 +163,22 @@ const YouTubeChannelsTab = () => {
         ))}
       </div>
 
-      {filteredChannels.length === 0 && (
-        <div className="text-center py-20">
-          <Youtube className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
+      {filteredChannels.length === 0 && !loading && (
+        <div className="text-center py-12">
+          <Youtube className="h-16 w-16 text-gray-300 mx-auto mb-4" />
           <p className="text-muted-foreground">No YouTube channels found matching your criteria.</p>
+          {searchTerm || categoryFilter !== 'all' ? (
+            <Button 
+              variant="outline" 
+              className="mt-4"
+              onClick={() => {
+                setSearchTerm('');
+                setCategoryFilter('all');
+              }}
+            >
+              Clear Filters
+            </Button>
+          ) : null}
         </div>
       )}
     </div>

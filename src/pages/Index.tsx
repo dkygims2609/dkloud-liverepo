@@ -15,6 +15,7 @@ import PortfolioPage from '@/components/PortfolioPage';
 import HowItWorksSection from '@/components/HowItWorksSection';
 import ContactFloatingButtons from '@/components/ContactFloatingButtons';
 import AIAssistant from '@/components/AIAssistant';
+import Footer from '@/components/Footer';
 
 const floatingIcons = [
   { icon: Cloud, color: 'text-blue-500', size: 'h-8 w-8' },
@@ -173,12 +174,13 @@ const Index = () => {
       {/* Main Content */}
       <div className="container mx-auto px-4 py-8 bg-white">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-3 lg:grid-cols-6 mb-8 bg-white/90 backdrop-blur-sm border border-gray-200">
+          <TabsList className="grid w-full grid-cols-3 lg:grid-cols-7 mb-8 bg-white/90 backdrop-blur-sm border border-gray-200">
             <TabsTrigger value="movies" className="text-sm">Movies & TV</TabsTrigger>
             <TabsTrigger value="youtube" className="text-sm">YouTube Picks</TabsTrigger>
             <TabsTrigger value="ai" className="text-sm">AI Tools</TabsTrigger>
             <TabsTrigger value="tech" className="text-sm">Tech Corner</TabsTrigger>
             <TabsTrigger value="gadgets" className="text-sm">SmartTech</TabsTrigger>
+            <TabsTrigger value="news" className="text-sm">Tech News</TabsTrigger>
             <TabsTrigger value="portfolio" className="text-sm">Portfolio</TabsTrigger>
           </TabsList>
 
@@ -202,12 +204,17 @@ const Index = () => {
             <GadgetsTab />
           </TabsContent>
 
+          <TabsContent value="news" className="space-y-6">
+            <TechNewsTab />
+          </TabsContent>
+
           <TabsContent value="portfolio" className="space-y-6">
             <PortfolioPage />
           </TabsContent>
         </Tabs>
       </div>
 
+      <Footer />
       <ContactFloatingButtons />
       <AIAssistant />
 
