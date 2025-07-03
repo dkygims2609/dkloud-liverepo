@@ -4,7 +4,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Moon, Sun, Film, Tv, Youtube, Bot, Wrench, Newspaper, Smartphone, User, MessageCircle, Mail, Instagram, Linkedin } from 'lucide-react';
+import { Moon, Sun, Film, Tv, Youtube, Bot, Wrench, Newspaper, Smartphone, User, MessageCircle, Mail, Instagram, Linkedin, Music, Code, Cloud, Zap, Cpu, Wifi } from 'lucide-react';
 import { useTheme } from "@/hooks/use-theme";
 import MoviesTab from '@/components/MoviesTab';
 import TVSeriesTab from '@/components/TVSeriesTab';
@@ -20,6 +20,7 @@ import ContactFloatingButtons from '@/components/ContactFloatingButtons';
 const Index = () => {
   const { theme, setTheme } = useTheme();
   const [activeTab, setActiveTab] = useState('home');
+  const [moviesTVTab, setMoviesTVTab] = useState('movies');
 
   useEffect(() => {
     // Animate tagline on load
@@ -37,8 +38,34 @@ const Index = () => {
     return <PortfolioPage onBack={() => setActiveTab('home')} />;
   }
 
+  // Floating animation icons
+  const FloatingIcon = ({ Icon, delay = 0, duration = 3 }: { Icon: any, delay?: number, duration?: number }) => (
+    <div 
+      className="absolute animate-bounce opacity-20 text-primary"
+      style={{
+        animationDelay: `${delay}s`,
+        animationDuration: `${duration}s`,
+        top: `${Math.random() * 80 + 10}%`,
+        left: `${Math.random() * 80 + 10}%`,
+      }}
+    >
+      <Icon className="h-6 w-6" />
+    </div>
+  );
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20">
+    <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20 relative overflow-hidden">
+      {/* Floating Background Animation Icons */}
+      <div className="fixed inset-0 pointer-events-none z-0">
+        <FloatingIcon Icon={Music} delay={0} />
+        <FloatingIcon Icon={Code} delay={1} />
+        <FloatingIcon Icon={Cloud} delay={2} />
+        <FloatingIcon Icon={Zap} delay={0.5} />
+        <FloatingIcon Icon={Cpu} delay={1.5} />
+        <FloatingIcon Icon={Wifi} delay={2.5} />
+        <FloatingIcon Icon={Bot} delay={3} />
+      </div>
+
       {/* Fixed Header */}
       <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
         <div className="container flex h-16 items-center justify-between">
@@ -80,15 +107,18 @@ const Index = () => {
 
       {/* Hero Section */}
       {activeTab === 'home' && (
-        <section className="py-20 px-4">
+        <section className="py-20 px-4 relative z-10">
           <div className="container mx-auto text-center">
             <div className="max-w-4xl mx-auto">
               <div className="animate-tagline opacity-0 transition-all duration-1000 ease-out transform translate-y-8">
                 <h1 className="text-4xl sm:text-6xl font-bold mb-6 bg-gradient-to-r from-primary via-blue-600 to-purple-600 bg-clip-text text-transparent">
                   Decoding Knowledge
                 </h1>
-                <p className="text-xl sm:text-2xl text-muted-foreground mb-8">
+                <p className="text-xl sm:text-2xl text-muted-foreground mb-4">
                   Library of Unique Discoveries
+                </p>
+                <p className="text-lg text-primary/80 mb-8">
+                  Powered by <span className="font-semibold">dKloud Tech</span>
                 </p>
                 <div className="w-24 h-1 bg-gradient-to-r from-primary to-blue-600 mx-auto mb-8"></div>
               </div>
@@ -149,17 +179,13 @@ const Index = () => {
       )}
 
       {/* Main Content Tabs */}
-      <div className="container mx-auto px-4 pb-20">
+      <div className="container mx-auto px-4 pb-20 relative z-10">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-4 lg:grid-cols-8 mb-8">
+          <TabsList className="grid w-full grid-cols-4 lg:grid-cols-7 mb-8">
             <TabsTrigger value="home" className="text-xs sm:text-sm">Home</TabsTrigger>
-            <TabsTrigger value="movies" className="text-xs sm:text-sm">
+            <TabsTrigger value="movies-tv" className="text-xs sm:text-sm">
               <Film className="h-4 w-4 mr-1" />
-              Movies
-            </TabsTrigger>
-            <TabsTrigger value="tv" className="text-xs sm:text-sm">
-              <Tv className="h-4 w-4 mr-1" />
-              TV Series
+              Movies & TV
             </TabsTrigger>
             <TabsTrigger value="youtube" className="text-xs sm:text-sm">
               <Youtube className="h-4 w-4 mr-1" />
@@ -179,7 +205,7 @@ const Index = () => {
             </TabsTrigger>
             <TabsTrigger value="gadgets" className="text-xs sm:text-sm">
               <Smartphone className="h-4 w-4 mr-1" />
-              Gadgets
+              SmartTech
             </TabsTrigger>
           </TabsList>
 
@@ -217,12 +243,27 @@ const Index = () => {
             </Card>
           </TabsContent>
 
-          <TabsContent value="movies">
-            <MoviesTab />
-          </TabsContent>
-
-          <TabsContent value="tv">
-            <TVSeriesTab />
+          <TabsContent value="movies-tv">
+            <Tabs value={moviesTVTab} onValueChange={setMoviesTVTab} className="w-full">
+              <TabsList className="grid w-full grid-cols-2 mb-6">
+                <TabsTrigger value="movies">
+                  <Film className="h-4 w-4 mr-2" />
+                  Movies
+                </TabsTrigger>
+                <TabsTrigger value="tv">
+                  <Tv className="h-4 w-4 mr-2" />
+                  TV Series
+                </TabsTrigger>
+              </TabsList>
+              
+              <TabsContent value="movies">
+                <MoviesTab />
+              </TabsContent>
+              
+              <TabsContent value="tv">
+                <TVSeriesTab />
+              </TabsContent>
+            </Tabs>
           </TabsContent>
 
           <TabsContent value="youtube">

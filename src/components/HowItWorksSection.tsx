@@ -1,42 +1,57 @@
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Database, Code, Zap, Users, ArrowRight, Globe, Smartphone } from 'lucide-react';
+import { Database, Code, Zap, Users, ArrowRight, Globe, Smartphone, MousePointer, Server, Monitor } from 'lucide-react';
 
 const HowItWorksSection = () => {
+  const [activeStep, setActiveStep] = useState(0);
+
   const steps = [
     {
-      icon: <Globe className="h-8 w-8 text-blue-500" />,
+      icon: <MousePointer className="h-8 w-8 text-blue-500" />,
       title: "User Clicks Tab",
       description: "You click on any content section like Movies, AI Tools, etc.",
-      detail: "Simple, intuitive navigation"
+      detail: "Simple, intuitive navigation",
+      position: { x: 10, y: 20 }
     },
     {
-      icon: <Code className="h-8 w-8 text-green-500" />,
-      title: "HTML Request",
-      description: "Browser sends request to page",
-      detail: "Modern web technology at work"
+      icon: <Globe className="h-8 w-8 text-green-500" />,
+      title: "Browser Request",
+      description: "Browser sends HTTP request to our server",
+      detail: "Modern web technology at work",
+      position: { x: 30, y: 40 }
     },
     {
-      icon: <Database className="h-8 w-8 text-purple-500" />,
-      title: "SheetBest API",
-      description: "Calls Google Sheets API to fetch fresh data",
-      detail: "Real-time content sync"
+      icon: <Server className="h-8 w-8 text-purple-500" />,
+      title: "API Call",
+      description: "Server calls Google Sheets API to fetch fresh data",
+      detail: "Real-time content sync",
+      position: { x: 50, y: 20 }
     },
     {
-      icon: <Smartphone className="h-8 w-8 text-orange-500" />,
+      icon: <Database className="h-8 w-8 text-orange-500" />,
       title: "Google Sheets",
-      description: "Fetches data from spreadsheet",
-      detail: "Easy content management"
+      description: "Data is retrieved from our spreadsheet backend",
+      detail: "Easy content management",
+      position: { x: 70, y: 40 }
     },
     {
-      icon: <Zap className="h-8 w-8 text-yellow-500" />,
+      icon: <Monitor className="h-8 w-8 text-yellow-500" />,
       title: "Display Result",
-      description: "Shows content on your screen instantly",
-      detail: "Lightning-fast delivery"
+      description: "Content appears on your screen instantly",
+      detail: "Lightning-fast delivery",
+      position: { x: 90, y: 20 }
     }
   ];
+
+  // Auto-animate through steps
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setActiveStep((prev) => (prev + 1) % steps.length);
+    }, 2000);
+    return () => clearInterval(interval);
+  }, []);
 
   return (
     <section className="space-y-8">
@@ -47,40 +62,100 @@ const HowItWorksSection = () => {
         </p>
       </div>
 
-      {/* Visual Flow Diagram */}
-      <div className="relative">
-        <div className="flex flex-col lg:flex-row items-center justify-center gap-4 lg:gap-8">
-          {steps.map((step, index) => (
-            <div key={index} className="flex flex-col lg:flex-row items-center">
-              <Card className="w-full max-w-xs hover:shadow-lg transition-all duration-300 bg-gradient-to-br from-background to-muted/20">
-                <CardHeader className="text-center pb-3">
-                  <div className="mx-auto p-3 rounded-full bg-muted/50 w-fit">
-                    {step.icon}
-                  </div>
-                  <CardTitle className="text-lg">{step.title}</CardTitle>
-                  <CardDescription className="text-sm">{step.description}</CardDescription>
-                </CardHeader>
-                <CardContent className="text-center pt-0">
-                  <Badge variant="secondary" className="text-xs">
-                    {step.detail}
-                  </Badge>
-                </CardContent>
-              </Card>
-              
-              {index < steps.length - 1 && (
-                <div className="hidden lg:block mx-4">
-                  <ArrowRight className="h-6 w-6 text-muted-foreground" />
-                </div>
-              )}
-              
-              {index < steps.length - 1 && (
-                <div className="lg:hidden my-2">
-                  <div className="w-0.5 h-8 bg-muted-foreground/30 mx-auto"></div>
-                </div>
-              )}
+      {/* Animated Flow Diagram */}
+      <div className="relative bg-gradient-to-r from-primary/5 to-blue-600/5 border border-primary/20 rounded-lg p-8 min-h-[400px]">
+        <h3 className="text-xl font-bold mb-6 text-center">🎯 Live Data Flow Animation</h3>
+        
+        {/* Animated Path */}
+        <svg className="absolute inset-0 w-full h-full pointer-events-none" style={{ zIndex: 1 }}>
+          <defs>
+            <linearGradient id="pathGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stopColor="#3b82f6" stopOpacity="0.8" />
+              <stop offset="100%" stopColor="#8b5cf6" stopOpacity="0.8" />
+            </linearGradient>
+          </defs>
+          
+          {/* Connecting Lines */}
+          {steps.slice(0, -1).map((step, index) => {
+            const nextStep = steps[index + 1];
+            return (
+              <line
+                key={index}
+                x1={`${step.position.x}%`}
+                y1={`${step.position.y}%`}
+                x2={`${nextStep.position.x}%`}
+                y2={`${nextStep.position.y}%`}
+                stroke="url(#pathGradient)"
+                strokeWidth="3"
+                strokeDasharray="5,5"
+                className={`transition-opacity duration-500 ${
+                  index <= activeStep ? 'opacity-100' : 'opacity-30'
+                }`}
+              />
+            );
+          })}
+          
+          {/* Animated Dot */}
+          <circle
+            cx={`${steps[activeStep]?.position.x}%`}
+            cy={`${steps[activeStep]?.position.y}%`}
+            r="8"
+            fill="#3b82f6"
+            className="animate-pulse"
+          />
+        </svg>
+
+        {/* Step Icons */}
+        {steps.map((step, index) => (
+          <div
+            key={index}
+            className={`absolute transform -translate-x-1/2 -translate-y-1/2 transition-all duration-500 ${
+              index === activeStep ? 'scale-125 z-10' : 'scale-100 z-0'
+            }`}
+            style={{
+              left: `${step.position.x}%`,
+              top: `${step.position.y}%`,
+            }}
+          >
+            <div className={`p-4 rounded-full bg-background border-2 shadow-lg ${
+              index === activeStep ? 'border-primary bg-primary/10' : 'border-muted'
+            }`}>
+              {step.icon}
             </div>
-          ))}
-        </div>
+            <div className="mt-2 text-center max-w-[120px]">
+              <h4 className="text-sm font-semibold">{step.title}</h4>
+              <Badge variant="secondary" className="text-xs mt-1">
+                {step.detail}
+              </Badge>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Step Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        {steps.map((step, index) => (
+          <Card 
+            key={index} 
+            className={`hover:shadow-lg transition-all duration-300 cursor-pointer ${
+              index === activeStep ? 'ring-2 ring-primary bg-primary/5' : ''
+            }`}
+            onClick={() => setActiveStep(index)}
+          >
+            <CardHeader className="text-center pb-3">
+              <div className="mx-auto p-3 rounded-full bg-muted/50 w-fit">
+                {step.icon}
+              </div>
+              <CardTitle className="text-sm">{step.title}</CardTitle>
+            </CardHeader>
+            <CardContent className="text-center pt-0">
+              <CardDescription className="text-xs mb-2">{step.description}</CardDescription>
+              <Badge variant="outline" className="text-xs">
+                {step.detail}
+              </Badge>
+            </CardContent>
+          </Card>
+        ))}
       </div>
 
       {/* Technical Details */}
@@ -115,15 +190,15 @@ const HowItWorksSection = () => {
               </div>
               <div>
                 <CardTitle className="text-lg">Google Sheets Backend</CardTitle>
-                <CardDescription>SheetBest API + Google Apps Script</CardDescription>
+                <CardDescription>Dynamic APIs + Google Apps Script</CardDescription>
               </div>
             </div>
           </CardHeader>
           <CardContent>
             <div className="flex flex-wrap gap-2">
               <Badge variant="secondary">Google Sheets</Badge>
-              <Badge variant="secondary">SheetBest API</Badge>
               <Badge variant="secondary">Apps Script</Badge>
+              <Badge variant="secondary">REST APIs</Badge>
               <Badge variant="secondary">Real-time</Badge>
             </div>
           </CardContent>
