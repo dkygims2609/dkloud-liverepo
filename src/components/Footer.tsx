@@ -1,8 +1,24 @@
+
 import React from 'react';
 import { Github, Globe, Mail, Phone, MapPin, Heart, Code, Cloud } from 'lucide-react';
 import { Badge } from "@/components/ui/badge";
 
 const Footer = () => {
+  const handleQuickLinkClick = (tabValue: string) => {
+    // Trigger tab change by dispatching a custom event
+    const tabsElement = document.querySelector('[role="tablist"]');
+    const targetTab = document.querySelector(`[value="${tabValue}"]`) as HTMLButtonElement;
+    
+    if (targetTab) {
+      targetTab.click();
+      // Scroll to main content
+      const element = document.getElementById('main-content');
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+  };
+
   return (
     <footer className="bg-gradient-to-r from-purple-50 to-blue-50 dark:from-purple-900/20 dark:to-blue-900/20 border-t border-border mt-16 transition-colors duration-300">
       <div className="container mx-auto px-4 py-12">
@@ -36,13 +52,62 @@ const Footer = () => {
           <div className="space-y-4">
             <h4 className="text-lg font-semibold text-gray-800">Quick Links</h4>
             <ul className="space-y-2 text-sm">
-              <li><a href="#movies" className="text-gray-600 hover:text-purple-600 transition-colors">Movies & TV</a></li>
-              <li><a href="#youtube" className="text-gray-600 hover:text-purple-600 transition-colors">YouTube Picks</a></li>
-              <li><a href="#ai" className="text-gray-600 hover:text-purple-600 transition-colors">AI Tools</a></li>
-              <li><a href="#tech" className="text-gray-600 hover:text-purple-600 transition-colors">Tech Corner</a></li>
-              <li><a href="#gadgets" className="text-gray-600 hover:text-purple-600 transition-colors">SmartTech</a></li>
-              <li><a href="#news" className="text-gray-600 hover:text-purple-600 transition-colors">Tech News</a></li>
-              <li><a href="#portfolio" className="text-gray-600 hover:text-purple-600 transition-colors">Portfolio</a></li>
+              <li>
+                <button 
+                  onClick={() => handleQuickLinkClick('movies')}
+                  className="text-gray-600 hover:text-purple-600 transition-colors text-left"
+                >
+                  Movies & TV
+                </button>
+              </li>
+              <li>
+                <button 
+                  onClick={() => handleQuickLinkClick('youtube')}
+                  className="text-gray-600 hover:text-purple-600 transition-colors text-left"
+                >
+                  YouTube Picks
+                </button>
+              </li>
+              <li>
+                <button 
+                  onClick={() => handleQuickLinkClick('ai')}
+                  className="text-gray-600 hover:text-purple-600 transition-colors text-left"
+                >
+                  AI Tools
+                </button>
+              </li>
+              <li>
+                <button 
+                  onClick={() => handleQuickLinkClick('tech')}
+                  className="text-gray-600 hover:text-purple-600 transition-colors text-left"
+                >
+                  Tech Corner
+                </button>
+              </li>
+              <li>
+                <button 
+                  onClick={() => handleQuickLinkClick('gadgets')}
+                  className="text-gray-600 hover:text-purple-600 transition-colors text-left"
+                >
+                  SmartTech
+                </button>
+              </li>
+              <li>
+                <button 
+                  onClick={() => handleQuickLinkClick('news')}
+                  className="text-gray-600 hover:text-purple-600 transition-colors text-left"
+                >
+                  Tech News
+                </button>
+              </li>
+              <li>
+                <button 
+                  onClick={() => handleQuickLinkClick('portfolio')}
+                  className="text-gray-600 hover:text-purple-600 transition-colors text-left"
+                >
+                  Portfolio
+                </button>
+              </li>
             </ul>
           </div>
 

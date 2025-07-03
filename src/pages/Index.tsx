@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
@@ -70,6 +69,54 @@ const FloatingIcon = ({ icon: Icon, color, size, delay }: any) => {
   );
 };
 
+const ShuffleText = ({ text, className }: { text: string; className?: string }) => {
+  const [displayText, setDisplayText] = useState(text);
+  const [isShuffling, setIsShuffling] = useState(false);
+
+  useEffect(() => {
+    const shuffleInterval = setInterval(() => {
+      setIsShuffling(true);
+      const chars = '!@#$%^&*()_+-=[]{}|;:,.<>?';
+      let iteration = 0;
+      
+      const shuffleTimer = setInterval(() => {
+        setDisplayText(
+          text
+            .split('')
+            .map((letter, index) => {
+              if (index < iteration) {
+                return text[index];
+              }
+              return chars[Math.floor(Math.random() * chars.length)];
+            })
+            .join('')
+        );
+        
+        if (iteration >= text.length) {
+          clearInterval(shuffleTimer);
+          setIsShuffling(false);
+        }
+        
+        iteration += 1 / 3;
+      }, 30);
+
+      setTimeout(() => {
+        clearInterval(shuffleTimer);
+        setDisplayText(text);
+        setIsShuffling(false);
+      }, 2000);
+    }, 5000);
+
+    return () => clearInterval(shuffleInterval);
+  }, [text]);
+
+  return (
+    <span className={`${className} ${isShuffling ? 'text-green-400' : ''} transition-colors duration-300`}>
+      {displayText}
+    </span>
+  );
+};
+
 const Index = () => {
   const [activeTab, setActiveTab] = useState("movies");
   const [showFloatingIcons, setShowFloatingIcons] = useState(true);
@@ -92,10 +139,27 @@ const Index = () => {
     }
   };
 
+  const handleTabClick = (tabValue: string) => {
+    setActiveTab(tabValue);
+    scrollToContent();
+  };
+
   return (
     <div className="min-h-screen bg-white dark:bg-gray-900 text-foreground page-transition">
       {/* Theme Toggle */}
       <ThemeToggle />
+
+      {/* Running Banner */}
+      <div className="bg-gradient-to-r from-purple-600 via-blue-600 to-purple-600 text-white py-2 overflow-hidden">
+        <div className="animate-marquee whitespace-nowrap">
+          <span className="text-sm font-medium">
+            🚀 This website is built with lots of effort, time, and passion — almost no cost! 
+            Join our community of tech enthusiasts and creators. 
+            Building the future, one line of code at a time. 
+            💻 Open Source • 🌟 Community Driven • 🎨 Creative Tech Space
+          </span>
+        </div>
+      </div>
 
       {/* Enhanced Floating Icons */}
       {showFloatingIcons && (
@@ -128,13 +192,18 @@ const Index = () => {
           <div className="text-center max-w-5xl mx-auto">
             {/* Animated Title */}
             <div className="mb-8 overflow-hidden">
-              <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold bg-gradient-to-r from-purple-600 via-blue-600 to-indigo-600 bg-clip-text text-transparent tracking-tight leading-tight mb-6 animate-slide-in-right" style={{ fontFamily: 'Inter, system-ui, sans-serif' }}>
-                Decoding Knowledge
+              <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight leading-tight mb-6 animate-slide-in-right" style={{ fontFamily: 'Inter, system-ui, sans-serif' }}>
+                <ShuffleText 
+                  text="Decoding Knowledge" 
+                  className="bg-gradient-to-r from-purple-600 via-blue-600 to-indigo-600 bg-clip-text text-transparent"
+                />
               </h1>
               
-              {/* Subtitle */}
-              <p className="text-xl md:text-2xl font-light text-gray-600 dark:text-gray-300 tracking-wide mb-4 animate-fade-in">
-                Library Of Unique Discoveries
+              {/* Subtitle with color */}
+              <p className="text-xl md:text-2xl font-light tracking-wide mb-4 animate-fade-in">
+                <span className="bg-gradient-to-r from-orange-500 via-pink-500 to-red-500 bg-clip-text text-transparent font-semibold">
+                  Library Of Unique Discoveries
+                </span>
               </p>
               
               {/* Powered by */}
@@ -147,22 +216,14 @@ const Index = () => {
             <div className="max-w-4xl mx-auto space-y-8 text-lg text-gray-600 dark:text-gray-300 mb-16">
               <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-2xl p-8 shadow-lg border border-gray-200 dark:border-gray-700 animate-fade-in" style={{ animationDelay: '0.4s' }}>
                 <p className="text-xl font-semibold text-gray-800 dark:text-white mb-6 leading-relaxed">
-                  A passionate creative techy's knowledge space
-                </p>
-                
-                <p className="leading-relaxed mb-6">
-                  We're on a <span className="text-purple-600 dark:text-purple-400 font-semibold">mission</span> to blend 
-                  <span className="text-blue-600 dark:text-blue-400 font-semibold"> creativity</span>, 
-                  <span className="text-indigo-600 dark:text-indigo-400 font-semibold"> cloud technology</span>, 
-                  <span className="text-purple-600 dark:text-purple-400 font-semibold"> AI</span>, and 
-                  <span className="text-green-600 dark:text-green-400 font-semibold"> community-driven learning</span> into one cohesive platform.
+                  At dKloud, we're crafting a universe where creativity meets the cloud, AI fuels curiosity, and learning becomes a shared adventure.
                 </p>
                 
                 <p className="leading-relaxed">
-                  Whether you're a <span className="text-green-600 dark:text-green-400 font-semibold">tech enthusiast</span>, 
-                  a <span className="text-pink-600 dark:text-pink-400 font-semibold">creative mind</span>, or 
-                  a <span className="text-orange-600 dark:text-orange-400 font-semibold">curious learner</span>, 
-                  you'll find something meaningful here.
+                  Whether you're a <span className="text-blue-600 dark:text-blue-400 font-semibold">tech explorer</span>, 
+                  a <span className="text-purple-600 dark:text-purple-400 font-semibold">digital creator</span>, or 
+                  a <span className="text-green-600 dark:text-green-400 font-semibold">seeker of knowledge</span> — 
+                  this is your space to discover, build, and belong.
                 </p>
               </div>
             </div>
