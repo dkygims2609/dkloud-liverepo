@@ -4,12 +4,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Input } from "@/components/ui/input";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Separator } from "@/components/ui/separator";
-import { Moon, Sun, Film, Tv, Youtube, Bot, Wrench, Newspaper, Smartphone, User, Heart, MessageCircle, Mail, Instagram, Linkedin } from 'lucide-react';
+import { Moon, Sun, Film, Tv, Youtube, Bot, Wrench, Newspaper, Smartphone, User, MessageCircle, Mail, Instagram, Linkedin } from 'lucide-react';
 import { useTheme } from "@/hooks/use-theme";
-import { toast } from "@/hooks/use-toast";
 import MoviesTab from '@/components/MoviesTab';
 import TVSeriesTab from '@/components/TVSeriesTab';
 import YouTubeChannelsTab from '@/components/YouTubeChannelsTab';
@@ -47,9 +43,19 @@ const Index = () => {
       <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
         <div className="container flex h-16 items-center justify-between">
           <div className="flex items-center space-x-4">
-            <h1 className="text-2xl font-bold bg-gradient-to-r from-primary to-blue-600 bg-clip-text text-transparent">
-              dKloud.in
-            </h1>
+            <div className="flex items-center space-x-2">
+              <img 
+                src="/lovable-uploads/fa65252b-b20b-442e-a7ae-c427ae84b769.png" 
+                alt="dKloud.in Logo" 
+                className="w-8 h-8 rounded-md"
+                onError={(e) => {
+                  e.currentTarget.style.display = 'none';
+                }}
+              />
+              <h1 className="text-2xl font-bold bg-gradient-to-r from-primary to-blue-600 bg-clip-text text-transparent">
+                dKloud.in
+              </h1>
+            </div>
             <Badge variant="secondary" className="hidden sm:inline-flex">
               Decoding Knowledge
             </Badge>
@@ -98,7 +104,7 @@ const Index = () => {
               <div className="flex flex-col items-center mb-12">
                 <div className="w-32 h-32 rounded-full overflow-hidden mb-4 ring-4 ring-primary/20">
                   <img 
-                    src="/dkphoto.jpeg" 
+                    src="/lovable-uploads/60f33ce6-efaa-4f60-a11c-09517021a6ff.png" 
                     alt="Dileep Yadav - Founder" 
                     className="w-full h-full object-cover"
                     onError={(e) => {
