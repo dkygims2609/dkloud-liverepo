@@ -115,81 +115,62 @@ const Index = () => {
         </div>
       </header>
 
-      {/* Modern Hero Section - Redesigned with Vertical Text Layout */}
-      <div className="relative overflow-hidden bg-white dark:bg-gray-900">
-        <div className="container mx-auto px-4 py-20">
-          <div className="text-center max-w-4xl mx-auto">
-            {/* Vertical Title Layout */}
-            <div className="mb-12">
-              <div className="inline-block">
-                <h1 className="text-6xl md:text-8xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent tracking-tight leading-tight" style={{ fontFamily: 'Inter, system-ui, sans-serif' }}>
-                  D<br/>
-                  e<br/>
-                  c<br/>
-                  o<br/>
-                  d<br/>
-                  i<br/>
-                  n<br/>
-                  g<br/>
-                  <br/>
-                  K<br/>
-                  n<br/>
-                  o<br/>
-                  w<br/>
-                  l<br/>
-                  e<br/>
-                  d<br/>
-                  g<br/>
-                  e
-                </h1>
-              </div>
+      {/* Redesigned Hero Section - Clean & Centered */}
+      <div className="relative overflow-hidden bg-gradient-to-br from-white via-blue-50/30 to-purple-50/30 dark:from-gray-900 dark:via-blue-900/10 dark:to-purple-900/10">
+        <div className="container mx-auto px-4 py-24">
+          <div className="text-center max-w-5xl mx-auto">
+            {/* Main Title - Horizontal Layout */}
+            <div className="mb-8">
+              <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold bg-gradient-to-r from-purple-600 via-blue-600 to-indigo-600 bg-clip-text text-transparent tracking-tight leading-tight mb-4" style={{ fontFamily: 'Inter, system-ui, sans-serif' }}>
+                Decoding Knowledge
+              </h1>
+              
+              {/* Subtitle */}
+              <p className="text-xl md:text-2xl font-light text-gray-600 dark:text-gray-300 tracking-wide mb-4">
+                Library Of Unique Discoveries
+              </p>
+              
+              {/* Powered by */}
+              <p className="text-base text-gray-500 dark:text-gray-400 mb-12">
+                Powered by dKloud Tech
+              </p>
             </div>
-            
-            {/* Subtitle */}
-            <p className="text-2xl md:text-3xl font-light mb-6 text-gray-600 dark:text-gray-300 tracking-wide">
-              Library Of Unique Discoveries
-            </p>
-            
-            {/* Powered by */}
-            <p className="text-lg text-gray-500 dark:text-gray-400 mb-12">
-              Powered by dKloud Tech
-            </p>
 
             {/* Description */}
-            <div className="max-w-3xl mx-auto space-y-6 text-lg text-gray-600 dark:text-gray-300 mb-12">
-              <p className="animate-fade-in">
+            <div className="max-w-4xl mx-auto space-y-6 text-lg text-gray-600 dark:text-gray-300 mb-12">
+              <p className="animate-fade-in leading-relaxed">
                 <span className="text-xl font-semibold text-gray-800 dark:text-white">
                   A passionate creative techy's knowledge space
                 </span>
               </p>
               
-              <p className="animate-fade-in" style={{ animationDelay: '0.2s' }}>
-                We're on a <span className="text-purple-600 font-semibold">mission</span> to blend 
-                <span className="text-blue-600 font-semibold"> creativity</span>, 
-                <span className="text-indigo-600 font-semibold"> cloud technology</span>, 
-                <span className="text-purple-600 font-semibold"> AI</span>, and 
-                <span className="text-green-600 font-semibold"> community-driven learning</span> into one cohesive platform.
+              <p className="animate-fade-in leading-relaxed" style={{ animationDelay: '0.2s' }}>
+                We're on a <span className="text-purple-600 dark:text-purple-400 font-semibold">mission</span> to blend 
+                <span className="text-blue-600 dark:text-blue-400 font-semibold"> creativity</span>, 
+                <span className="text-indigo-600 dark:text-indigo-400 font-semibold"> cloud technology</span>, 
+                <span className="text-purple-600 dark:text-purple-400 font-semibold"> AI</span>, and 
+                <span className="text-green-600 dark:text-green-400 font-semibold"> community-driven learning</span> into one cohesive platform.
               </p>
               
-              <p className="animate-fade-in" style={{ animationDelay: '0.4s' }}>
-                Whether you're a <span className="text-green-600 font-semibold">tech enthusiast</span>, 
-                a <span className="text-pink-600 font-semibold">creative mind</span>, or 
-                a <span className="text-orange-600 font-semibold">curious learner</span>, 
+              <p className="animate-fade-in leading-relaxed" style={{ animationDelay: '0.4s' }}>
+                Whether you're a <span className="text-green-600 dark:text-green-400 font-semibold">tech enthusiast</span>, 
+                a <span className="text-pink-600 dark:text-pink-400 font-semibold">creative mind</span>, or 
+                a <span className="text-orange-600 dark:text-orange-400 font-semibold">curious learner</span>, 
                 you'll find something meaningful here.
               </p>
             </div>
 
             {/* Feature Badges */}
             <div className="flex flex-wrap justify-center gap-4 mb-12 animate-slide-up">
-              <div className="flex items-center gap-2 bg-gray-50 dark:bg-gray-800 rounded-full px-6 py-3 shadow-sm border border-gray-200 dark:border-gray-700 hover-scale transition-all duration-200">
+              <div className="flex items-center gap-2 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-full px-6 py-3 shadow-sm border border-gray-200 dark:border-gray-700 hover-scale transition-all duration-200">
                 <Star className="h-5 w-5 text-yellow-500" />
                 <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Curated Content</span>
               </div>
-              <div className="flex items-center gap-2 bg-gray-50 dark:bg-gray-800 rounded-full px-6 py-3 shadow-sm border border-gray-200 dark:border-gray-700 hover-scale transition-all duration-200">
+              <div className="flex items-center gap-2 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-full px-6 py-3 shadow-sm border border-gray-200 dark:border-gray-700 hover-scale transition-all duration-200">
                 <Heart className="h-5 w-5 text-red-500" />
                 <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Community Driven</span>
               </div>
-              <div className="flex items-center gap-2 bg-gray-50 dark:bg-gray-800 rounded-full px-6 py-3 shadow-sm border border-gray-200 dark:border-gray-700 hover-scale transition-all duration-200">
+              <div className="flex items-center gap-2 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-full px-6 py-3 shadow-sm border border-gray-200 dark:border-gray-700 hover-scale transition-all duration-200">
                 <Github className="h-5 w-5 text-gray-700 dark:text-gray-300" />
                 <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Open Source</span>
               </div>
@@ -197,10 +178,10 @@ const Index = () => {
 
             {/* CTA Buttons */}
             <div className="flex flex-wrap gap-4 justify-center">
-              <Button className="bg-gradient-to-r from-purple-600 to-blue-600 text-white px-8 py-3 rounded-full hover:from-purple-700 hover:to-blue-700 transition-all duration-300">
+              <Button className="bg-gradient-to-r from-purple-600 to-blue-600 text-white px-8 py-3 rounded-full hover:from-purple-700 hover:to-blue-700 transition-all duration-300 shadow-lg hover:shadow-xl">
                 Explore dKloud
               </Button>
-              <Button variant="outline" className="px-8 py-3 rounded-full border-2 border-purple-300 text-purple-700 dark:text-purple-300 hover:bg-purple-50 dark:hover:bg-purple-900/20">
+              <Button variant="outline" className="px-8 py-3 rounded-full border-2 border-purple-300 dark:border-purple-600 text-purple-700 dark:text-purple-300 hover:bg-purple-50 dark:hover:bg-purple-900/20 transition-all duration-300">
                 View Portfolio
               </Button>
             </div>
@@ -209,16 +190,16 @@ const Index = () => {
       </div>
 
       {/* Main Content Tabs */}
-      <div className="container mx-auto px-4 py-8 bg-white dark:bg-gray-900">
+      <div className="container mx-auto px-4 py-12 bg-white dark:bg-gray-900">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-3 lg:grid-cols-7 mb-8 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 shadow-sm">
-            <TabsTrigger value="movies" className="text-sm tab-trigger">Movies & TV</TabsTrigger>
-            <TabsTrigger value="youtube" className="text-sm tab-trigger">YouTube Picks</TabsTrigger>
-            <TabsTrigger value="ai" className="text-sm tab-trigger">AI Tools</TabsTrigger>
-            <TabsTrigger value="tech" className="text-sm tab-trigger">Tech Corner</TabsTrigger>
-            <TabsTrigger value="gadgets" className="text-sm tab-trigger">SmartTech</TabsTrigger>
-            <TabsTrigger value="news" className="text-sm tab-trigger">Tech News</TabsTrigger>
-            <TabsTrigger value="portfolio" className="text-sm tab-trigger">Portfolio</TabsTrigger>
+          <TabsList className="grid w-full grid-cols-3 lg:grid-cols-7 mb-8 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 shadow-sm rounded-lg">
+            <TabsTrigger value="movies" className="text-sm tab-trigger rounded-md">Movies & TV</TabsTrigger>
+            <TabsTrigger value="youtube" className="text-sm tab-trigger rounded-md">YouTube Picks</TabsTrigger>
+            <TabsTrigger value="ai" className="text-sm tab-trigger rounded-md">AI Tools</TabsTrigger>
+            <TabsTrigger value="tech" className="text-sm tab-trigger rounded-md">Tech Corner</TabsTrigger>
+            <TabsTrigger value="gadgets" className="text-sm tab-trigger rounded-md">SmartTech</TabsTrigger>
+            <TabsTrigger value="news" className="text-sm tab-trigger rounded-md">Tech News</TabsTrigger>
+            <TabsTrigger value="portfolio" className="text-sm tab-trigger rounded-md">Portfolio</TabsTrigger>
           </TabsList>
 
           <TabsContent value="movies" className="space-y-6">

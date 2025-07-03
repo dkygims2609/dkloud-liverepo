@@ -29,7 +29,8 @@ const AIToolsTab = () => {
   const fetchTools = async () => {
     try {
       setLoading(true);
-      const response = await fetch('https://script.google.com/macros/s/AKfycbxpIEMPY1Ji3tft5mYLNaObg9csvvzCdoWuAcOpz-KQlMWWmytkzShEgZBJNQ3r3yl7/exec');
+      // Updated API URL as requested
+      const response = await fetch('https://script.google.com/macros/s/AKfycbyQZiNTLogFsjujIKxhFs2pXoK_iaoLkFb4D3HJ_wQjQpD17RxsqHX0G1nuKbQN2x9u/exec');
       const data = await response.json();
       console.log('AI tools data:', data);
       
