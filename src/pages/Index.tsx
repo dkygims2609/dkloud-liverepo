@@ -114,17 +114,17 @@ const Index = () => {
             </div>
           </div>
           
-          <h1 className="text-6xl md:text-8xl font-bold mb-6 bg-gradient-to-r from-purple-600 via-blue-600 to-indigo-600 bg-clip-text text-transparent animate-fade-in">
-            dKloud.in
+          <h1 className="text-6xl md:text-8xl font-bold mb-4 bg-gradient-to-r from-purple-600 via-blue-600 to-indigo-600 bg-clip-text text-transparent animate-fade-in">
+            Decoding Knowledge
           </h1>
           
-          <p className="text-2xl md:text-3xl font-medium mb-4 text-gray-600 animate-slide-up">
-            Decoding Knowledge
+          <p className="text-xl md:text-2xl font-medium mb-4 text-gray-600 animate-slide-up">
+            Library Of Unique Discoveries
           </p>
           
           <div className="mb-8 animate-scale-in">
             <Badge variant="secondary" className="text-lg px-6 py-2 bg-gradient-to-r from-purple-100 to-blue-100 text-purple-800">
-              by dKloud Tech
+              dKloud.in by dKloud Tech
             </Badge>
           </div>
 
