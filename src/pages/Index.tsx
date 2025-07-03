@@ -211,7 +211,7 @@ const Index = () => {
       <ContactFloatingButtons />
       <AIAssistant />
 
-      <style jsx>{`
+      <style>{`
         @keyframes float {
           0%, 100% { transform: translateY(0px) rotate(0deg); }
           33% { transform: translateY(-20px) rotate(5deg); }

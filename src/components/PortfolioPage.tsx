@@ -6,11 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { ArrowLeft, User, Music, FileText, Play, ExternalLink } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
-interface PortfolioPageProps {
-  onBack: () => void;
-}
-
-const PortfolioPage = ({ onBack }: PortfolioPageProps) => {
+const PortfolioPage = () => {
   const compositions = [
     {
       title: "Pahla Pyar",
@@ -96,21 +92,6 @@ const PortfolioPage = ({ onBack }: PortfolioPageProps) => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20">
-      {/* Header */}
-      <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-        <div className="container flex h-16 items-center justify-between">
-          <div className="flex items-center space-x-4">
-            <Button variant="ghost" size="sm" onClick={onBack}>
-              <ArrowLeft className="h-4 w-4 mr-2" />
-              Back to Home
-            </Button>
-            <h1 className="text-2xl font-bold bg-gradient-to-r from-primary to-blue-600 bg-clip-text text-transparent">
-              My Portfolio
-            </h1>
-          </div>
-        </div>
-      </header>
-
       <div className="container mx-auto px-4 py-8">
         <div className="text-center mb-8">
           <h1 className="text-4xl font-bold mb-4">🎼 My Portfolio</h1>
