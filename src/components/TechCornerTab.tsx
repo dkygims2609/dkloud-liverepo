@@ -13,9 +13,7 @@ interface TechResource {
   Description: string;
   Cheatsheetlink: string;
   Author?: string;
-  Tags?: string;
-  Category?: string;
-  Type?: string;
+  [key: string]: any;
 }
 
 const TechCornerTab = () => {
@@ -23,7 +21,7 @@ const TechCornerTab = () => {
   const [filteredResources, setFilteredResources] = useState<TechResource[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
-  const [categoryFilter, setCategoryFilter] = useState('all');
+  const [authorFilter, setAuthorFilter] = useState('all');
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const itemsPerView = 6; // 2 rows x 3 columns
@@ -64,18 +62,17 @@ const TechCornerTab = () => {
   useEffect(() => {
     let filtered = resources.filter(resource => {
       const matchesSearch = resource.Title?.toLowerCase().includes(searchTerm.toLowerCase()) || 
-                           resource.Description?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                           resource.Tags?.toLowerCase().includes(searchTerm.toLowerCase());
-      const matchesCategory = categoryFilter === 'all' || resource.Category === categoryFilter;
+                           resource.Description?.toLowerCase().includes(searchTerm.toLowerCase());
+      const matchesAuthor = authorFilter === 'all' || resource.Author === authorFilter;
       
-      return matchesSearch && matchesCategory;
+      return matchesSearch && matchesAuthor;
     });
 
     setFilteredResources(filtered);
-    setCurrentIndex(0); // Reset to first page when filters change
-  }, [resources, searchTerm, categoryFilter]);
+    setCurrentIndex(0);
+  }, [resources, searchTerm, authorFilter]);
 
-  const uniqueCategories = [...new Set(resources.map(resource => resource.Category).filter(Boolean))];
+  const uniqueAuthors = [...new Set(resources.map(resource => resource.Author).filter(Boolean))];
 
   // Manual slider controls
   const nextSlide = () => {
@@ -106,7 +103,7 @@ const TechCornerTab = () => {
     <div className="space-y-6">
       <div className="text-center mb-8">
         <h2 className="text-3xl font-bold mb-4 bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
-          🔧 Tech Corner
+          Tech Corner
         </h2>
         <p className="text-lg text-muted-foreground">
           Technical resources and documentation
@@ -133,14 +130,14 @@ const TechCornerTab = () => {
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <Select value={categoryFilter} onValueChange={setCategoryFilter}>
+            <Select value={authorFilter} onValueChange={setAuthorFilter}>
               <SelectTrigger>
-                <SelectValue placeholder="Filter by category" />
+                <SelectValue placeholder="Filter by author" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">All Categories</SelectItem>
-                {uniqueCategories.map(category => (
-                  <SelectItem key={category} value={category}>{category}</SelectItem>
+                <SelectItem value="all">All Authors</SelectItem>
+                {uniqueAuthors.map(author => (
+                  <SelectItem key={author} value={author}>{author}</SelectItem>
                 ))}
               </SelectContent>
             </Select>
@@ -155,7 +152,7 @@ const TechCornerTab = () => {
 
       {/* Slider Controls */}
       <div className="flex items-center justify-between mb-4">
-        <h3 className="text-xl font-semibold text-gray-800 dark:text-white">🔧 Featured Resources</h3>
+        <h3 className="text-xl font-semibold text-gray-800 dark:text-white">Featured Resources</h3>
         <div className="flex gap-2">
           <Button 
             variant="outline" 
@@ -178,7 +175,7 @@ const TechCornerTab = () => {
         </div>
       </div>
 
-      {/* Resources Grid */}
+      {/* Resources Grid - 2 rows */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {visibleResources.map((resource, index) => (
           <Card key={index} className="hover:shadow-lg transition-shadow duration-300 bg-gradient-to-br from-background to-indigo-50/20 dark:to-indigo-900/10 border-indigo-200/50 dark:border-indigo-800/50">
@@ -187,18 +184,6 @@ const TechCornerTab = () => {
                 <Wrench className="h-5 w-5 text-indigo-600" />
                 <span className="line-clamp-1">{resource.Title}</span>
               </CardTitle>
-              <div className="flex flex-wrap gap-2 mb-2">
-                {resource.Category && (
-                  <Badge variant="secondary" className="bg-indigo-100 dark:bg-indigo-900 text-indigo-800 dark:text-indigo-200">
-                    {resource.Category}
-                  </Badge>
-                )}
-                {resource.Type && (
-                  <Badge variant="outline" className="border-purple-300 dark:border-purple-700 text-purple-700 dark:text-purple-300">
-                    {resource.Type}
-                  </Badge>
-                )}
-              </div>
             </CardHeader>
             <CardContent className="pt-0">
               {resource.Description && (
@@ -211,18 +196,6 @@ const TechCornerTab = () => {
                 <div className="flex items-center gap-2 mb-3 text-sm text-muted-foreground">
                   <User className="h-4 w-4" />
                   By {resource.Author}
-                </div>
-              )}
-              
-              {resource.Tags && (
-                <div className="mb-4">
-                  <div className="flex flex-wrap gap-1">
-                    {resource.Tags.split(',').slice(0, 3).map((tag, tagIndex) => (
-                      <Badge key={tagIndex} variant="outline" className="text-xs border-blue-300 dark:border-blue-700 text-blue-700 dark:text-blue-300">
-                        {tag.trim()}
-                      </Badge>
-                    ))}
-                  </div>
                 </div>
               )}
               
@@ -257,13 +230,13 @@ const TechCornerTab = () => {
         <div className="text-center py-20">
           <FileText className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
           <p className="text-muted-foreground">No tech resources found matching your criteria.</p>
-          {searchTerm || categoryFilter !== 'all' ? (
+          {searchTerm || authorFilter !== 'all' ? (
             <Button 
               variant="outline" 
               className="mt-4"
               onClick={() => {
                 setSearchTerm('');
-                setCategoryFilter('all');
+                setAuthorFilter('all');
               }}
             >
               Clear Filters

@@ -9,12 +9,7 @@ import { Brain, ExternalLink, Star, Search, Filter, ChevronLeft, ChevronRight } 
 import { toast } from "@/hooks/use-toast";
 
 interface AITool {
-  Name: string;
-  Description: string;
-  Category: string;
-  'Tools Link': string;
-  Rating?: string;
-  Tags?: string;
+  [key: string]: any;
 }
 
 const AIToolsTab = () => {
@@ -34,11 +29,11 @@ const AIToolsTab = () => {
   const fetchTools = async () => {
     try {
       setLoading(true);
-      const response = await fetch('https://script.google.com/macros/s/AKfycbzrOGVhNGJwqnIgSDzEV_3kJMT9sK8X6lGlAhFOTFNJMo_4qQAT3_3e7kMjPLc9-1vg/exec');
+      const response = await fetch('https://script.google.com/macros/s/AKfycbxpIEMPY1Ji3tft5mYLNaObg9csvvzCdoWuAcOpz-KQlMWWmytkzShEgZBJNQ3r3yl7/exec');
       const data = await response.json();
       console.log('AI tools data:', data);
       
-      if (Array.isArray(data)) {
+      if (Array.isArray(data) && data.length > 0) {
         setTools(data);
         setFilteredTools(data);
       } else {
@@ -62,21 +57,27 @@ const AIToolsTab = () => {
 
   useEffect(() => {
     let filtered = tools.filter(tool => {
-      const matchesSearch = tool.Name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                           tool.Description?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                           tool.Tags?.toLowerCase().includes(searchTerm.toLowerCase());
-      const matchesCategory = categoryFilter === 'all' || tool.Category === categoryFilter;
+      const name = tool.Name || tool.name || tool.Tool || '';
+      const description = tool.Description || tool.description || '';
+      const category = tool.Category || tool.category || '';
+      const tags = tool.Tags || tool.tags || '';
+
+      const matchesSearch = 
+        name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        description.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        tags.toLowerCase().includes(searchTerm.toLowerCase());
+      
+      const matchesCategory = categoryFilter === 'all' || category.toLowerCase().includes(categoryFilter.toLowerCase());
       
       return matchesSearch && matchesCategory;
     });
 
     setFilteredTools(filtered);
-    setCurrentIndex(0); // Reset to first page when filters change
+    setCurrentIndex(0);
   }, [tools, searchTerm, categoryFilter]);
 
-  const uniqueCategories = [...new Set(tools.map(tool => tool.Category).filter(Boolean))];
+  const uniqueCategories = [...new Set(tools.map(tool => tool.Category || tool.category).filter(Boolean))];
 
-  // Manual slider controls
   const nextSlide = () => {
     if (currentIndex + itemsPerView < filteredTools.length) {
       setCurrentIndex(currentIndex + itemsPerView);
@@ -105,7 +106,7 @@ const AIToolsTab = () => {
     <div className="space-y-6">
       <div className="text-center mb-8">
         <h2 className="text-3xl font-bold mb-4 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-          🤖 AI Tools Collection
+          AI Tools Collection
         </h2>
         <p className="text-lg text-muted-foreground">
           Discover powerful AI tools to enhance your productivity
@@ -154,7 +155,7 @@ const AIToolsTab = () => {
 
       {/* Slider Controls */}
       <div className="flex items-center justify-between mb-4">
-        <h3 className="text-xl font-semibold text-gray-800 dark:text-white">🤖 Featured AI Tools</h3>
+        <h3 className="text-xl font-semibold text-gray-800 dark:text-white">Featured AI Tools</h3>
         <div className="flex gap-2">
           <Button 
             variant="outline" 
@@ -177,40 +178,40 @@ const AIToolsTab = () => {
         </div>
       </div>
 
-      {/* Tools Grid */}
+      {/* Tools Grid - 2 rows */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {visibleTools.map((tool, index) => (
           <Card key={index} className="hover:shadow-lg transition-shadow duration-300 bg-gradient-to-br from-background to-blue-50/20 dark:to-blue-900/10 border-blue-200/50 dark:border-blue-800/50">
             <CardHeader className="pb-3">
               <CardTitle className="text-lg mb-2 flex items-center gap-2">
                 <Brain className="h-5 w-5 text-blue-600" />
-                <span className="line-clamp-1">{tool.Name}</span>
+                <span className="line-clamp-1">{tool.Name || tool.name || tool.Tool || 'AI Tool'}</span>
               </CardTitle>
               <div className="flex flex-wrap gap-2 mb-2">
-                {tool.Category && (
+                {(tool.Category || tool.category) && (
                   <Badge variant="secondary" className="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200">
-                    {tool.Category}
+                    {tool.Category || tool.category}
                   </Badge>
                 )}
-                {tool.Rating && (
+                {(tool.Rating || tool.rating) && (
                   <div className="flex items-center gap-1 text-yellow-500">
                     <Star className="h-3 w-3 fill-current" />
-                    <span className="text-xs font-medium">{tool.Rating}</span>
+                    <span className="text-xs font-medium">{tool.Rating || tool.rating}</span>
                   </div>
                 )}
               </div>
             </CardHeader>
             <CardContent className="pt-0">
-              {tool.Description && (
+              {(tool.Description || tool.description) && (
                 <CardDescription className="mb-4 line-clamp-3">
-                  {tool.Description}
+                  {tool.Description || tool.description}
                 </CardDescription>
               )}
               
-              {tool.Tags && (
+              {(tool.Tags || tool.tags) && (
                 <div className="mb-4">
                   <div className="flex flex-wrap gap-1">
-                    {tool.Tags.split(',').slice(0, 3).map((tag, tagIndex) => (
+                    {(tool.Tags || tool.tags).split(',').slice(0, 3).map((tag: string, tagIndex: number) => (
                       <Badge key={tagIndex} variant="outline" className="text-xs border-purple-300 dark:border-purple-700 text-purple-700 dark:text-purple-300">
                         {tag.trim()}
                       </Badge>
@@ -219,7 +220,7 @@ const AIToolsTab = () => {
                 </div>
               )}
               
-              {tool['Tools Link'] && (
+              {(tool['Tools Link'] || tool.Link || tool.URL) && (
                 <Button 
                   variant="outline" 
                   size="sm" 
@@ -227,7 +228,7 @@ const AIToolsTab = () => {
                   asChild
                 >
                   <a 
-                    href={tool['Tools Link']} 
+                    href={tool['Tools Link'] || tool.Link || tool.URL} 
                     target="_blank" 
                     rel="noopener noreferrer"
                     className="flex items-center gap-2"

@@ -115,14 +115,35 @@ const Index = () => {
         </div>
       </header>
 
-      {/* Modern Hero Section - Redesigned */}
+      {/* Modern Hero Section - Redesigned with Vertical Text Layout */}
       <div className="relative overflow-hidden bg-white dark:bg-gray-900">
         <div className="container mx-auto px-4 py-20">
           <div className="text-center max-w-4xl mx-auto">
-            {/* Main Title */}
-            <h1 className="text-6xl md:text-8xl font-bold mb-8 bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent tracking-tight" style={{ fontFamily: 'Inter, system-ui, sans-serif' }}>
-              Decoding Knowledge
-            </h1>
+            {/* Vertical Title Layout */}
+            <div className="mb-12">
+              <div className="inline-block">
+                <h1 className="text-6xl md:text-8xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent tracking-tight leading-tight" style={{ fontFamily: 'Inter, system-ui, sans-serif' }}>
+                  D<br/>
+                  e<br/>
+                  c<br/>
+                  o<br/>
+                  d<br/>
+                  i<br/>
+                  n<br/>
+                  g<br/>
+                  <br/>
+                  K<br/>
+                  n<br/>
+                  o<br/>
+                  w<br/>
+                  l<br/>
+                  e<br/>
+                  d<br/>
+                  g<br/>
+                  e
+                </h1>
+              </div>
+            </div>
             
             {/* Subtitle */}
             <p className="text-2xl md:text-3xl font-light mb-6 text-gray-600 dark:text-gray-300 tracking-wide">

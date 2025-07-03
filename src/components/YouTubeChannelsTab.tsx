@@ -57,16 +57,16 @@ const YouTubeChannelsTab = () => {
       );
       
       const matchesCategory = categoryFilter === 'all' || 
-        (typeof category === 'string' && category.toLowerCase() === categoryFilter.toLowerCase());
+        (typeof category === 'string' && category.toLowerCase().includes(categoryFilter.toLowerCase()));
 
       return matchesSearch && matchesCategory;
     });
 
     setFilteredChannels(filtered);
-    setCurrentIndex(0); // Reset to first page when filters change
+    setCurrentIndex(0);
   }, [channels, searchTerm, categoryFilter]);
 
-  // Extract unique categories for filter
+  // Extract unique categories for filter from Category column
   const categories = [...new Set(channels.map(channel => channel.Category || channel.category).filter(Boolean))];
 
   // Manual slider controls
@@ -98,17 +98,17 @@ const YouTubeChannelsTab = () => {
     <div className="space-y-6">
       <div className="text-center">
         <h2 className="text-3xl font-bold mb-4 bg-gradient-to-r from-red-600 to-purple-600 bg-clip-text text-transparent">
-          📺 YouTube Channel Picks
+          YouTube Channel Picks
         </h2>
         <p className="text-muted-foreground">Curated collection of educational and entertaining YouTube channels</p>
       </div>
 
-      {/* Search and Filters */}
+      {/* Search and Category Filter */}
       <Card className="bg-white dark:bg-gray-800 shadow-sm border border-gray-200 dark:border-gray-700">
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Filter className="h-5 w-5 text-red-600" />
-            Search & Filters
+            Search & Category Filter
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
@@ -148,7 +148,7 @@ const YouTubeChannelsTab = () => {
       {/* Slider Controls */}
       <div className="flex items-center justify-between mb-4">
         <h3 className="text-xl font-semibold text-gray-800 dark:text-white">
-          📺 Featured Channels
+          Featured Channels
         </h3>
         <div className="flex gap-2">
           <Button 
@@ -172,7 +172,7 @@ const YouTubeChannelsTab = () => {
         </div>
       </div>
 
-      {/* Channels Grid */}
+      {/* Channels Grid - 2 rows */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {visibleChannels.map((channel, index) => (
           <Card key={index} className="bg-white dark:bg-gray-800 shadow-sm border border-gray-200 dark:border-gray-700 hover:shadow-md transition-shadow">

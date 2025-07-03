@@ -78,14 +78,14 @@ const MoviesTab = () => {
       const name = item.Name || item.name || '';
       const genre = item.Genre || item.genre || '';
       const platform = item.Platform || item.platform || '';
-      const rating = item['DKcloudRating'] || item['Dkloud Rating'] || item.rating || '';
+      const rating = item.DKcloudRating || item['Dkloud Rating'] || item.rating || '';
       const language = item.Language || item.language || '';
       const awards = item.Awards || item.awards || '';
 
       const matchesSearch = typeof name === 'string' && name.toLowerCase().includes(searchTerm.toLowerCase());
       const matchesGenre = genreFilter === 'all' || (typeof genre === 'string' && genre.toLowerCase().includes(genreFilter.toLowerCase()));
       const matchesPlatform = platformFilter === 'all' || (typeof platform === 'string' && platform.toLowerCase().includes(platformFilter.toLowerCase()));
-      const matchesRating = ratingFilter === 'all' || rating === ratingFilter;
+      const matchesRating = ratingFilter === 'all' || rating.toString() === ratingFilter;
       const matchesLanguage = languageFilter === 'all' || (typeof language === 'string' && language.toLowerCase().includes(languageFilter.toLowerCase()));
       const matchesAwards = awardsFilter === 'all' || (typeof awards === 'string' && awards.toLowerCase().includes(awardsFilter.toLowerCase()));
 
@@ -93,8 +93,16 @@ const MoviesTab = () => {
     });
 
     setCurrentFiltered(filtered);
-    setCurrentIndex(0); // Reset to first page when filters change
+    setCurrentIndex(0);
   }, [movies, tvSeries, activeType, searchTerm, genreFilter, platformFilter, ratingFilter, languageFilter, awardsFilter]);
+
+  // Extract unique values for filters
+  const currentData = activeType === 'movies' ? movies : tvSeries;
+  const genres = [...new Set(currentData.map(item => item.Genre).filter(Boolean))];
+  const platforms = [...new Set(currentData.map(item => item.Platform).filter(Boolean))];
+  const ratings = [...new Set(currentData.map(item => item.DKcloudRating || item['Dkloud Rating']).filter(Boolean))];
+  const languages = [...new Set(currentData.map(item => item.Language).filter(Boolean))];
+  const awards = [...new Set(currentData.map(item => item.Awards).filter(Boolean))];
 
   // Manual slider controls
   const nextSlide = () => {
@@ -118,21 +126,21 @@ const MoviesTab = () => {
     );
   }
 
-  const currentData = activeType === 'movies' ? filteredMovies : filteredTvSeries;
-  const visibleItems = currentData.slice(currentIndex, currentIndex + itemsPerView);
-  const canGoNext = currentIndex + itemsPerView < currentData.length;
+  const currentFilteredData = activeType === 'movies' ? filteredMovies : filteredTvSeries;
+  const visibleItems = currentFilteredData.slice(currentIndex, currentIndex + itemsPerView);
+  const canGoNext = currentIndex + itemsPerView < currentFilteredData.length;
   const canGoPrev = currentIndex > 0;
 
   return (
     <div className="space-y-6">
       <div className="text-center">
         <h2 className="text-3xl font-bold mb-4 bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
-          🎬 Movies & TV Series
+          Movies & TV Series
         </h2>
         <p className="text-muted-foreground">Curated collection of entertainment content</p>
       </div>
 
-      {/* Search and Filters - Moved to top */}
+      {/* Search and Filters */}
       <Card className="bg-white dark:bg-gray-800 shadow-sm border border-gray-200 dark:border-gray-700">
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
@@ -158,10 +166,9 @@ const MoviesTab = () => {
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">All Genres</SelectItem>
-                <SelectItem value="action">Action</SelectItem>
-                <SelectItem value="drama">Drama</SelectItem>
-                <SelectItem value="comedy">Comedy</SelectItem>
-                <SelectItem value="thriller">Thriller</SelectItem>
+                {genres.map(genre => (
+                  <SelectItem key={genre} value={genre}>{genre}</SelectItem>
+                ))}
               </SelectContent>
             </Select>
 
@@ -171,22 +178,21 @@ const MoviesTab = () => {
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">All Platforms</SelectItem>
-                <SelectItem value="netflix">Netflix</SelectItem>
-                <SelectItem value="amazon">Amazon Prime</SelectItem>
-                <SelectItem value="disney">Disney+</SelectItem>
-                <SelectItem value="hbo">HBO Max</SelectItem>
+                {platforms.map(platform => (
+                  <SelectItem key={platform} value={platform}>{platform}</SelectItem>
+                ))}
               </SelectContent>
             </Select>
 
             <Select value={ratingFilter} onValueChange={setRatingFilter}>
               <SelectTrigger>
-                <SelectValue placeholder="Rating" />
+                <SelectValue placeholder="DKcloud Rating" />
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">All Ratings</SelectItem>
-                <SelectItem value="5">5 Stars</SelectItem>
-                <SelectItem value="4">4 Stars</SelectItem>
-                <SelectItem value="3">3 Stars</SelectItem>
+                {ratings.map(rating => (
+                  <SelectItem key={rating} value={rating.toString()}>{rating} Stars</SelectItem>
+                ))}
               </SelectContent>
             </Select>
 
@@ -196,9 +202,9 @@ const MoviesTab = () => {
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">All Languages</SelectItem>
-                <SelectItem value="english">English</SelectItem>
-                <SelectItem value="hindi">Hindi</SelectItem>
-                <SelectItem value="spanish">Spanish</SelectItem>
+                {languages.map(language => (
+                  <SelectItem key={language} value={language}>{language}</SelectItem>
+                ))}
               </SelectContent>
             </Select>
 
@@ -208,9 +214,9 @@ const MoviesTab = () => {
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">All</SelectItem>
-                <SelectItem value="oscar">Oscar Winner</SelectItem>
-                <SelectItem value="emmy">Emmy Winner</SelectItem>
-                <SelectItem value="golden globe">Golden Globe</SelectItem>
+                {awards.map(award => (
+                  <SelectItem key={award} value={award}>{award}</SelectItem>
+                ))}
               </SelectContent>
             </Select>
           </div>
@@ -248,7 +254,7 @@ const MoviesTab = () => {
       {/* Slider Controls */}
       <div className="flex items-center justify-between mb-4">
         <h3 className="text-xl font-semibold text-gray-800 dark:text-white">
-          {activeType === 'movies' ? '🎬 Featured Movies' : '📺 Featured TV Series'}
+          {activeType === 'movies' ? 'Featured Movies' : 'Featured TV Series'}
         </h3>
         <div className="flex gap-2">
           <Button 
@@ -306,10 +312,10 @@ const MoviesTab = () => {
               </div>
 
               <div className="flex items-center justify-between">
-                {(item['DKcloudRating'] || item['Dkloud Rating']) && (
+                {(item.DKcloudRating || item['Dkloud Rating']) && (
                   <div className="flex items-center">
                     <Star className="h-4 w-4 text-yellow-500 mr-1" />
-                    <span className="text-sm font-medium">{item['DKcloudRating'] || item['Dkloud Rating']}/5</span>
+                    <span className="text-sm font-medium">{item.DKcloudRating || item['Dkloud Rating']}/5</span>
                   </div>
                 )}
                 {item.Awards && (
