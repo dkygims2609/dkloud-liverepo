@@ -4,7 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
-import { Bot, Send, X, MessageCircle } from 'lucide-react';
+import { Bot, Send, X } from 'lucide-react';
 
 const AIAssistant = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -55,7 +55,7 @@ const AIAssistant = () => {
     setMessage('');
   };
 
-  const handleKeyPress = (e) => {
+  const handleKeyPress = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter') {
       handleSend();
     }
