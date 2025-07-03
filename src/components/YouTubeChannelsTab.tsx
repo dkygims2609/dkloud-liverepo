@@ -21,7 +21,7 @@ const YouTubeChannelsTab = () => {
   const fetchChannels = async () => {
     try {
       setLoading(true);
-      const response = await fetch('https://api.sheetbest.com/sheets/65f34b49-7b92-4a44-be4c-ba8d1bca6a48');
+      const response = await fetch('https://api.sheetbest.com/sheets/c66a0da1-d347-44f8-adc7-dc02c8627799');
       const data = await response.json();
       console.log('YouTube channels data:', data);
       

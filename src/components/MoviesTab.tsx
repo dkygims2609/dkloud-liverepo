@@ -1,11 +1,10 @@
-
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Star, Play, Calendar, Globe, Award, Search, Filter, Film, Tv } from 'lucide-react';
+import { Star, Play, Calendar, Globe, Award, Search, Filter, Film, Tv, ChevronLeft, ChevronRight } from 'lucide-react';
 
 const MoviesTab = () => {
   const [movies, setMovies] = useState([]);
@@ -20,6 +19,9 @@ const MoviesTab = () => {
   const [ratingFilter, setRatingFilter] = useState('all');
   const [languageFilter, setLanguageFilter] = useState('all');
   const [awardsFilter, setAwardsFilter] = useState('all');
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  const itemsPerView = 3; // Show only 3 items
 
   useEffect(() => {
     fetchMoviesAndTvSeries();
@@ -92,6 +94,23 @@ const MoviesTab = () => {
     setCurrentFiltered(filtered);
   }, [movies, tvSeries, activeType, searchTerm, genreFilter, platformFilter, ratingFilter, languageFilter, awardsFilter]);
 
+  // Auto-slide functionality
+  const nextSlide = () => {
+    const currentData = activeType === 'movies' ? filteredMovies : filteredTvSeries;
+    setCurrentIndex((prev) => (prev + itemsPerView) % Math.max(itemsPerView, currentData.length));
+  };
+
+  const prevSlide = () => {
+    const currentData = activeType === 'movies' ? filteredMovies : filteredTvSeries;
+    setCurrentIndex((prev) => (prev - itemsPerView + currentData.length) % Math.max(itemsPerView, currentData.length));
+  };
+
+  // Auto-slide timer
+  useEffect(() => {
+    const interval = setInterval(nextSlide, 5000); // Auto-slide every 5 seconds
+    return () => clearInterval(interval);
+  }, [activeType, filteredMovies, filteredTvSeries]);
+
   if (loading) {
     return (
       <div className="flex justify-center items-center h-64">
@@ -101,6 +120,7 @@ const MoviesTab = () => {
   }
 
   const currentData = activeType === 'movies' ? filteredMovies : filteredTvSeries;
+  const visibleItems = currentData.slice(currentIndex, currentIndex + itemsPerView);
 
   return (
     <div className="space-y-6">
@@ -113,7 +133,7 @@ const MoviesTab = () => {
 
       {/* Type Switcher */}
       <div className="flex justify-center mb-6">
-        <div className="flex bg-white rounded-lg p-1 border border-gray-200">
+        <div className="flex bg-white rounded-lg p-1 border border-gray-200 shadow-sm">
           <button
             onClick={() => setActiveType('movies')}
             className={`flex items-center gap-2 px-4 py-2 rounded-md transition-colors ${
@@ -137,6 +157,87 @@ const MoviesTab = () => {
             TV Series ({tvSeries.length})
           </button>
         </div>
+      </div>
+
+      {/* Slider Controls */}
+      <div className="flex items-center justify-between mb-4">
+        <h3 className="text-xl font-semibold text-gray-800">
+          {activeType === 'movies' ? 'Featured Movies' : 'Featured TV Series'}
+        </h3>
+        <div className="flex gap-2">
+          <Button variant="outline" size="sm" onClick={prevSlide} className="h-8 w-8 p-0">
+            <ChevronLeft className="h-4 w-4" />
+          </Button>
+          <Button variant="outline" size="sm" onClick={nextSlide} className="h-8 w-8 p-0">
+            <ChevronRight className="h-4 w-4" />
+          </Button>
+        </div>
+      </div>
+
+      {/* Content Slider - Only 3 items visible */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+        {visibleItems.map((item, index) => (
+          <Card key={index} className="bg-white shadow-sm border border-gray-200 hover:shadow-md transition-shadow">
+            <CardHeader>
+              <CardTitle className="text-lg text-gray-900 flex items-center gap-2">
+                {activeType === 'movies' ? <Film className="h-4 w-4" /> : <Tv className="h-4 w-4" />}
+                {item.Name || item.name || 'Untitled'}
+              </CardTitle>
+              <CardDescription className="line-clamp-3">
+                {item['Why to Watch'] || item.Description || item.description || 'No description available'}
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-3">
+              <div className="flex flex-wrap gap-2">
+                {item.Genre && (
+                  <Badge variant="secondary" className="bg-purple-100 text-purple-700">
+                    {item.Genre}
+                  </Badge>
+                )}
+                {item.Platform && (
+                  <Badge variant="outline" className="border-blue-200 text-blue-700">
+                    <Globe className="h-3 w-3 mr-1" />
+                    {item.Platform}
+                  </Badge>
+                )}
+                {item.Language && (
+                  <Badge variant="outline" className="border-indigo-200 text-indigo-700">
+                    {item.Language}
+                  </Badge>
+                )}
+              </div>
+
+              <div className="flex items-center justify-between">
+                {item['DKcloudRating'] && (
+                  <div className="flex items-center">
+                    <Star className="h-4 w-4 text-yellow-500 mr-1" />
+                    <span className="text-sm font-medium">{item['DKcloudRating']}/5</span>
+                  </div>
+                )}
+                {item.Awards && (
+                  <div className="flex items-center">
+                    <Award className="h-4 w-4 text-yellow-500 mr-1" />
+                    <span className="text-xs text-muted-foreground">{item.Awards}</span>
+                  </div>
+                )}
+              </div>
+
+              {item['IMDb Link'] && (
+                <Button 
+                  variant="outline" 
+                  size="sm" 
+                  className="w-full border-purple-200 text-purple-700 hover:bg-purple-50"
+                  asChild
+                >
+                  <a href={item['IMDb Link']} target="_blank" rel="noopener noreferrer">
+                    <Play className="h-4 w-4 mr-2" />
+                    View on IMDb
+                  </a>
+                </Button>
+              )}
+            </CardContent>
+          </Card>
+        ))}
       </div>
 
       {/* Search and Filters */}
@@ -223,72 +324,6 @@ const MoviesTab = () => {
           </div>
         </CardContent>
       </Card>
-
-      {/* Content Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {currentData.map((item, index) => (
-          <Card key={index} className="bg-white shadow-sm border border-gray-200 hover:shadow-md transition-shadow">
-            <CardHeader>
-              <CardTitle className="text-lg text-gray-900 flex items-center gap-2">
-                {activeType === 'movies' ? <Film className="h-4 w-4" /> : <Tv className="h-4 w-4" />}
-                {item.Name || item.name || 'Untitled'}
-              </CardTitle>
-              <CardDescription>
-                {item.Description || item.description || 'No description available'}
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-3">
-              <div className="flex flex-wrap gap-2">
-                {item.Genre && (
-                  <Badge variant="secondary" className="bg-purple-100 text-purple-700">
-                    {item.Genre}
-                  </Badge>
-                )}
-                {item.Platform && (
-                  <Badge variant="outline" className="border-blue-200 text-blue-700">
-                    <Globe className="h-3 w-3 mr-1" />
-                    {item.Platform}
-                  </Badge>
-                )}
-                {item.Language && (
-                  <Badge variant="outline" className="border-indigo-200 text-indigo-700">
-                    {item.Language}
-                  </Badge>
-                )}
-              </div>
-
-              <div className="flex items-center justify-between">
-                {item['Dkloud Rating'] && (
-                  <div className="flex items-center">
-                    <Star className="h-4 w-4 text-yellow-500 mr-1" />
-                    <span className="text-sm font-medium">{item['Dkloud Rating']}/5</span>
-                  </div>
-                )}
-                {item.Awards && (
-                  <div className="flex items-center">
-                    <Award className="h-4 w-4 text-gold-500 mr-1" />
-                    <span className="text-xs text-muted-foreground">{item.Awards}</span>
-                  </div>
-                )}
-              </div>
-
-              {item['IMDb Link'] && (
-                <Button 
-                  variant="outline" 
-                  size="sm" 
-                  className="w-full border-purple-200 text-purple-700 hover:bg-purple-50"
-                  asChild
-                >
-                  <a href={item['IMDb Link']} target="_blank" rel="noopener noreferrer">
-                    <Play className="h-4 w-4 mr-2" />
-                    View on IMDb
-                  </a>
-                </Button>
-              )}
-            </CardContent>
-          </Card>
-        ))}
-      </div>
 
       {currentData.length === 0 && !loading && (
         <div className="text-center py-12">
