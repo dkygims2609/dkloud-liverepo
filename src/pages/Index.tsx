@@ -86,7 +86,7 @@ const Index = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-white text-foreground page-transition">
+    <div className="min-h-screen bg-white dark:bg-gray-900 text-foreground page-transition">
       {/* Theme Toggle */}
       <ThemeToggle />
 
@@ -104,82 +104,111 @@ const Index = () => {
       )}
 
       {/* Header with Logo */}
-      <header className="w-full py-4 px-4 flex justify-center">
+      <header className="w-full py-4 px-4 flex justify-center bg-white dark:bg-gray-900 border-b border-gray-100 dark:border-gray-800">
         <div className="flex items-center gap-3">
           <img 
             src="/lovable-uploads/422cbbb0-c4bc-4187-9a72-3357810c13df.png" 
             alt="dKloud Tech Logo" 
-            className="h-12 w-12 rounded-full border-2 border-gray-200 shadow-sm"
+            className="h-12 w-12 rounded-full border-2 border-gray-200 dark:border-gray-700 shadow-sm"
           />
-          <div className="text-2xl font-bold text-gray-800">dKloud Tech</div>
+          <div className="text-2xl font-bold text-gray-800 dark:text-white">dKloud Tech</div>
         </div>
       </header>
 
       {/* Modern Hero Section */}
-      <div className="relative overflow-hidden bg-white">
-        <div className="container mx-auto px-4 py-16 text-center">
-          <h1 className="text-7xl md:text-9xl font-bold mb-6 text-gray-900 tracking-tight" style={{ fontFamily: 'Inter, system-ui, sans-serif' }}>
-            Decoding Knowledge
-          </h1>
-          
-          <p className="text-2xl md:text-3xl font-light mb-6 text-gray-600 tracking-wide">
-            Library Of Unique Discoveries
-          </p>
-          
-          <p className="text-lg text-gray-500 mb-12">
-            Powered by dKloud Tech
-          </p>
+      <div className="relative overflow-hidden bg-white dark:bg-gray-900">
+        <div className="container mx-auto px-4 py-16">
+          <div className="flex flex-col lg:flex-row items-center justify-between gap-12">
+            {/* Left side - Content */}
+            <div className="flex-1 text-center lg:text-left">
+              <h1 className="text-6xl md:text-8xl font-bold mb-6 bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent tracking-tight" style={{ fontFamily: 'Inter, system-ui, sans-serif' }}>
+                🔍 Decoding Knowledge
+              </h1>
+              
+              <p className="text-2xl md:text-3xl font-light mb-6 text-gray-600 dark:text-gray-300 tracking-wide">
+                📚 Library Of Unique Discoveries
+              </p>
+              
+              <p className="text-lg text-gray-500 dark:text-gray-400 mb-8">
+                Powered by dKloud Tech
+              </p>
 
-          <div className="max-w-4xl mx-auto space-y-6 text-lg text-gray-600 mb-12">
-            <p className="animate-fade-in">
-              <span className="text-2xl font-semibold text-gray-800">
-                A passionate creative techy's knowledge space
-              </span>
-            </p>
-            
-            <p className="animate-fade-in" style={{ animationDelay: '0.2s' }}>
-              We're on a mission to blend <span className="text-purple-600 font-semibold">creativity</span>, 
-              <span className="text-blue-600 font-semibold"> cloud technology</span>, 
-              <span className="text-indigo-600 font-semibold"> AI</span>, and 
-              <span className="text-purple-600 font-semibold"> community-driven learning</span> into one cohesive platform.
-            </p>
-            
-            <p className="animate-fade-in" style={{ animationDelay: '0.4s' }}>
-              Whether you're a <span className="text-green-600 font-semibold">tech enthusiast</span>, 
-              a <span className="text-pink-600 font-semibold">creative mind</span>, or 
-              a <span className="text-orange-600 font-semibold">curious learner</span>, 
-              you'll find something meaningful here.
-            </p>
-          </div>
+              <div className="max-w-3xl space-y-4 text-lg text-gray-600 dark:text-gray-300 mb-8">
+                <p className="animate-fade-in">
+                  <span className="text-xl font-semibold text-gray-800 dark:text-white">
+                    🚀 A passionate creative techy's knowledge space
+                  </span>
+                </p>
+                
+                <p className="animate-fade-in" style={{ animationDelay: '0.2s' }}>
+                  We're on a <span className="text-purple-600 font-semibold">mission</span> to blend 
+                  <span className="text-blue-600 font-semibold"> 🎨 creativity</span>, 
+                  <span className="text-indigo-600 font-semibold"> ☁️ cloud technology</span>, 
+                  <span className="text-purple-600 font-semibold"> 🤖 AI</span>, and 
+                  <span className="text-green-600 font-semibold"> 🌟 community-driven learning</span> into one cohesive platform.
+                </p>
+                
+                <p className="animate-fade-in" style={{ animationDelay: '0.4s' }}>
+                  Whether you're a <span className="text-green-600 font-semibold">💻 tech enthusiast</span>, 
+                  a <span className="text-pink-600 font-semibold">🎭 creative mind</span>, or 
+                  a <span className="text-orange-600 font-semibold">🔬 curious learner</span>, 
+                  you'll find something meaningful here.
+                </p>
+              </div>
 
-          <div className="flex flex-wrap justify-center gap-4 mb-16 animate-slide-up">
-            <div className="flex items-center gap-2 bg-gray-50 rounded-full px-6 py-3 shadow-sm border border-gray-200 hover-scale transition-all duration-200">
-              <Star className="h-5 w-5 text-yellow-500" />
-              <span className="text-sm font-medium text-gray-700">Curated Content</span>
+              <div className="flex flex-wrap justify-center lg:justify-start gap-4 mb-8 animate-slide-up">
+                <div className="flex items-center gap-2 bg-gray-50 dark:bg-gray-800 rounded-full px-6 py-3 shadow-sm border border-gray-200 dark:border-gray-700 hover-scale transition-all duration-200">
+                  <Star className="h-5 w-5 text-yellow-500" />
+                  <span className="text-sm font-medium text-gray-700 dark:text-gray-300">⭐ Curated Content</span>
+                </div>
+                <div className="flex items-center gap-2 bg-gray-50 dark:bg-gray-800 rounded-full px-6 py-3 shadow-sm border border-gray-200 dark:border-gray-700 hover-scale transition-all duration-200">
+                  <Heart className="h-5 w-5 text-red-500" />
+                  <span className="text-sm font-medium text-gray-700 dark:text-gray-300">❤️ Community Driven</span>
+                </div>
+                <div className="flex items-center gap-2 bg-gray-50 dark:bg-gray-800 rounded-full px-6 py-3 shadow-sm border border-gray-200 dark:border-gray-700 hover-scale transition-all duration-200">
+                  <Github className="h-5 w-5 text-gray-700 dark:text-gray-300" />
+                  <span className="text-sm font-medium text-gray-700 dark:text-gray-300">🔓 Open Source</span>
+                </div>
+              </div>
+
+              <div className="flex flex-wrap gap-4 justify-center lg:justify-start">
+                <Button className="bg-gradient-to-r from-purple-600 to-blue-600 text-white px-8 py-3 rounded-full hover:from-purple-700 hover:to-blue-700 transition-all duration-300">
+                  🚀 Explore dKloud
+                </Button>
+                <Button variant="outline" className="px-8 py-3 rounded-full border-2 border-purple-300 text-purple-700 dark:text-purple-300 hover:bg-purple-50 dark:hover:bg-purple-900/20">
+                  👤 View Portfolio
+                </Button>
+              </div>
             </div>
-            <div className="flex items-center gap-2 bg-gray-50 rounded-full px-6 py-3 shadow-sm border border-gray-200 hover-scale transition-all duration-200">
-              <Heart className="h-5 w-5 text-red-500" />
-              <span className="text-sm font-medium text-gray-700">Community Driven</span>
-            </div>
-            <div className="flex items-center gap-2 bg-gray-50 rounded-full px-6 py-3 shadow-sm border border-gray-200 hover-scale transition-all duration-200">
-              <Github className="h-5 w-5 text-gray-700" />
-              <span className="text-sm font-medium text-gray-700">Open Source</span>
+
+            {/* Right side - Founder Image */}
+            <div className="flex-shrink-0">
+              <div className="relative">
+                <img 
+                  src="/lovable-uploads/422cbbb0-c4bc-4187-9a72-3357810c13df.png" 
+                  alt="Founder DK" 
+                  className="w-64 h-64 lg:w-80 lg:h-80 rounded-full border-4 border-purple-200 dark:border-purple-700 shadow-xl object-cover"
+                />
+                <div className="absolute -bottom-4 -right-4 bg-white dark:bg-gray-800 rounded-full px-4 py-2 shadow-lg border border-gray-200 dark:border-gray-700">
+                  <span className="text-sm font-semibold text-gray-700 dark:text-gray-300">👨‍💻 Founder</span>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Main Content Tabs - Moved above How It Works */}
-      <div className="container mx-auto px-4 py-8 bg-white">
+      {/* Main Content Tabs */}
+      <div className="container mx-auto px-4 py-8 bg-white dark:bg-gray-900">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-3 lg:grid-cols-7 mb-8 bg-gray-50 border border-gray-200 shadow-sm">
-            <TabsTrigger value="movies" className="text-sm tab-trigger">Movies & TV</TabsTrigger>
-            <TabsTrigger value="youtube" className="text-sm tab-trigger">YouTube Picks</TabsTrigger>
-            <TabsTrigger value="ai" className="text-sm tab-trigger">AI Tools</TabsTrigger>
-            <TabsTrigger value="tech" className="text-sm tab-trigger">Tech Corner</TabsTrigger>
-            <TabsTrigger value="gadgets" className="text-sm tab-trigger">SmartTech</TabsTrigger>
-            <TabsTrigger value="news" className="text-sm tab-trigger">Tech News</TabsTrigger>
-            <TabsTrigger value="portfolio" className="text-sm tab-trigger">Portfolio</TabsTrigger>
+          <TabsList className="grid w-full grid-cols-3 lg:grid-cols-7 mb-8 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 shadow-sm">
+            <TabsTrigger value="movies" className="text-sm tab-trigger">🎬 Movies & TV</TabsTrigger>
+            <TabsTrigger value="youtube" className="text-sm tab-trigger">📺 YouTube Picks</TabsTrigger>
+            <TabsTrigger value="ai" className="text-sm tab-trigger">🤖 AI Tools</TabsTrigger>
+            <TabsTrigger value="tech" className="text-sm tab-trigger">🔧 Tech Corner</TabsTrigger>
+            <TabsTrigger value="gadgets" className="text-sm tab-trigger">📱 SmartTech</TabsTrigger>
+            <TabsTrigger value="news" className="text-sm tab-trigger">📰 Tech News</TabsTrigger>
+            <TabsTrigger value="portfolio" className="text-sm tab-trigger">💼 Portfolio</TabsTrigger>
           </TabsList>
 
           <TabsContent value="movies" className="space-y-6">
@@ -212,22 +241,8 @@ const Index = () => {
         </Tabs>
       </div>
 
-      {/* How It Works Section - Moved below tabs */}
+      {/* How It Works Section */}
       <HowItWorksSection />
-
-      {/* Designer Profile Section with Static Image */}
-      <div className="py-16 bg-gray-50">
-        <div className="container mx-auto px-4 text-center">
-          <h3 className="text-2xl font-bold mb-8 text-gray-800">Designed by DK</h3>
-          <div className="flex justify-center">
-            <img 
-              src="/lovable-uploads/422cbbb0-c4bc-4187-9a72-3357810c13df.png" 
-              alt="Founder DK" 
-              className="w-32 h-32 rounded-full border-4 border-white shadow-lg"
-            />
-          </div>
-        </div>
-      </div>
 
       <Footer />
       <ContactFloatingButtons />

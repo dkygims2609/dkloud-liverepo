@@ -5,13 +5,13 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Wrench, ExternalLink, FileText, Download, Search, User } from 'lucide-react';
+import { Wrench, ExternalLink, FileText, Download, Search, User, ChevronLeft, ChevronRight } from 'lucide-react';
 import { toast } from "@/hooks/use-toast";
 
 interface TechResource {
   Title: string;
   Description: string;
-  FileLink: string;
+  Cheatsheetlink: string;
   Author?: string;
   Tags?: string;
   Category?: string;
@@ -20,9 +20,13 @@ interface TechResource {
 
 const TechCornerTab = () => {
   const [resources, setResources] = useState<TechResource[]>([]);
+  const [filteredResources, setFilteredResources] = useState<TechResource[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [categoryFilter, setCategoryFilter] = useState('all');
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  const itemsPerView = 6; // 2 rows x 3 columns
 
   useEffect(() => {
     fetchResources();
@@ -30,10 +34,19 @@ const TechCornerTab = () => {
 
   const fetchResources = async () => {
     try {
+      setLoading(true);
       const response = await fetch('https://script.google.com/macros/s/AKfycbw6hSBYLo33ze3aqiTzBszbfiTFVh2nHsrsop58d0DFWGOOwaOZIepb6kUjmqKwKcVr/exec');
       const data = await response.json();
       console.log('Tech resources data:', data);
-      setResources(data);
+      
+      if (Array.isArray(data)) {
+        setResources(data);
+        setFilteredResources(data);
+      } else {
+        console.error('Invalid tech resources data format:', data);
+        setResources([]);
+        setFilteredResources([]);
+      }
     } catch (error) {
       console.error('Error fetching tech resources:', error);
       toast({
@@ -41,21 +54,41 @@ const TechCornerTab = () => {
         description: "Failed to fetch tech resources data",
         variant: "destructive",
       });
+      setResources([]);
+      setFilteredResources([]);
     } finally {
       setLoading(false);
     }
   };
 
-  const filteredResources = resources.filter(resource => {
-    const matchesSearch = resource.Title?.toLowerCase().includes(searchTerm.toLowerCase()) || 
-                         resource.Description?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         resource.Tags?.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesCategory = categoryFilter === 'all' || resource.Category === categoryFilter;
-    
-    return matchesSearch && matchesCategory;
-  });
+  useEffect(() => {
+    let filtered = resources.filter(resource => {
+      const matchesSearch = resource.Title?.toLowerCase().includes(searchTerm.toLowerCase()) || 
+                           resource.Description?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                           resource.Tags?.toLowerCase().includes(searchTerm.toLowerCase());
+      const matchesCategory = categoryFilter === 'all' || resource.Category === categoryFilter;
+      
+      return matchesSearch && matchesCategory;
+    });
+
+    setFilteredResources(filtered);
+    setCurrentIndex(0); // Reset to first page when filters change
+  }, [resources, searchTerm, categoryFilter]);
 
   const uniqueCategories = [...new Set(resources.map(resource => resource.Category).filter(Boolean))];
+
+  // Manual slider controls
+  const nextSlide = () => {
+    if (currentIndex + itemsPerView < filteredResources.length) {
+      setCurrentIndex(currentIndex + itemsPerView);
+    }
+  };
+
+  const prevSlide = () => {
+    if (currentIndex - itemsPerView >= 0) {
+      setCurrentIndex(currentIndex - itemsPerView);
+    }
+  };
 
   if (loading) {
     return (
@@ -64,6 +97,10 @@ const TechCornerTab = () => {
       </div>
     );
   }
+
+  const visibleResources = filteredResources.slice(currentIndex, currentIndex + itemsPerView);
+  const canGoNext = currentIndex + itemsPerView < filteredResources.length;
+  const canGoPrev = currentIndex > 0;
 
   return (
     <div className="space-y-6">
@@ -76,31 +113,74 @@ const TechCornerTab = () => {
         </p>
       </div>
 
-      <div className="flex flex-col sm:flex-row gap-4 mb-6">
-        <div className="relative flex-1">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-          <Input
-            placeholder="Search tech resources..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="pl-10"
-          />
+      {/* Search and Filters */}
+      <Card className="bg-white dark:bg-gray-800 shadow-sm border border-gray-200 dark:border-gray-700">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <Wrench className="h-5 w-5 text-indigo-600" />
+            Search & Filters
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="relative">
+            <Search className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+            <Input
+              placeholder="Search tech resources..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="pl-10"
+            />
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <Select value={categoryFilter} onValueChange={setCategoryFilter}>
+              <SelectTrigger>
+                <SelectValue placeholder="Filter by category" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All Categories</SelectItem>
+                {uniqueCategories.map(category => (
+                  <SelectItem key={category} value={category}>{category}</SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            
+            <div className="flex items-center gap-2 text-sm text-muted-foreground">
+              <FileText className="h-4 w-4 text-indigo-600" />
+              <span>Showing {Math.min(itemsPerView, filteredResources.length - currentIndex)} of {filteredResources.length} resources</span>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Slider Controls */}
+      <div className="flex items-center justify-between mb-4">
+        <h3 className="text-xl font-semibold text-gray-800 dark:text-white">🔧 Featured Resources</h3>
+        <div className="flex gap-2">
+          <Button 
+            variant="outline" 
+            size="sm" 
+            onClick={prevSlide} 
+            disabled={!canGoPrev}
+            className="h-8 w-8 p-0"
+          >
+            <ChevronLeft className="h-4 w-4" />
+          </Button>
+          <Button 
+            variant="outline" 
+            size="sm" 
+            onClick={nextSlide} 
+            disabled={!canGoNext}
+            className="h-8 w-8 p-0"
+          >
+            <ChevronRight className="h-4 w-4" />
+          </Button>
         </div>
-        <Select value={categoryFilter} onValueChange={setCategoryFilter}>
-          <SelectTrigger className="w-full sm:w-48">
-            <SelectValue placeholder="Filter by category" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">All Categories</SelectItem>
-            {uniqueCategories.map(category => (
-              <SelectItem key={category} value={category}>{category}</SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
       </div>
 
+      {/* Resources Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {filteredResources.map((resource, index) => (
+        {visibleResources.map((resource, index) => (
           <Card key={index} className="hover:shadow-lg transition-shadow duration-300 bg-gradient-to-br from-background to-indigo-50/20 dark:to-indigo-900/10 border-indigo-200/50 dark:border-indigo-800/50">
             <CardHeader className="pb-3">
               <CardTitle className="text-lg mb-2 flex items-center gap-2">
@@ -109,12 +189,12 @@ const TechCornerTab = () => {
               </CardTitle>
               <div className="flex flex-wrap gap-2 mb-2">
                 {resource.Category && (
-                  <Badge variant="secondary" className="bg-indigo-100 text-indigo-800 dark:bg-indigo-900 dark:text-indigo-200">
+                  <Badge variant="secondary" className="bg-indigo-100 dark:bg-indigo-900 text-indigo-800 dark:text-indigo-200">
                     {resource.Category}
                   </Badge>
                 )}
                 {resource.Type && (
-                  <Badge variant="outline" className="border-purple-300 text-purple-700 dark:border-purple-700 dark:text-purple-300">
+                  <Badge variant="outline" className="border-purple-300 dark:border-purple-700 text-purple-700 dark:text-purple-300">
                     {resource.Type}
                   </Badge>
                 )}
@@ -138,7 +218,7 @@ const TechCornerTab = () => {
                 <div className="mb-4">
                   <div className="flex flex-wrap gap-1">
                     {resource.Tags.split(',').slice(0, 3).map((tag, tagIndex) => (
-                      <Badge key={tagIndex} variant="outline" className="text-xs border-blue-300 text-blue-700 dark:border-blue-700 dark:text-blue-300">
+                      <Badge key={tagIndex} variant="outline" className="text-xs border-blue-300 dark:border-blue-700 text-blue-700 dark:text-blue-300">
                         {tag.trim()}
                       </Badge>
                     ))}
@@ -146,7 +226,7 @@ const TechCornerTab = () => {
                 </div>
               )}
               
-              {resource.FileLink && (
+              {resource.Cheatsheetlink && (
                 <Button 
                   variant="outline" 
                   size="sm" 
@@ -154,17 +234,17 @@ const TechCornerTab = () => {
                   asChild
                 >
                   <a 
-                    href={resource.FileLink} 
+                    href={resource.Cheatsheetlink} 
                     target="_blank" 
                     rel="noopener noreferrer"
                     className="flex items-center gap-2"
                   >
-                    {resource.FileLink.includes('drive.google.com') ? (
+                    {resource.Cheatsheetlink.includes('docs.google.com') ? (
                       <Download className="h-4 w-4" />
                     ) : (
                       <ExternalLink className="h-4 w-4" />
                     )}
-                    {resource.FileLink.includes('drive.google.com') ? 'Download' : 'View Resource'}
+                    {resource.Cheatsheetlink.includes('docs.google.com') ? 'Download Document' : 'View Resource'}
                   </a>
                 </Button>
               )}
@@ -173,12 +253,29 @@ const TechCornerTab = () => {
         ))}
       </div>
 
-      {filteredResources.length === 0 && (
+      {filteredResources.length === 0 && !loading && (
         <div className="text-center py-20">
           <FileText className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
           <p className="text-muted-foreground">No tech resources found matching your criteria.</p>
+          {searchTerm || categoryFilter !== 'all' ? (
+            <Button 
+              variant="outline" 
+              className="mt-4"
+              onClick={() => {
+                setSearchTerm('');
+                setCategoryFilter('all');
+              }}
+            >
+              Clear Filters
+            </Button>
+          ) : null}
         </div>
       )}
+
+      {/* Pagination Info */}
+      <div className="text-center text-sm text-muted-foreground">
+        Showing {currentIndex + 1}-{Math.min(currentIndex + itemsPerView, filteredResources.length)} of {filteredResources.length} resources
+      </div>
     </div>
   );
 };

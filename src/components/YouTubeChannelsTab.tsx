@@ -5,7 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Youtube, ExternalLink, Users, Search, Filter, Play } from 'lucide-react';
+import { Youtube, ExternalLink, Users, Search, Filter, Play, ChevronLeft, ChevronRight } from 'lucide-react';
 
 const YouTubeChannelsTab = () => {
   const [channels, setChannels] = useState([]);
@@ -13,6 +13,9 @@ const YouTubeChannelsTab = () => {
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [categoryFilter, setCategoryFilter] = useState('all');
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  const itemsPerView = 6; // 2 rows x 3 columns
 
   useEffect(() => {
     fetchChannels();
@@ -54,16 +57,30 @@ const YouTubeChannelsTab = () => {
       );
       
       const matchesCategory = categoryFilter === 'all' || 
-        (typeof category === 'string' && category.toLowerCase().includes(categoryFilter.toLowerCase()));
+        (typeof category === 'string' && category.toLowerCase() === categoryFilter.toLowerCase());
 
       return matchesSearch && matchesCategory;
     });
 
     setFilteredChannels(filtered);
+    setCurrentIndex(0); // Reset to first page when filters change
   }, [channels, searchTerm, categoryFilter]);
 
   // Extract unique categories for filter
   const categories = [...new Set(channels.map(channel => channel.Category || channel.category).filter(Boolean))];
+
+  // Manual slider controls
+  const nextSlide = () => {
+    if (currentIndex + itemsPerView < filteredChannels.length) {
+      setCurrentIndex(currentIndex + itemsPerView);
+    }
+  };
+
+  const prevSlide = () => {
+    if (currentIndex - itemsPerView >= 0) {
+      setCurrentIndex(currentIndex - itemsPerView);
+    }
+  };
 
   if (loading) {
     return (
@@ -73,17 +90,21 @@ const YouTubeChannelsTab = () => {
     );
   }
 
+  const visibleChannels = filteredChannels.slice(currentIndex, currentIndex + itemsPerView);
+  const canGoNext = currentIndex + itemsPerView < filteredChannels.length;
+  const canGoPrev = currentIndex > 0;
+
   return (
     <div className="space-y-6">
       <div className="text-center">
         <h2 className="text-3xl font-bold mb-4 bg-gradient-to-r from-red-600 to-purple-600 bg-clip-text text-transparent">
-          YouTube Channel Picks
+          📺 YouTube Channel Picks
         </h2>
         <p className="text-muted-foreground">Curated collection of educational and entertaining YouTube channels</p>
       </div>
 
       {/* Search and Filters */}
-      <Card className="bg-white shadow-sm border border-gray-200">
+      <Card className="bg-white dark:bg-gray-800 shadow-sm border border-gray-200 dark:border-gray-700">
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Filter className="h-5 w-5 text-red-600" />
@@ -109,7 +130,7 @@ const YouTubeChannelsTab = () => {
               <SelectContent>
                 <SelectItem value="all">All Categories</SelectItem>
                 {categories.map((category) => (
-                  <SelectItem key={category} value={category.toLowerCase()}>
+                  <SelectItem key={category} value={category}>
                     {category}
                   </SelectItem>
                 ))}
@@ -118,26 +139,53 @@ const YouTubeChannelsTab = () => {
             
             <div className="flex items-center gap-2 text-sm text-muted-foreground">
               <Youtube className="h-4 w-4 text-red-600" />
-              <span>Showing {filteredChannels.length} of {channels.length} channels</span>
+              <span>Showing {Math.min(itemsPerView, filteredChannels.length - currentIndex)} of {filteredChannels.length} channels</span>
             </div>
           </div>
         </CardContent>
       </Card>
 
+      {/* Slider Controls */}
+      <div className="flex items-center justify-between mb-4">
+        <h3 className="text-xl font-semibold text-gray-800 dark:text-white">
+          📺 Featured Channels
+        </h3>
+        <div className="flex gap-2">
+          <Button 
+            variant="outline" 
+            size="sm" 
+            onClick={prevSlide} 
+            disabled={!canGoPrev}
+            className="h-8 w-8 p-0"
+          >
+            <ChevronLeft className="h-4 w-4" />
+          </Button>
+          <Button 
+            variant="outline" 
+            size="sm" 
+            onClick={nextSlide} 
+            disabled={!canGoNext}
+            className="h-8 w-8 p-0"
+          >
+            <ChevronRight className="h-4 w-4" />
+          </Button>
+        </div>
+      </div>
+
       {/* Channels Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {filteredChannels.map((channel, index) => (
-          <Card key={index} className="bg-white shadow-sm border border-gray-200 hover:shadow-md transition-shadow">
+        {visibleChannels.map((channel, index) => (
+          <Card key={index} className="bg-white dark:bg-gray-800 shadow-sm border border-gray-200 dark:border-gray-700 hover:shadow-md transition-shadow">
             <CardHeader>
               <div className="flex items-start justify-between mb-2">
                 <div className="flex items-center gap-2">
                   <Youtube className="h-5 w-5 text-red-600" />
-                  <Badge variant="secondary" className="bg-red-100 text-red-700">
+                  <Badge variant="secondary" className="bg-red-100 dark:bg-red-900 text-red-700 dark:text-red-300">
                     {channel.Category || channel.category || 'General'}
                   </Badge>
                 </div>
               </div>
-              <CardTitle className="text-lg text-gray-900">
+              <CardTitle className="text-lg text-gray-900 dark:text-white">
                 {channel.Name || channel.name || 'Untitled Channel'}
               </CardTitle>
               <CardDescription className="line-clamp-3">
@@ -149,7 +197,7 @@ const YouTubeChannelsTab = () => {
                 <Button 
                   variant="outline" 
                   size="sm" 
-                  className="w-full border-red-200 text-red-700 hover:bg-red-50"
+                  className="w-full border-red-200 dark:border-red-700 text-red-700 dark:text-red-300 hover:bg-red-50 dark:hover:bg-red-900/20"
                   asChild
                 >
                   <a href={channel['YouTube Link']} target="_blank" rel="noopener noreferrer">
@@ -181,6 +229,11 @@ const YouTubeChannelsTab = () => {
           ) : null}
         </div>
       )}
+
+      {/* Pagination Info */}
+      <div className="text-center text-sm text-muted-foreground">
+        Showing {currentIndex + 1}-{Math.min(currentIndex + itemsPerView, filteredChannels.length)} of {filteredChannels.length} channels
+      </div>
     </div>
   );
 };

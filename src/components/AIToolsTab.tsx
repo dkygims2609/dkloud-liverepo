@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -24,7 +25,7 @@ const AIToolsTab = () => {
   const [categoryFilter, setCategoryFilter] = useState('all');
   const [currentIndex, setCurrentIndex] = useState(0);
 
-  const itemsPerView = 3;
+  const itemsPerView = 6; // 2 rows x 3 columns
 
   useEffect(() => {
     fetchTools();
@@ -32,11 +33,19 @@ const AIToolsTab = () => {
 
   const fetchTools = async () => {
     try {
+      setLoading(true);
       const response = await fetch('https://script.google.com/macros/s/AKfycbzrOGVhNGJwqnIgSDzEV_3kJMT9sK8X6lGlAhFOTFNJMo_4qQAT3_3e7kMjPLc9-1vg/exec');
       const data = await response.json();
       console.log('AI tools data:', data);
-      setTools(data);
-      setFilteredTools(data);
+      
+      if (Array.isArray(data)) {
+        setTools(data);
+        setFilteredTools(data);
+      } else {
+        console.error('Invalid AI tools data format:', data);
+        setTools([]);
+        setFilteredTools([]);
+      }
     } catch (error) {
       console.error('Error fetching AI tools:', error);
       toast({
@@ -44,40 +53,41 @@ const AIToolsTab = () => {
         description: "Failed to fetch AI tools data",
         variant: "destructive",
       });
+      setTools([]);
+      setFilteredTools([]);
     } finally {
       setLoading(false);
     }
   };
 
-  // Auto-slide functionality
-  const nextSlide = () => {
-    setCurrentIndex((prev) => (prev + itemsPerView) % Math.max(itemsPerView, filteredTools.length));
-  };
-
-  const prevSlide = () => {
-    setCurrentIndex((prev) => (prev - itemsPerView + filteredTools.length) % Math.max(itemsPerView, filteredTools.length));
-  };
-
-  // Auto-slide timer
   useEffect(() => {
-    const interval = setInterval(nextSlide, 5000);
-    return () => clearInterval(interval);
-  }, [filteredTools]);
+    let filtered = tools.filter(tool => {
+      const matchesSearch = tool.Name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                           tool.Description?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                           tool.Tags?.toLowerCase().includes(searchTerm.toLowerCase());
+      const matchesCategory = categoryFilter === 'all' || tool.Category === categoryFilter;
+      
+      return matchesSearch && matchesCategory;
+    });
 
-  const filtered = tools.filter(tool => {
-    const matchesSearch = tool.Name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         tool.Description?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         tool.Tags?.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesCategory = categoryFilter === 'all' || tool.Category === categoryFilter;
-    
-    return matchesSearch && matchesCategory;
-  });
-
-  useEffect(() => {
     setFilteredTools(filtered);
+    setCurrentIndex(0); // Reset to first page when filters change
   }, [tools, searchTerm, categoryFilter]);
 
   const uniqueCategories = [...new Set(tools.map(tool => tool.Category).filter(Boolean))];
+
+  // Manual slider controls
+  const nextSlide = () => {
+    if (currentIndex + itemsPerView < filteredTools.length) {
+      setCurrentIndex(currentIndex + itemsPerView);
+    }
+  };
+
+  const prevSlide = () => {
+    if (currentIndex - itemsPerView >= 0) {
+      setCurrentIndex(currentIndex - itemsPerView);
+    }
+  };
 
   if (loading) {
     return (
@@ -88,6 +98,8 @@ const AIToolsTab = () => {
   }
 
   const visibleTools = filteredTools.slice(currentIndex, currentIndex + itemsPerView);
+  const canGoNext = currentIndex + itemsPerView < filteredTools.length;
+  const canGoPrev = currentIndex > 0;
 
   return (
     <div className="space-y-6">
@@ -100,20 +112,72 @@ const AIToolsTab = () => {
         </p>
       </div>
 
+      {/* Search and Filters */}
+      <Card className="bg-white dark:bg-gray-800 shadow-sm border border-gray-200 dark:border-gray-700">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <Filter className="h-5 w-5 text-blue-600" />
+            Search & Filters
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="relative">
+            <Search className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+            <Input
+              placeholder="Search AI tools..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="pl-10"
+            />
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <Select value={categoryFilter} onValueChange={setCategoryFilter}>
+              <SelectTrigger>
+                <SelectValue placeholder="Filter by category" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All Categories</SelectItem>
+                {uniqueCategories.map(category => (
+                  <SelectItem key={category} value={category}>{category}</SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            
+            <div className="flex items-center gap-2 text-sm text-muted-foreground">
+              <Brain className="h-4 w-4 text-blue-600" />
+              <span>Showing {Math.min(itemsPerView, filteredTools.length - currentIndex)} of {filteredTools.length} tools</span>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
       {/* Slider Controls */}
       <div className="flex items-center justify-between mb-4">
-        <h3 className="text-xl font-semibold text-gray-800">Featured AI Tools</h3>
+        <h3 className="text-xl font-semibold text-gray-800 dark:text-white">🤖 Featured AI Tools</h3>
         <div className="flex gap-2">
-          <Button variant="outline" size="sm" onClick={prevSlide} className="h-8 w-8 p-0">
+          <Button 
+            variant="outline" 
+            size="sm" 
+            onClick={prevSlide} 
+            disabled={!canGoPrev}
+            className="h-8 w-8 p-0"
+          >
             <ChevronLeft className="h-4 w-4" />
           </Button>
-          <Button variant="outline" size="sm" onClick={nextSlide} className="h-8 w-8 p-0">
+          <Button 
+            variant="outline" 
+            size="sm" 
+            onClick={nextSlide} 
+            disabled={!canGoNext}
+            className="h-8 w-8 p-0"
+          >
             <ChevronRight className="h-4 w-4" />
           </Button>
         </div>
       </div>
 
-      {/* Tools Slider */}
+      {/* Tools Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {visibleTools.map((tool, index) => (
           <Card key={index} className="hover:shadow-lg transition-shadow duration-300 bg-gradient-to-br from-background to-blue-50/20 dark:to-blue-900/10 border-blue-200/50 dark:border-blue-800/50">
@@ -124,7 +188,7 @@ const AIToolsTab = () => {
               </CardTitle>
               <div className="flex flex-wrap gap-2 mb-2">
                 {tool.Category && (
-                  <Badge variant="secondary" className="bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200">
+                  <Badge variant="secondary" className="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200">
                     {tool.Category}
                   </Badge>
                 )}
@@ -147,7 +211,7 @@ const AIToolsTab = () => {
                 <div className="mb-4">
                   <div className="flex flex-wrap gap-1">
                     {tool.Tags.split(',').slice(0, 3).map((tag, tagIndex) => (
-                      <Badge key={tagIndex} variant="outline" className="text-xs border-purple-300 text-purple-700 dark:border-purple-700 dark:text-purple-300">
+                      <Badge key={tagIndex} variant="outline" className="text-xs border-purple-300 dark:border-purple-700 text-purple-700 dark:text-purple-300">
                         {tag.trim()}
                       </Badge>
                     ))}
@@ -178,27 +242,28 @@ const AIToolsTab = () => {
         ))}
       </div>
 
-      <div className="flex flex-col sm:flex-row gap-4 mb-6">
-        <div className="relative flex-1">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-          <Input
-            placeholder="Search AI tools..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="pl-10"
-          />
+      {filteredTools.length === 0 && !loading && (
+        <div className="text-center py-12">
+          <Brain className="h-16 w-16 text-gray-300 mx-auto mb-4" />
+          <p className="text-muted-foreground">No AI tools found matching your criteria.</p>
+          {searchTerm || categoryFilter !== 'all' ? (
+            <Button 
+              variant="outline" 
+              className="mt-4"
+              onClick={() => {
+                setSearchTerm('');
+                setCategoryFilter('all');
+              }}
+            >
+              Clear Filters
+            </Button>
+          ) : null}
         </div>
-        <Select value={categoryFilter} onValueChange={setCategoryFilter}>
-          <SelectTrigger className="w-full sm:w-48">
-            <SelectValue placeholder="Filter by category" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">All Categories</SelectItem>
-            {uniqueCategories.map(category => (
-              <SelectItem key={category} value={category}>{category}</SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
+      )}
+
+      {/* Pagination Info */}
+      <div className="text-center text-sm text-muted-foreground">
+        Showing {currentIndex + 1}-{Math.min(currentIndex + itemsPerView, filteredTools.length)} of {filteredTools.length} tools
       </div>
     </div>
   );
