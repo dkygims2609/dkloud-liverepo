@@ -4,7 +4,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Cloud, Code, Music, Sparkles, Zap, Globe, Github, Palette, Brain, Rocket, Star, Heart } from 'lucide-react';
+import { Cloud, Code, Music, Sparkles, Zap, Globe, Github, Palette, Brain, Rocket, Star, Heart, ArrowDown } from 'lucide-react';
 import MoviesTab from '@/components/MoviesTab';
 import YouTubeChannelsTab from '@/components/YouTubeChannelsTab';
 import AIToolsTab from '@/components/AIToolsTab';
@@ -85,6 +85,13 @@ const Index = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  const scrollToContent = () => {
+    const element = document.getElementById('main-content');
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   return (
     <div className="min-h-screen bg-white dark:bg-gray-900 text-foreground page-transition">
       {/* Theme Toggle */}
@@ -115,53 +122,53 @@ const Index = () => {
         </div>
       </header>
 
-      {/* Redesigned Hero Section - Clean & Centered */}
-      <div className="relative overflow-hidden bg-gradient-to-br from-white via-blue-50/30 to-purple-50/30 dark:from-gray-900 dark:via-blue-900/10 dark:to-purple-900/10">
+      {/* Redesigned Hero Section */}
+      <div className="relative overflow-hidden bg-gradient-to-br from-white via-blue-50/30 to-purple-50/30 dark:from-gray-900 dark:via-blue-900/10 dark:to-purple-900/10 min-h-screen flex items-center">
         <div className="container mx-auto px-4 py-24">
           <div className="text-center max-w-5xl mx-auto">
-            {/* Main Title - Horizontal Layout */}
-            <div className="mb-8">
-              <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold bg-gradient-to-r from-purple-600 via-blue-600 to-indigo-600 bg-clip-text text-transparent tracking-tight leading-tight mb-4" style={{ fontFamily: 'Inter, system-ui, sans-serif' }}>
+            {/* Animated Title */}
+            <div className="mb-8 overflow-hidden">
+              <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold bg-gradient-to-r from-purple-600 via-blue-600 to-indigo-600 bg-clip-text text-transparent tracking-tight leading-tight mb-6 animate-slide-in-right" style={{ fontFamily: 'Inter, system-ui, sans-serif' }}>
                 Decoding Knowledge
               </h1>
               
               {/* Subtitle */}
-              <p className="text-xl md:text-2xl font-light text-gray-600 dark:text-gray-300 tracking-wide mb-4">
+              <p className="text-xl md:text-2xl font-light text-gray-600 dark:text-gray-300 tracking-wide mb-4 animate-fade-in">
                 Library Of Unique Discoveries
               </p>
               
               {/* Powered by */}
-              <p className="text-base text-gray-500 dark:text-gray-400 mb-12">
+              <p className="text-base text-gray-500 dark:text-gray-400 mb-12 animate-fade-in" style={{ animationDelay: '0.2s' }}>
                 Powered by dKloud Tech
               </p>
             </div>
 
-            {/* Description */}
-            <div className="max-w-4xl mx-auto space-y-6 text-lg text-gray-600 dark:text-gray-300 mb-12">
-              <p className="animate-fade-in leading-relaxed">
-                <span className="text-xl font-semibold text-gray-800 dark:text-white">
+            {/* Enhanced Description */}
+            <div className="max-w-4xl mx-auto space-y-8 text-lg text-gray-600 dark:text-gray-300 mb-16">
+              <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-2xl p-8 shadow-lg border border-gray-200 dark:border-gray-700 animate-fade-in" style={{ animationDelay: '0.4s' }}>
+                <p className="text-xl font-semibold text-gray-800 dark:text-white mb-6 leading-relaxed">
                   A passionate creative techy's knowledge space
-                </span>
-              </p>
-              
-              <p className="animate-fade-in leading-relaxed" style={{ animationDelay: '0.2s' }}>
-                We're on a <span className="text-purple-600 dark:text-purple-400 font-semibold">mission</span> to blend 
-                <span className="text-blue-600 dark:text-blue-400 font-semibold"> creativity</span>, 
-                <span className="text-indigo-600 dark:text-indigo-400 font-semibold"> cloud technology</span>, 
-                <span className="text-purple-600 dark:text-purple-400 font-semibold"> AI</span>, and 
-                <span className="text-green-600 dark:text-green-400 font-semibold"> community-driven learning</span> into one cohesive platform.
-              </p>
-              
-              <p className="animate-fade-in leading-relaxed" style={{ animationDelay: '0.4s' }}>
-                Whether you're a <span className="text-green-600 dark:text-green-400 font-semibold">tech enthusiast</span>, 
-                a <span className="text-pink-600 dark:text-pink-400 font-semibold">creative mind</span>, or 
-                a <span className="text-orange-600 dark:text-orange-400 font-semibold">curious learner</span>, 
-                you'll find something meaningful here.
-              </p>
+                </p>
+                
+                <p className="leading-relaxed mb-6">
+                  We're on a <span className="text-purple-600 dark:text-purple-400 font-semibold">mission</span> to blend 
+                  <span className="text-blue-600 dark:text-blue-400 font-semibold"> creativity</span>, 
+                  <span className="text-indigo-600 dark:text-indigo-400 font-semibold"> cloud technology</span>, 
+                  <span className="text-purple-600 dark:text-purple-400 font-semibold"> AI</span>, and 
+                  <span className="text-green-600 dark:text-green-400 font-semibold"> community-driven learning</span> into one cohesive platform.
+                </p>
+                
+                <p className="leading-relaxed">
+                  Whether you're a <span className="text-green-600 dark:text-green-400 font-semibold">tech enthusiast</span>, 
+                  a <span className="text-pink-600 dark:text-pink-400 font-semibold">creative mind</span>, or 
+                  a <span className="text-orange-600 dark:text-orange-400 font-semibold">curious learner</span>, 
+                  you'll find something meaningful here.
+                </p>
+              </div>
             </div>
 
             {/* Feature Badges */}
-            <div className="flex flex-wrap justify-center gap-4 mb-12 animate-slide-up">
+            <div className="flex flex-wrap justify-center gap-4 mb-12 animate-slide-up" style={{ animationDelay: '0.6s' }}>
               <div className="flex items-center gap-2 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-full px-6 py-3 shadow-sm border border-gray-200 dark:border-gray-700 hover-scale transition-all duration-200">
                 <Star className="h-5 w-5 text-yellow-500" />
                 <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Curated Content</span>
@@ -176,13 +183,14 @@ const Index = () => {
               </div>
             </div>
 
-            {/* CTA Buttons */}
-            <div className="flex flex-wrap gap-4 justify-center">
-              <Button className="bg-gradient-to-r from-purple-600 to-blue-600 text-white px-8 py-3 rounded-full hover:from-purple-700 hover:to-blue-700 transition-all duration-300 shadow-lg hover:shadow-xl">
-                Explore dKloud
-              </Button>
-              <Button variant="outline" className="px-8 py-3 rounded-full border-2 border-purple-300 dark:border-purple-600 text-purple-700 dark:text-purple-300 hover:bg-purple-50 dark:hover:bg-purple-900/20 transition-all duration-300">
-                View Portfolio
+            {/* CTA Button */}
+            <div className="flex flex-col items-center gap-6 animate-fade-in" style={{ animationDelay: '0.8s' }}>
+              <Button 
+                onClick={scrollToContent}
+                className="bg-gradient-to-r from-purple-600 to-blue-600 text-white px-12 py-4 rounded-full hover:from-purple-700 hover:to-blue-700 transition-all duration-300 shadow-lg hover:shadow-xl text-lg font-semibold flex items-center gap-3"
+              >
+                Dive in dKloud Tech Universe
+                <ArrowDown className="h-5 w-5 animate-bounce" />
               </Button>
             </div>
           </div>
@@ -190,7 +198,7 @@ const Index = () => {
       </div>
 
       {/* Main Content Tabs */}
-      <div className="container mx-auto px-4 py-12 bg-white dark:bg-gray-900">
+      <div id="main-content" className="container mx-auto px-4 py-12 bg-white dark:bg-gray-900">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
           <TabsList className="grid w-full grid-cols-3 lg:grid-cols-7 mb-8 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 shadow-sm rounded-lg">
             <TabsTrigger value="movies" className="text-sm tab-trigger rounded-md">Movies & TV</TabsTrigger>

@@ -5,10 +5,16 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Brain, ExternalLink, Star, Search, Filter, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Brain, ExternalLink, Star, Search, Filter, ChevronLeft, ChevronRight, DollarSign, Tag } from 'lucide-react';
 import { toast } from "@/hooks/use-toast";
 
 interface AITool {
+  Toolname: string;
+  Category: string;
+  Purpose: string;
+  Pricingmodel: string;
+  'EstimatedCost (per month)': string;
+  'Tools Link': string;
   [key: string]: any;
 }
 
@@ -29,7 +35,6 @@ const AIToolsTab = () => {
   const fetchTools = async () => {
     try {
       setLoading(true);
-      // Updated API URL as requested
       const response = await fetch('https://script.google.com/macros/s/AKfycbyQZiNTLogFsjujIKxhFs2pXoK_iaoLkFb4D3HJ_wQjQpD17RxsqHX0G1nuKbQN2x9u/exec');
       const data = await response.json();
       console.log('AI tools data:', data);
@@ -58,15 +63,14 @@ const AIToolsTab = () => {
 
   useEffect(() => {
     let filtered = tools.filter(tool => {
-      const name = tool.Name || tool.name || tool.Tool || '';
-      const description = tool.Description || tool.description || '';
-      const category = tool.Category || tool.category || '';
-      const tags = tool.Tags || tool.tags || '';
+      const toolname = tool.Toolname || '';
+      const purpose = tool.Purpose || '';
+      const category = tool.Category || '';
 
       const matchesSearch = 
-        name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        description.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        tags.toLowerCase().includes(searchTerm.toLowerCase());
+        toolname.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        purpose.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        category.toLowerCase().includes(searchTerm.toLowerCase());
       
       const matchesCategory = categoryFilter === 'all' || category.toLowerCase().includes(categoryFilter.toLowerCase());
       
@@ -77,7 +81,7 @@ const AIToolsTab = () => {
     setCurrentIndex(0);
   }, [tools, searchTerm, categoryFilter]);
 
-  const uniqueCategories = [...new Set(tools.map(tool => tool.Category || tool.category).filter(Boolean))];
+  const uniqueCategories = [...new Set(tools.map(tool => tool.Category).filter(Boolean))];
 
   const nextSlide = () => {
     if (currentIndex + itemsPerView < filteredTools.length) {
@@ -186,42 +190,37 @@ const AIToolsTab = () => {
             <CardHeader className="pb-3">
               <CardTitle className="text-lg mb-2 flex items-center gap-2">
                 <Brain className="h-5 w-5 text-blue-600" />
-                <span className="line-clamp-1">{tool.Name || tool.name || tool.Tool || 'AI Tool'}</span>
+                <span className="line-clamp-1">{tool.Toolname || 'AI Tool'}</span>
               </CardTitle>
               <div className="flex flex-wrap gap-2 mb-2">
-                {(tool.Category || tool.category) && (
+                {tool.Category && (
                   <Badge variant="secondary" className="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200">
-                    {tool.Category || tool.category}
+                    <Tag className="h-3 w-3 mr-1" />
+                    {tool.Category}
                   </Badge>
                 )}
-                {(tool.Rating || tool.rating) && (
-                  <div className="flex items-center gap-1 text-yellow-500">
-                    <Star className="h-3 w-3 fill-current" />
-                    <span className="text-xs font-medium">{tool.Rating || tool.rating}</span>
-                  </div>
+                {tool.Pricingmodel && (
+                  <Badge variant="outline" className="text-green-600 dark:text-green-400 border-green-300 dark:border-green-700">
+                    <DollarSign className="h-3 w-3 mr-1" />
+                    {tool.Pricingmodel}
+                  </Badge>
                 )}
               </div>
             </CardHeader>
             <CardContent className="pt-0">
-              {(tool.Description || tool.description) && (
+              {tool.Purpose && (
                 <CardDescription className="mb-4 line-clamp-3">
-                  {tool.Description || tool.description}
+                  <strong>Purpose:</strong> {tool.Purpose}
                 </CardDescription>
               )}
               
-              {(tool.Tags || tool.tags) && (
-                <div className="mb-4">
-                  <div className="flex flex-wrap gap-1">
-                    {(tool.Tags || tool.tags).split(',').slice(0, 3).map((tag: string, tagIndex: number) => (
-                      <Badge key={tagIndex} variant="outline" className="text-xs border-purple-300 dark:border-purple-700 text-purple-700 dark:text-purple-300">
-                        {tag.trim()}
-                      </Badge>
-                    ))}
-                  </div>
+              {tool['EstimatedCost (per month)'] && (
+                <div className="mb-4 text-sm text-muted-foreground">
+                  <strong>Monthly Cost:</strong> {tool['EstimatedCost (per month)']}
                 </div>
               )}
               
-              {(tool['Tools Link'] || tool.Link || tool.URL) && (
+              {tool['Tools Link'] && (
                 <Button 
                   variant="outline" 
                   size="sm" 
@@ -229,7 +228,7 @@ const AIToolsTab = () => {
                   asChild
                 >
                   <a 
-                    href={tool['Tools Link'] || tool.Link || tool.URL} 
+                    href={tool['Tools Link']} 
                     target="_blank" 
                     rel="noopener noreferrer"
                     className="flex items-center gap-2"
