@@ -22,6 +22,7 @@ const MoviesTab = () => {
   const [movies, setMovies] = useState<Movie[]>([]);
   const [loading, setLoading] = useState(true);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const itemsPerView = 6; // 3 columns x 2 rows
 
   useEffect(() => {
     fetchMovies();
@@ -45,15 +46,15 @@ const MoviesTab = () => {
   };
 
   const nextSlide = () => {
-    setCurrentIndex((prev) => (prev + 1) % Math.max(1, movies.length - 2));
+    setCurrentIndex((prev) => (prev + itemsPerView) % Math.max(itemsPerView, movies.length));
   };
 
   const prevSlide = () => {
-    setCurrentIndex((prev) => (prev - 1 + Math.max(1, movies.length - 2)) % Math.max(1, movies.length - 2));
+    setCurrentIndex((prev) => (prev - itemsPerView + movies.length) % Math.max(itemsPerView, movies.length));
   };
 
   useEffect(() => {
-    const interval = setInterval(nextSlide, 5000); // Auto-slide every 5 seconds
+    const interval = setInterval(nextSlide, 8000); // Auto-slide every 8 seconds
     return () => clearInterval(interval);
   }, [movies.length]);
 
@@ -64,6 +65,8 @@ const MoviesTab = () => {
       </div>
     );
   }
+
+  const visibleMovies = movies.slice(currentIndex, currentIndex + itemsPerView);
 
   return (
     <div className="space-y-6">
@@ -79,69 +82,62 @@ const MoviesTab = () => {
         </div>
       </div>
 
-      <div className="relative overflow-hidden">
-        <div 
-          className="flex transition-transform duration-500 ease-in-out gap-6"
-          style={{ transform: `translateX(-${currentIndex * 33.333}%)` }}
-        >
-          {movies.map((movie, index) => (
-            <div key={index} className="min-w-[300px] flex-shrink-0">
-              <Card className="hover:shadow-lg transition-shadow duration-300 h-full">
-                <CardHeader>
-                  <div className="flex items-start justify-between">
-                    <div className="flex-1">
-                      <CardTitle className="text-lg mb-2 flex items-center gap-2">
-                        <Film className="h-5 w-5 text-primary" />
-                        {movie.Name}
-                      </CardTitle>
-                      <CardDescription className="text-sm">{movie["Why to Watch"]}</CardDescription>
-                    </div>
-                    {movie.DKcloudRating && (
-                      <div className="flex items-center gap-1 text-yellow-500">
-                        <Star className="h-4 w-4 fill-current" />
-                        <span className="text-sm font-medium">{movie.DKcloudRating}</span>
-                      </div>
-                    )}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        {visibleMovies.map((movie, index) => (
+          <Card key={index} className="hover:shadow-lg transition-shadow duration-300 h-full">
+            <CardHeader className="pb-3">
+              <div className="flex items-start justify-between">
+                <div className="flex-1">
+                  <CardTitle className="text-base mb-1 flex items-center gap-2">
+                    <Film className="h-4 w-4 text-primary" />
+                    <span className="line-clamp-1">{movie.Name}</span>
+                  </CardTitle>
+                  <CardDescription className="text-xs line-clamp-2">{movie["Why to Watch"]}</CardDescription>
+                </div>
+                {movie.DKcloudRating && (
+                  <div className="flex items-center gap-1 text-yellow-500">
+                    <Star className="h-3 w-3 fill-current" />
+                    <span className="text-xs font-medium">{movie.DKcloudRating}</span>
                   </div>
-                </CardHeader>
-                <CardContent>
-                  <div className="flex flex-wrap gap-2 mb-4">
-                    {movie.Genre && (
-                      <Badge variant="secondary">{movie.Genre}</Badge>
-                    )}
-                    {movie.Platform && (
-                      <Badge variant="outline">{movie.Platform}</Badge>
-                    )}
-                    {movie.Language && (
-                      <Badge variant="outline">
-                        <Globe className="h-3 w-3 mr-1" />
-                        {movie.Language}
-                      </Badge>
-                    )}
+                )}
+              </div>
+            </CardHeader>
+            <CardContent className="pt-0">
+              <div className="flex flex-wrap gap-1 mb-3">
+                {movie.Genre && (
+                  <Badge variant="secondary" className="text-xs">{movie.Genre}</Badge>
+                )}
+                {movie.Platform && (
+                  <Badge variant="outline" className="text-xs">{movie.Platform}</Badge>
+                )}
+                {movie.Language && (
+                  <Badge variant="outline" className="text-xs">
+                    <Globe className="h-2 w-2 mr-1" />
+                    {movie.Language}
+                  </Badge>
+                )}
+              </div>
+              <div className="flex items-center justify-between text-xs text-muted-foreground">
+                {movie.Year && (
+                  <div className="flex items-center gap-1">
+                    <Calendar className="h-3 w-3" />
+                    {movie.Year}
                   </div>
-                  <div className="flex items-center justify-between text-sm text-muted-foreground">
-                    {movie.Year && (
-                      <div className="flex items-center gap-1">
-                        <Calendar className="h-4 w-4" />
-                        {movie.Year}
-                      </div>
-                    )}
-                    {movie.Awards && (
-                      <Badge variant="outline" className="text-xs">
-                        {movie.Awards}
-                      </Badge>
-                    )}
-                  </div>
-                  {movie.Director && (
-                    <p className="text-xs text-muted-foreground mt-2">
-                      Directed by {movie.Director}
-                    </p>
-                  )}
-                </CardContent>
-              </Card>
-            </div>
-          ))}
-        </div>
+                )}
+                {movie.Awards && (
+                  <Badge variant="outline" className="text-xs">
+                    {movie.Awards}
+                  </Badge>
+                )}
+              </div>
+              {movie.Director && (
+                <p className="text-xs text-muted-foreground mt-2">
+                  Directed by {movie.Director}
+                </p>
+              )}
+            </CardContent>
+          </Card>
+        ))}
       </div>
     </div>
   );

@@ -2,19 +2,19 @@
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Button } from "@/components/ui/button";
-import { Bot, ExternalLink, Sparkles } from 'lucide-react';
+import { Bot, ExternalLink, Zap } from 'lucide-react';
 import { toast } from "@/hooks/use-toast";
 
 interface AITool {
-  id: string;
-  name: string;
-  description: string;
-  category: string;
-  url: string;
-  pricing: string;
+  "Tool Name": string;
+  Category: string;
+  Description: string;
+  "Visit Link": string;
+  Features?: string;
+  "Pricing Model"?: string;
 }
 
 const AIToolsTab = () => {
@@ -39,71 +39,20 @@ const AIToolsTab = () => {
         description: "Failed to fetch AI tools data",
         variant: "destructive",
       });
-      // Fallback data
-      setTools([
-        {
-          id: '1',
-          name: 'ChatGPT',
-          description: 'Conversational AI assistant for various tasks including writing, coding, and analysis.',
-          category: 'Conversational AI',
-          url: 'https://chat.openai.com',
-          pricing: 'Free/Premium'
-        },
-        {
-          id: '2',
-          name: 'Midjourney',
-          description: 'AI-powered image generation tool for creating stunning artwork and designs.',
-          category: 'Image Generation',
-          url: 'https://midjourney.com',
-          pricing: 'Subscription'
-        },
-        {
-          id: '3',
-          name: 'GitHub Copilot',
-          description: 'AI pair programmer that helps you write code faster and with less work.',
-          category: 'Code Assistant',
-          url: 'https://github.com/features/copilot',
-          pricing: 'Subscription'
-        },
-        {
-          id: '4',
-          name: 'Notion AI',
-          description: 'Writing assistant integrated into Notion for brainstorming and content creation.',
-          category: 'Writing Assistant',
-          url: 'https://notion.so/ai',
-          pricing: 'Free/Premium'
-        },
-        {
-          id: '5',
-          name: 'Runway ML',
-          description: 'AI-powered video editing and generation tools for content creators.',
-          category: 'Video Generation',
-          url: 'https://runwayml.com',
-          pricing: 'Free/Premium'
-        },
-        {
-          id: '6',
-          name: 'Jasper',
-          description: 'AI content platform for teams to create brand-aligned content at scale.',
-          category: 'Content Creation',
-          url: 'https://jasper.ai',
-          pricing: 'Subscription'
-        }
-      ]);
     } finally {
       setLoading(false);
     }
   };
 
   const filteredTools = tools.filter(tool => {
-    const matchesSearch = tool.name?.toLowerCase().includes(searchTerm.toLowerCase()) || 
-                         tool.description?.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesCategory = categoryFilter === 'all' || tool.category === categoryFilter;
+    const matchesSearch = tool["Tool Name"]?.toLowerCase().includes(searchTerm.toLowerCase()) || 
+                         tool.Description?.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesCategory = categoryFilter === 'all' || tool.Category === categoryFilter;
     
     return matchesSearch && matchesCategory;
   });
 
-  const uniqueCategories = [...new Set(tools.map(tool => tool.category).filter(Boolean))];
+  const uniqueCategories = [...new Set(tools.map(tool => tool.Category).filter(Boolean))];
 
   if (loading) {
     return (
@@ -115,6 +64,13 @@ const AIToolsTab = () => {
 
   return (
     <div className="space-y-6">
+      <div className="text-center mb-8">
+        <h2 className="text-3xl font-bold mb-4">🤖 AI Tools Collection</h2>
+        <p className="text-lg text-muted-foreground">
+          Discover powerful AI tools to enhance your productivity
+        </p>
+      </div>
+
       <div className="flex flex-col sm:flex-row gap-4 mb-6">
         <Input
           placeholder="Search AI tools..."
@@ -136,43 +92,53 @@ const AIToolsTab = () => {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {filteredTools.map((tool) => (
-          <Card key={tool.id} className="hover:shadow-lg transition-shadow duration-300 relative overflow-hidden">
-            <div className="absolute top-2 right-2">
-              <Sparkles className="h-4 w-4 text-yellow-500" />
-            </div>
+        {filteredTools.map((tool, index) => (
+          <Card key={index} className="hover:shadow-lg transition-shadow duration-300">
             <CardHeader>
               <CardTitle className="text-lg mb-2 flex items-center gap-2">
                 <Bot className="h-5 w-5 text-primary" />
-                {tool.name}
+                {tool["Tool Name"]}
               </CardTitle>
               <div className="flex flex-wrap gap-2 mb-2">
-                <Badge variant="secondary">{tool.category}</Badge>
-                {tool.pricing && (
-                  <Badge variant="outline">{tool.pricing}</Badge>
+                <Badge variant="secondary">{tool.Category}</Badge>
+                {tool["Pricing Model"] && (
+                  <Badge variant="outline">{tool["Pricing Model"]}</Badge>
                 )}
               </div>
             </CardHeader>
             <CardContent>
               <CardDescription className="mb-4">
-                {tool.description}
+                {tool.Description}
               </CardDescription>
-              <Button 
-                variant="outline" 
-                size="sm" 
-                className="w-full"
-                asChild
-              >
-                <a 
-                  href={tool.url} 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-2"
+              
+              {tool.Features && (
+                <div className="mb-4">
+                  <h4 className="text-sm font-semibold mb-2 flex items-center gap-2">
+                    <Zap className="h-4 w-4 text-yellow-500" />
+                    Key Features:
+                  </h4>
+                  <p className="text-sm text-muted-foreground">{tool.Features}</p>
+                </div>
+              )}
+              
+              {tool["Visit Link"] && (
+                <Button 
+                  variant="outline" 
+                  size="sm" 
+                  className="w-full"
+                  asChild
                 >
-                  <ExternalLink className="h-4 w-4" />
-                  Visit Tool
-                </a>
-              </Button>
+                  <a 
+                    href={tool["Visit Link"]} 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-2"
+                  >
+                    <ExternalLink className="h-4 w-4" />
+                    Try Tool
+                  </a>
+                </Button>
+              )}
             </CardContent>
           </Card>
         ))}

@@ -23,6 +23,7 @@ const TVSeriesTab = () => {
   const [series, setSeries] = useState<TVSeries[]>([]);
   const [loading, setLoading] = useState(true);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const itemsPerView = 6; // 3 columns x 2 rows
 
   useEffect(() => {
     fetchSeries();
@@ -46,15 +47,15 @@ const TVSeriesTab = () => {
   };
 
   const nextSlide = () => {
-    setCurrentIndex((prev) => (prev + 1) % Math.max(1, series.length - 2));
+    setCurrentIndex((prev) => (prev + itemsPerView) % Math.max(itemsPerView, series.length));
   };
 
   const prevSlide = () => {
-    setCurrentIndex((prev) => (prev - 1 + Math.max(1, series.length - 2)) % Math.max(1, series.length - 2));
+    setCurrentIndex((prev) => (prev - itemsPerView + series.length) % Math.max(itemsPerView, series.length));
   };
 
   useEffect(() => {
-    const interval = setInterval(nextSlide, 5000); // Auto-slide every 5 seconds
+    const interval = setInterval(nextSlide, 8000); // Auto-slide every 8 seconds
     return () => clearInterval(interval);
   }, [series.length]);
 
@@ -65,6 +66,8 @@ const TVSeriesTab = () => {
       </div>
     );
   }
+
+  const visibleSeries = series.slice(currentIndex, currentIndex + itemsPerView);
 
   return (
     <div className="space-y-6">
@@ -80,74 +83,67 @@ const TVSeriesTab = () => {
         </div>
       </div>
 
-      <div className="relative overflow-hidden">
-        <div 
-          className="flex transition-transform duration-500 ease-in-out gap-6"
-          style={{ transform: `translateX(-${currentIndex * 33.333}%)` }}
-        >
-          {series.map((show, index) => (
-            <div key={index} className="min-w-[300px] flex-shrink-0">
-              <Card className="hover:shadow-lg transition-shadow duration-300 h-full">
-                <CardHeader>
-                  <div className="flex items-start justify-between">
-                    <div className="flex-1">
-                      <CardTitle className="text-lg mb-2 flex items-center gap-2">
-                        <Tv className="h-5 w-5 text-primary" />
-                        {show.Name}
-                      </CardTitle>
-                      <CardDescription className="text-sm">{show["Why to Watch"]}</CardDescription>
-                    </div>
-                    {show.DKcloudRating && (
-                      <div className="flex items-center gap-1 text-yellow-500">
-                        <Star className="h-4 w-4 fill-current" />
-                        <span className="text-sm font-medium">{show.DKcloudRating}</span>
-                      </div>
-                    )}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        {visibleSeries.map((show, index) => (
+          <Card key={index} className="hover:shadow-lg transition-shadow duration-300 h-full">
+            <CardHeader className="pb-3">
+              <div className="flex items-start justify-between">
+                <div className="flex-1">
+                  <CardTitle className="text-base mb-1 flex items-center gap-2">
+                    <Tv className="h-4 w-4 text-primary" />
+                    <span className="line-clamp-1">{show.Name}</span>
+                  </CardTitle>
+                  <CardDescription className="text-xs line-clamp-2">{show["Why to Watch"]}</CardDescription>
+                </div>
+                {show.DKcloudRating && (
+                  <div className="flex items-center gap-1 text-yellow-500">
+                    <Star className="h-3 w-3 fill-current" />
+                    <span className="text-xs font-medium">{show.DKcloudRating}</span>
                   </div>
-                </CardHeader>
-                <CardContent>
-                  <div className="flex flex-wrap gap-2 mb-4">
-                    {show.Genre && (
-                      <Badge variant="secondary">{show.Genre}</Badge>
-                    )}
-                    {show.Platform && (
-                      <Badge variant="outline">{show.Platform}</Badge>
-                    )}
-                    {show.Language && (
-                      <Badge variant="outline">
-                        <Globe className="h-3 w-3 mr-1" />
-                        {show.Language}
-                      </Badge>
-                    )}
-                    {show.Seasons && (
-                      <Badge variant="outline">
-                        {show.Seasons} Season{show.Seasons !== '1' ? 's' : ''}
-                      </Badge>
-                    )}
+                )}
+              </div>
+            </CardHeader>
+            <CardContent className="pt-0">
+              <div className="flex flex-wrap gap-1 mb-3">
+                {show.Genre && (
+                  <Badge variant="secondary" className="text-xs">{show.Genre}</Badge>
+                )}
+                {show.Platform && (
+                  <Badge variant="outline" className="text-xs">{show.Platform}</Badge>
+                )}
+                {show.Language && (
+                  <Badge variant="outline" className="text-xs">
+                    <Globe className="h-2 w-2 mr-1" />
+                    {show.Language}
+                  </Badge>
+                )}
+                {show.Seasons && (
+                  <Badge variant="outline" className="text-xs">
+                    {show.Seasons} Season{show.Seasons !== '1' ? 's' : ''}
+                  </Badge>
+                )}
+              </div>
+              <div className="flex items-center justify-between text-xs text-muted-foreground">
+                {show.Year && (
+                  <div className="flex items-center gap-1">
+                    <Calendar className="h-3 w-3" />
+                    {show.Year}
                   </div>
-                  <div className="flex items-center justify-between text-sm text-muted-foreground">
-                    {show.Year && (
-                      <div className="flex items-center gap-1">
-                        <Calendar className="h-4 w-4" />
-                        {show.Year}
-                      </div>
-                    )}
-                    {show.Awards && (
-                      <Badge variant="outline" className="text-xs">
-                        {show.Awards}
-                      </Badge>
-                    )}
-                  </div>
-                  {show.Director && (
-                    <p className="text-xs text-muted-foreground mt-2">
-                      Directed by {show.Director}
-                    </p>
-                  )}
-                </CardContent>
-              </Card>
-            </div>
-          ))}
-        </div>
+                )}
+                {show.Awards && (
+                  <Badge variant="outline" className="text-xs">
+                    {show.Awards}
+                  </Badge>
+                )}
+              </div>
+              {show.Director && (
+                <p className="text-xs text-muted-foreground mt-2">
+                  Directed by {show.Director}
+                </p>
+              )}
+            </CardContent>
+          </Card>
+        ))}
       </div>
     </div>
   );
