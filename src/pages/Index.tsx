@@ -44,7 +44,7 @@ const FloatingIcon = ({ icon: Icon, color, size, delay }: any) => {
       
       const hideTimer = setTimeout(() => {
         setIsVisible(false);
-      }, 3000);
+      }, 4000);
 
       return () => clearTimeout(hideTimer);
     }, delay);
@@ -56,16 +56,16 @@ const FloatingIcon = ({ icon: Icon, color, size, delay }: any) => {
 
   return (
     <div
-      className={`fixed pointer-events-none z-20 transition-all duration-1000 ${
-        isVisible ? 'opacity-70 scale-100' : 'opacity-0 scale-50'
+      className={`fixed pointer-events-none z-20 floating-icon transition-all duration-500 ${
+        isVisible ? 'opacity-60' : 'opacity-0'
       }`}
       style={{
         left: `${position.x}px`,
         top: `${position.y}px`,
-        animation: 'float 6s ease-in-out infinite',
+        animationDelay: `${delay}ms`,
       }}
     >
-      <Icon className={`${color} ${size} drop-shadow-lg`} />
+      <Icon className={`${color} ${size} drop-shadow-sm`} />
     </div>
   );
 };
@@ -86,35 +86,35 @@ const Index = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-background text-foreground transition-colors duration-300">
+    <div className="min-h-screen bg-background text-foreground page-transition">
       {/* Theme Toggle */}
       <ThemeToggle />
 
-      {/* Floating Icons - Only on landing page */}
+      {/* Enhanced Floating Icons */}
       {showFloatingIcons && (
         <div className="fixed inset-0 pointer-events-none z-10">
           {floatingIcons.map((iconData, index) => (
             <FloatingIcon
               key={index}
               {...iconData}
-              delay={index * 1000 + Math.random() * 2000}
+              delay={index * 800 + Math.random() * 1000}
             />
           ))}
         </div>
       )}
 
-      {/* Hero Section */}
+      {/* Hero Section with Enhanced Animations */}
       <div className="relative overflow-hidden bg-background">
-        <div className="absolute inset-0 bg-gradient-to-r from-purple-600/10 via-blue-600/10 to-indigo-600/10"></div>
+        <div className="absolute inset-0 bg-gradient-to-r from-purple-600/5 via-blue-600/5 to-indigo-600/5 transition-all duration-500"></div>
         
         <div className="relative z-10 container mx-auto px-4 py-20 text-center">
           <div className="mb-8 flex justify-center">
-            <div className="relative">
-              <div className="absolute inset-0 bg-gradient-to-r from-purple-600 to-blue-600 rounded-full blur-lg opacity-30 animate-pulse"></div>
+            <div className="relative hover-scale">
+              <div className="absolute inset-0 bg-gradient-to-r from-purple-600 to-blue-600 rounded-full blur-lg opacity-20 animate-pulse"></div>
               <img 
                 src="/lovable-uploads/422cbbb0-c4bc-4187-9a72-3357810c13df.png" 
                 alt="dKloud Tech Logo" 
-                className="relative h-24 w-24 mx-auto rounded-full border-4 border-white dark:border-gray-800 shadow-2xl transition-colors duration-300"
+                className="relative h-24 w-24 mx-auto rounded-full border-4 border-white dark:border-gray-800 shadow-xl page-transition"
               />
             </div>
           </div>
@@ -123,12 +123,12 @@ const Index = () => {
             Decoding Knowledge
           </h1>
           
-          <p className="text-xl md:text-2xl font-medium mb-4 text-muted-foreground animate-slide-up">
+          <p className="text-xl md:text-2xl font-medium mb-4 text-muted-foreground animate-tagline">
             Library Of Unique Discoveries
           </p>
           
           <div className="mb-8 animate-scale-in">
-            <Badge variant="secondary" className="text-lg px-6 py-2 bg-gradient-to-r from-purple-100 to-blue-100 dark:from-purple-900/50 dark:to-blue-900/50 text-purple-800 dark:text-purple-200">
+            <Badge variant="secondary" className="text-lg px-6 py-2 bg-gradient-to-r from-purple-100 to-blue-100 dark:from-purple-900/50 dark:to-blue-900/50 text-purple-800 dark:text-purple-200 hover-scale">
               dKloud.in by dKloud Tech
             </Badge>
           </div>
@@ -156,15 +156,15 @@ const Index = () => {
           </div>
 
           <div className="flex flex-wrap justify-center gap-4 mb-16 animate-slide-up" style={{ animationDelay: '0.8s' }}>
-            <div className="flex items-center gap-2 bg-white/90 backdrop-blur-sm rounded-full px-4 py-2 shadow-lg border border-gray-200">
+            <div className="flex items-center gap-2 bg-white/90 backdrop-blur-sm rounded-full px-4 py-2 shadow-sm border border-gray-200 hover-scale transition-all duration-200">
               <Star className="h-5 w-5 text-yellow-500" />
               <span className="text-sm font-medium text-gray-700">Curated Content</span>
             </div>
-            <div className="flex items-center gap-2 bg-white/90 backdrop-blur-sm rounded-full px-4 py-2 shadow-lg border border-gray-200">
+            <div className="flex items-center gap-2 bg-white/90 backdrop-blur-sm rounded-full px-4 py-2 shadow-sm border border-gray-200 hover-scale transition-all duration-200">
               <Heart className="h-5 w-5 text-red-500" />
               <span className="text-sm font-medium text-gray-700">Community Driven</span>
             </div>
-            <div className="flex items-center gap-2 bg-white/90 backdrop-blur-sm rounded-full px-4 py-2 shadow-lg border border-gray-200">
+            <div className="flex items-center gap-2 bg-white/90 backdrop-blur-sm rounded-full px-4 py-2 shadow-sm border border-gray-200 hover-scale transition-all duration-200">
               <Github className="h-5 w-5 text-gray-700" />
               <span className="text-sm font-medium text-gray-700">Open Source</span>
             </div>
@@ -178,17 +178,17 @@ const Index = () => {
       {/* How It Works Section */}
       <HowItWorksSection />
 
-      {/* Main Content */}
+      {/* Main Content with Enhanced Tab Animations */}
       <div className="container mx-auto px-4 py-8 bg-background">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-3 lg:grid-cols-7 mb-8 bg-card/90 backdrop-blur-sm border border-border">
-            <TabsTrigger value="movies" className="text-sm">Movies & TV</TabsTrigger>
-            <TabsTrigger value="youtube" className="text-sm">YouTube Picks</TabsTrigger>
-            <TabsTrigger value="ai" className="text-sm">AI Tools</TabsTrigger>
-            <TabsTrigger value="tech" className="text-sm">Tech Corner</TabsTrigger>
-            <TabsTrigger value="gadgets" className="text-sm">SmartTech</TabsTrigger>
-            <TabsTrigger value="news" className="text-sm">Tech News</TabsTrigger>
-            <TabsTrigger value="portfolio" className="text-sm">Portfolio</TabsTrigger>
+          <TabsList className="grid w-full grid-cols-3 lg:grid-cols-7 mb-8 bg-card/90 backdrop-blur-sm border border-border shadow-sm">
+            <TabsTrigger value="movies" className="text-sm tab-trigger">Movies & TV</TabsTrigger>
+            <TabsTrigger value="youtube" className="text-sm tab-trigger">YouTube Picks</TabsTrigger>
+            <TabsTrigger value="ai" className="text-sm tab-trigger">AI Tools</TabsTrigger>
+            <TabsTrigger value="tech" className="text-sm tab-trigger">Tech Corner</TabsTrigger>
+            <TabsTrigger value="gadgets" className="text-sm tab-trigger">SmartTech</TabsTrigger>
+            <TabsTrigger value="news" className="text-sm tab-trigger">Tech News</TabsTrigger>
+            <TabsTrigger value="portfolio" className="text-sm tab-trigger">Portfolio</TabsTrigger>
           </TabsList>
 
           <TabsContent value="movies" className="space-y-6">
@@ -224,14 +224,6 @@ const Index = () => {
       <Footer />
       <ContactFloatingButtons />
       <AIAssistant />
-
-      <style>{`
-        @keyframes float {
-          0%, 100% { transform: translateY(0px) rotate(0deg); }
-          33% { transform: translateY(-20px) rotate(5deg); }
-          66% { transform: translateY(-10px) rotate(-5deg); }
-        }
-      `}</style>
     </div>
   );
 };

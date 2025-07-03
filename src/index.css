@@ -96,6 +96,7 @@ All colors MUST be HSL.
   ::-webkit-scrollbar-thumb {
     background: hsl(var(--muted-foreground));
     border-radius: 4px;
+    transition: background 0.2s ease;
   }
 
   ::-webkit-scrollbar-thumb:hover {
@@ -117,39 +118,63 @@ All colors MUST be HSL.
   }
 }
 
-/* Theme Toggle Button Styles */
+/* Enhanced Theme Toggle Button with Minimalistic Animations */
 .theme-toggle-button {
-  @apply fixed top-4 right-4 z-50 w-12 h-12 rounded-full shadow-lg transition-all duration-300 hover:scale-110;
+  @apply fixed top-4 right-4 z-50 w-12 h-12 rounded-full shadow-md transition-all duration-200 ease-out;
   @apply bg-gradient-to-r from-purple-500 to-blue-500 text-white;
   @apply flex items-center justify-center cursor-pointer;
-  @apply hover:shadow-xl hover:from-purple-600 hover:to-blue-600;
+  @apply hover:shadow-lg hover:scale-105 active:scale-95;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.theme-toggle-button:hover {
+  @apply from-purple-600 to-blue-600;
+  transform: translateY(-1px) scale(1.05);
 }
 
 .theme-toggle-button.dark {
-  @apply from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700;
+  @apply from-purple-600 to-blue-600;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.theme-toggle-button.dark:hover {
+  @apply from-purple-700 to-blue-700;
 }
 
 .icon-flip {
-  @apply transition-transform duration-500 ease-in-out;
+  @apply transition-all duration-300 ease-out;
 }
 
 .icon-flip.flipping {
   @apply rotate-180;
+  animation: gentleRotate 0.4s ease-out;
 }
 
-/* Designer Profile Styles */
+@keyframes gentleRotate {
+  0% { transform: rotate(0deg) scale(1); }
+  50% { transform: rotate(90deg) scale(1.1); }
+  100% { transform: rotate(180deg) scale(1); }
+}
+
+/* Enhanced Designer Profile with Minimalistic Animations */
 .designer-profile-section {
   @apply py-16 bg-gradient-to-r from-purple-50 to-blue-50 dark:from-purple-900/20 dark:to-blue-900/20;
-  @apply transition-colors duration-300;
+  @apply transition-all duration-500 ease-out;
 }
 
 .designer-card-3d {
   @apply relative w-32 h-32 mx-auto cursor-pointer;
   perspective: 1000px;
+  transition: transform 0.2s ease-out;
+}
+
+.designer-card-3d:hover {
+  transform: translateY(-2px);
 }
 
 .designer-card-inner {
-  @apply relative w-full h-full transition-transform duration-1000 ease-in-out;
+  @apply relative w-full h-full transition-transform duration-700 ease-out;
   transform-style: preserve-3d;
 }
 
@@ -159,11 +184,11 @@ All colors MUST be HSL.
 
 .designer-card-front,
 .designer-card-back {
-  @apply absolute inset-0 w-full h-full rounded-full shadow-xl;
+  @apply absolute inset-0 w-full h-full rounded-full shadow-lg;
   @apply border-4 border-purple-500 dark:border-purple-400;
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
-  @apply bg-white dark:bg-gray-800 transition-colors duration-300;
+  @apply bg-white dark:bg-gray-800 transition-all duration-300;
 }
 
 .designer-card-back {
@@ -174,19 +199,11 @@ All colors MUST be HSL.
   animation-play-state: paused;
 }
 
-.animate-continuous-flip {
-  animation: continuousFlip 5s infinite ease-in-out;
-}
-
-@keyframes continuousFlip {
-  0%, 45% { transform: rotateY(0deg); }
-  55%, 100% { transform: rotateY(180deg); }
-}
-
-@keyframes fadeIn {
+/* Subtle Fade-in Animations */
+@keyframes subtleFadeIn {
   from {
     opacity: 0;
-    transform: translateY(20px);
+    transform: translateY(10px);
   }
   to {
     opacity: 1;
@@ -194,25 +211,114 @@ All colors MUST be HSL.
   }
 }
 
-@keyframes taglineSlide {
+@keyframes gentleSlide {
   from {
     opacity: 0;
-    transform: translateY(30px);
+    transform: translateY(15px);
   }
   to {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+@keyframes softScale {
+  from {
+    opacity: 0;
+    transform: scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
   }
 }
 
 .animate-fade-in {
-  animation: fadeIn 1s ease-out forwards;
+  animation: subtleFadeIn 0.6s ease-out forwards;
 }
 
 .animate-tagline {
-  animation: taglineSlide 1s ease-out forwards;
+  animation: gentleSlide 0.7s ease-out forwards;
 }
 
+.animate-scale-in {
+  animation: softScale 0.5s ease-out forwards;
+}
+
+.animate-slide-up {
+  animation: gentleSlide 0.8s ease-out forwards;
+}
+
+/* Enhanced Interactive Elements */
+.hover-scale {
+  transition: all 0.2s ease-out;
+}
+
+.hover-scale:hover {
+  transform: translateY(-1px) scale(1.02);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Minimalistic Card Hover Effects */
+.card-hover {
+  @apply transition-all duration-200 ease-out;
+  @apply hover:shadow-md hover:-translate-y-0.5;
+}
+
+/* Subtle Button Animations */
+.btn-minimal {
+  @apply transition-all duration-200 ease-out;
+  @apply hover:scale-[1.02] active:scale-[0.98];
+}
+
+/* Enhanced Tab Animations */
+.tab-trigger {
+  @apply transition-all duration-200 ease-out;
+  @apply hover:bg-accent/80 hover:text-accent-foreground;
+  position: relative;
+}
+
+.tab-trigger::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 0;
+  height: 2px;
+  background: hsl(var(--primary));
+  transition: all 0.3s ease-out;
+  transform: translateX(-50%);
+}
+
+.tab-trigger[data-state="active"]::after {
+  width: 80%;
+}
+
+/* Floating Icons Enhanced Animation */
+@keyframes minimalistFloat {
+  0%, 100% { 
+    transform: translateY(0px) rotate(0deg);
+    opacity: 0.6;
+  }
+  25% { 
+    transform: translateY(-8px) rotate(2deg);
+    opacity: 0.8;
+  }
+  50% { 
+    transform: translateY(-12px) rotate(0deg);
+    opacity: 0.7;
+  }
+  75% { 
+    transform: translateY(-6px) rotate(-2deg);
+    opacity: 0.8;
+  }
+}
+
+.floating-icon {
+  animation: minimalistFloat 4s ease-in-out infinite;
+}
+
+/* Responsive Mobile Optimizations */
 @media (max-width: 768px) {
   .container {
     padding-left: 1rem;
@@ -222,21 +328,21 @@ All colors MUST be HSL.
   .theme-toggle-button {
     @apply top-2 right-2 w-10 h-10;
   }
+  
+  .designer-card-3d {
+    @apply w-24 h-24;
+  }
 }
 
-.hover-scale {
-  transition: transform 0.2s ease-in-out;
-}
-
-.hover-scale:hover {
-  transform: scale(1.02);
-}
-
-.gradient-bg {
-  background: linear-gradient(135deg, hsl(262.1 83.3% 57.8%) 0%, hsl(210 40% 96.1%) 100%);
-}
-
+/* Focus States for Accessibility */
 .focus-visible {
-  outline: 2px solid hsl(222.2 84% 4.9%);
+  outline: 2px solid hsl(var(--ring));
   outline-offset: 2px;
+  transition: outline 0.2s ease-out;
 }
+
+/* Smooth Page Transitions */
+.page-transition {
+  @apply transition-all duration-300 ease-out;
+}
+
