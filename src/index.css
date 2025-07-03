@@ -85,22 +85,24 @@ All colors MUST be HSL.
     scroll-behavior: smooth;
   }
 
+  /* Enhanced Scrollbar */
   ::-webkit-scrollbar {
     width: 8px;
   }
 
   ::-webkit-scrollbar-track {
     background: hsl(var(--muted));
+    border-radius: 4px;
   }
 
   ::-webkit-scrollbar-thumb {
-    background: hsl(var(--muted-foreground));
+    background: linear-gradient(180deg, hsl(var(--muted-foreground)), hsl(var(--primary)));
     border-radius: 4px;
-    transition: background 0.2s ease;
+    transition: all 0.2s ease;
   }
 
   ::-webkit-scrollbar-thumb:hover {
-    background: hsl(var(--foreground));
+    background: linear-gradient(180deg, hsl(var(--primary)), hsl(var(--foreground)));
   }
 
   .line-clamp-2 {
@@ -118,7 +120,7 @@ All colors MUST be HSL.
   }
 }
 
-/* Marquee Animation */
+/* Enhanced Marquee Animation */
 @keyframes marquee {
   0% {
     transform: translateX(100%);
@@ -129,22 +131,22 @@ All colors MUST be HSL.
 }
 
 .animate-marquee {
-  animation: marquee 20s linear infinite;
+  animation: marquee 25s linear infinite;
 }
 
-/* Enhanced Theme Toggle Button with Minimalistic Animations */
+/* Enhanced Theme Toggle Button */
 .theme-toggle-button {
-  @apply fixed top-4 right-4 z-50 w-12 h-12 rounded-full shadow-md transition-all duration-200 ease-out;
+  @apply fixed top-4 right-4 z-50 w-12 h-12 rounded-full shadow-lg transition-all duration-300 ease-out;
   @apply bg-gradient-to-r from-purple-500 to-blue-500 text-white;
   @apply flex items-center justify-center cursor-pointer;
-  @apply hover:shadow-lg hover:scale-105 active:scale-95;
+  @apply hover:shadow-xl hover:scale-110 active:scale-95;
   backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .theme-toggle-button:hover {
   @apply from-purple-600 to-blue-600;
-  transform: translateY(-1px) scale(1.05);
+  transform: translateY(-2px) scale(1.1);
 }
 
 .theme-toggle-button.dark {
@@ -171,26 +173,8 @@ All colors MUST be HSL.
   100% { transform: rotate(180deg) scale(1); }
 }
 
-/* Stable shuffle text animation */
-.shuffle-text-container {
-  display: inline-block;
-  position: relative;
-  overflow: hidden;
-}
-
-/* Subtle Fade-in Animations */
+/* Enhanced Animations */
 @keyframes subtleFadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes gentleSlide {
   from {
     opacity: 0;
     transform: translateY(15px);
@@ -201,10 +185,21 @@ All colors MUST be HSL.
   }
 }
 
+@keyframes gentleSlide {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 @keyframes softScale {
   from {
     opacity: 0;
-    transform: scale(0.98);
+    transform: scale(0.95);
   }
   to {
     opacity: 1;
@@ -213,48 +208,49 @@ All colors MUST be HSL.
 }
 
 .animate-fade-in {
-  animation: subtleFadeIn 0.6s ease-out forwards;
+  animation: subtleFadeIn 0.8s ease-out forwards;
 }
 
 .animate-tagline {
-  animation: gentleSlide 0.7s ease-out forwards;
+  animation: gentleSlide 0.9s ease-out forwards;
 }
 
 .animate-scale-in {
-  animation: softScale 0.5s ease-out forwards;
+  animation: softScale 0.6s ease-out forwards;
 }
 
 .animate-slide-up {
-  animation: gentleSlide 0.8s ease-out forwards;
+  animation: gentleSlide 1s ease-out forwards;
 }
 
 /* Enhanced Interactive Elements */
 .hover-scale {
-  transition: all 0.2s ease-out;
+  transition: all 0.3s ease-out;
 }
 
 .hover-scale:hover {
-  transform: translateY(-1px) scale(1.02);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px) scale(1.03);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
 }
 
-/* Minimalistic Card Hover Effects */
+/* Enhanced Card Hover Effects */
 .card-hover {
-  @apply transition-all duration-200 ease-out;
-  @apply hover:shadow-md hover:-translate-y-0.5;
+  @apply transition-all duration-300 ease-out;
+  @apply hover:shadow-xl hover:-translate-y-1;
 }
 
-/* Subtle Button Animations */
+/* Enhanced Button Animations */
 .btn-minimal {
   @apply transition-all duration-200 ease-out;
-  @apply hover:scale-[1.02] active:scale-[0.98];
+  @apply hover:scale-[1.05] active:scale-[0.98];
 }
 
-/* Enhanced Tab Animations with Theme Colors */
+/* Enhanced Tab Animations with Dynamic Colors */
 .tab-trigger {
-  @apply transition-all duration-200 ease-out;
+  @apply transition-all duration-300 ease-out;
   @apply hover:bg-accent/80 hover:text-accent-foreground;
   position: relative;
+  border-radius: 0.5rem;
 }
 
 .tab-trigger::after {
@@ -263,45 +259,52 @@ All colors MUST be HSL.
   bottom: 0;
   left: 50%;
   width: 0;
-  height: 2px;
-  background: hsl(var(--primary));
-  transition: all 0.3s ease-out;
+  height: 3px;
+  background: linear-gradient(90deg, hsl(var(--primary)), hsl(var(--ring)));
+  transition: all 0.4s ease-out;
   transform: translateX(-50%);
+  border-radius: 2px;
 }
 
 .tab-trigger[data-state="active"]::after {
-  width: 80%;
+  width: 85%;
 }
 
-/* Floating Icons Enhanced Animation */
+.tab-trigger:hover::after {
+  width: 60%;
+  background: linear-gradient(90deg, hsl(var(--muted-foreground)), hsl(var(--primary)));
+}
+
+/* Enhanced Floating Icons Animation */
 @keyframes minimalistFloat {
   0%, 100% { 
     transform: translateY(0px) rotate(0deg);
-    opacity: 0.6;
+    opacity: 0.4;
   }
   25% { 
-    transform: translateY(-8px) rotate(2deg);
-    opacity: 0.8;
-  }
-  50% { 
-    transform: translateY(-12px) rotate(0deg);
+    transform: translateY(-12px) rotate(3deg);
     opacity: 0.7;
   }
+  50% { 
+    transform: translateY(-18px) rotate(0deg);
+    opacity: 0.6;
+  }
   75% { 
-    transform: translateY(-6px) rotate(-2deg);
+    transform: translateY(-8px) rotate(-3deg);
     opacity: 0.8;
   }
 }
 
 .floating-icon {
-  animation: minimalistFloat 4s ease-in-out infinite;
+  animation: minimalistFloat 5s ease-in-out infinite;
+  filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.1));
 }
 
 /* Enhanced Slide Animation */
 @keyframes slideInRight {
   from {
     opacity: 0;
-    transform: translateX(100%);
+    transform: translateX(50px);
   }
   to {
     opacity: 1;
@@ -313,24 +316,24 @@ All colors MUST be HSL.
   animation: slideInRight 1.2s ease-out forwards;
 }
 
-/* Bounce animation for arrow */
+/* Enhanced Bounce Animation */
 @keyframes bounce {
   0%, 20%, 53%, 80%, 100% {
     transform: translateY(0);
   }
   40%, 43% {
-    transform: translateY(-8px);
+    transform: translateY(-12px);
   }
   70% {
-    transform: translateY(-4px);
+    transform: translateY(-6px);
   }
   90% {
-    transform: translateY(-2px);
+    transform: translateY(-3px);
   }
 }
 
 .animate-bounce {
-  animation: bounce 2s infinite;
+  animation: bounce 2.5s infinite;
 }
 
 /* Mobile Optimizations */
@@ -341,41 +344,42 @@ All colors MUST be HSL.
   }
   
   .theme-toggle-button {
-    @apply top-2 right-2 w-10 h-10;
+    @apply top-3 right-3 w-10 h-10;
   }
   
-  /* Mobile hero adjustments */
   .animate-slide-in-right h1 {
-    @apply text-3xl;
+    @apply text-2xl;
   }
   
-  /* Mobile tab adjustments */
   .tab-trigger {
-    @apply text-xs px-2;
+    @apply text-xs px-2 py-2;
   }
   
-  /* Mobile card spacing */
   .card-hover {
     @apply mb-4;
   }
   
-  /* Mobile search */
   .search-mobile {
     @apply w-full;
+  }
+
+  .animate-marquee {
+    @apply text-xs;
+    animation: marquee 15s linear infinite;
   }
 }
 
 @media (max-width: 640px) {
   .animate-slide-in-right h1 {
-    @apply text-2xl;
+    @apply text-xl;
   }
   
   .grid-cols-4 {
-    @apply grid-cols-2 gap-2;
+    @apply grid-cols-2 gap-3;
   }
   
-  .animate-marquee {
-    @apply text-xs;
+  .hero-highlights {
+    @apply gap-3;
   }
 }
 
@@ -386,14 +390,18 @@ All colors MUST be HSL.
   }
   
   .animate-slide-in-right h1 {
-    @apply text-5xl;
+    @apply text-4xl;
   }
 }
 
 /* Desktop Optimizations */
 @media (min-width: 1024px) {
   .hover-scale:hover {
-    transform: translateY(-2px) scale(1.03);
+    transform: translateY(-3px) scale(1.05);
+  }
+  
+  .tab-trigger:hover {
+    transform: translateY(-1px);
   }
 }
 
@@ -431,4 +439,16 @@ All colors MUST be HSL.
   .hover-scale:hover {
     transform: none;
   }
+  
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Enhanced Backdrop Filters */
+.backdrop-blur-custom {
+  backdrop-filter: blur(12px) saturate(180%);
+  -webkit-backdrop-filter: blur(12px) saturate(180%);
 }
