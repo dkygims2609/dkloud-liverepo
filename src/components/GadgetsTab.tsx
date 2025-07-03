@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -43,128 +44,142 @@ const GadgetsTab = () => {
         {
           id: '1',
           name: 'iPhone 15 Pro Max',
-          description: 'Latest flagship smartphone with A17 Pro chip, titanium design, and advanced camera system. Available in India.',
+          description: 'Latest flagship smartphone with A17 Pro chip, titanium design, and advanced camera system. Available in India at authorized Apple stores.',
           category: 'Smartphone',
           brand: 'Apple',
-          price: 159900, // INR
+          price: 159900,
           rating: 4.8,
-          features: ['A17 Pro Chip', 'Titanium Build', 'ProRAW Camera', '5G Support'],
-          image: 'https://via.placeholder.com/300x200?text=iPhone+15+Pro',
-          link: 'https://www.amazon.in/dp/B0CHX3TK9K',
+          features: ['A17 Pro Chip', 'Titanium Build', 'ProRAW Camera', '5G Support', '256GB Storage'],
+          image: 'https://images.unsplash.com/photo-1695048133142-1a20484d2569?w=300&h=200&fit=crop',
+          link: 'https://www.amazon.in/Apple-iPhone-15-Pro-Max/dp/B0CHX3TK9K',
           trending: true,
           availability: 'In Stock'
         },
         {
           id: '2',
           name: 'OnePlus 12',
-          description: 'Flagship killer with Snapdragon 8 Gen 3, excellent cameras, and fast charging. Great value in India.',
+          description: 'Flagship killer with Snapdragon 8 Gen 3, Hasselblad cameras, and 100W SUPERVOOC charging. Excellent performance for Indian users.',
           category: 'Smartphone',
           brand: 'OnePlus',
-          price: 64999, // INR
+          price: 64999,
           rating: 4.7,
-          features: ['Snapdragon 8 Gen 3', '100W Fast Charging', 'Hasselblad Camera', '5G Ready'],
-          image: 'https://via.placeholder.com/300x200?text=OnePlus+12',
-          link: 'https://www.amazon.in/dp/B0CQX2QC3K',
+          features: ['Snapdragon 8 Gen 3', '100W Fast Charging', 'Hasselblad Camera', '5G Ready', '256GB Storage'],
+          image: 'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=300&h=200&fit=crop',
+          link: 'https://www.amazon.in/OnePlus-12-5G-Smartphone/dp/B0CQX2QC3K',
           trending: true,
           availability: 'In Stock'
         },
         {
           id: '3',
           name: 'MacBook Air M3',
-          description: 'Revolutionary laptop with M3 chip, delivering unprecedented performance and battery life. Now available in India.',
+          description: 'Revolutionary laptop with M3 chip, delivering unprecedented performance and 18-hour battery life. Perfect for professionals in India.',
           category: 'Laptop',
           brand: 'Apple',
-          price: 114900, // INR
+          price: 114900,
           rating: 4.9,
-          features: ['M3 Chip', '18-hour battery', 'Liquid Retina Display', 'Silent Operation'],
-          image: 'https://via.placeholder.com/300x200?text=MacBook+Air+M3',
-          link: 'https://www.amazon.in/dp/B0CX23GFYJ',
+          features: ['M3 Chip', '18-hour battery', 'Liquid Retina Display', 'Silent Operation', '256GB SSD'],
+          image: 'https://images.unsplash.com/photo-1541807084-5c52b6b3adef?w=300&h=200&fit=crop',
+          link: 'https://www.amazon.in/Apple-MacBook-Air-13-inch-M3/dp/B0CX23GFYJ',
           trending: true,
           availability: 'In Stock'
         },
         {
           id: '4',
           name: 'ASUS ROG Strix G15',
-          description: 'Gaming powerhouse with RTX 4060, perfect for Indian gaming enthusiasts.',
+          description: 'Gaming powerhouse with RTX 4060, AMD Ryzen 7, and 144Hz display. Built for Indian gaming enthusiasts.',
           category: 'Laptop',
           brand: 'ASUS',
-          price: 89990, // INR
+          price: 89990,
           rating: 4.6,
-          features: ['RTX 4060', 'AMD Ryzen 7', '144Hz Display', 'RGB Keyboard'],
-          image: 'https://via.placeholder.com/300x200?text=ASUS+ROG+Strix',
-          link: 'https://www.amazon.in/dp/B0C74DXQS6',
+          features: ['RTX 4060', 'AMD Ryzen 7', '144Hz Display', 'RGB Keyboard', '16GB RAM'],
+          image: 'https://images.unsplash.com/photo-1593642632823-8f785ba67e45?w=300&h=200&fit=crop',
+          link: 'https://www.amazon.in/ASUS-ROG-Strix-G15-Gaming/dp/B0C74DXQS6',
           trending: false,
           availability: 'In Stock'
         },
         {
           id: '5',
           name: 'Samsung Galaxy Watch 6',
-          description: 'Advanced smartwatch with comprehensive health monitoring. Popular choice in India.',
+          description: 'Advanced smartwatch with comprehensive health monitoring, GPS tracking, and water resistance. Popular among Indian fitness enthusiasts.',
           category: 'Wearable',
           brand: 'Samsung',
-          price: 30999, // INR
+          price: 30999,
           rating: 4.6,
-          features: ['Health Monitoring', 'GPS Tracking', 'Water Resistant', 'Long Battery Life'],
-          image: 'https://via.placeholder.com/300x200?text=Galaxy+Watch+6',
-          link: 'https://www.amazon.in/dp/B0C94Q5LBP',
+          features: ['Health Monitoring', 'GPS Tracking', 'Water Resistant', 'Long Battery Life', 'Sleep Tracking'],
+          image: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=300&h=200&fit=crop',
+          link: 'https://www.amazon.in/Samsung-Galaxy-Watch6-Bluetooth/dp/B0C94Q5LBP',
           trending: false,
           availability: 'In Stock'
         },
         {
           id: '6',
           name: 'Sony WH-1000XM5',
-          description: 'Industry-leading noise-canceling headphones. Premium audio experience for Indian audiophiles.',
+          description: 'Industry-leading noise-canceling headphones with 30-hour battery life. Premium audio experience for Indian audiophiles.',
           category: 'Audio',
           brand: 'Sony',
-          price: 29990, // INR
+          price: 29990,
           rating: 4.7,
-          features: ['Active Noise Canceling', '30-hour battery', 'Touch Controls', 'Quick Charge'],
-          image: 'https://via.placeholder.com/300x200?text=Sony+WH-1000XM5',
-          link: 'https://www.amazon.in/dp/B09XB7HJZX',
+          features: ['Active Noise Canceling', '30-hour battery', 'Touch Controls', 'Quick Charge', 'LDAC Support'],
+          image: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=300&h=200&fit=crop',
+          link: 'https://www.amazon.in/Sony-WH-1000XM5-Cancelling-Headphones/dp/B09XB7HJZX',
           trending: true,
           availability: 'In Stock'
         },
         {
           id: '7',
           name: 'Nothing Phone (2a)',
-          description: 'Unique transparent design smartphone with great specs at an affordable price in India.',
+          description: 'Unique transparent design smartphone with Glyph Interface and great specs at an affordable price. Made for Indian market.',
           category: 'Smartphone',
           brand: 'Nothing',
-          price: 23999, // INR
+          price: 23999,
           rating: 4.5,
-          features: ['Dimensity 7200 Pro', 'Glyph Interface', '50MP Camera', 'Fast Charging'],
-          image: 'https://via.placeholder.com/300x200?text=Nothing+Phone+2a',
-          link: 'https://www.amazon.in/dp/B0CYK5QHPV',
+          features: ['Dimensity 7200 Pro', 'Glyph Interface', '50MP Camera', 'Fast Charging', '128GB Storage'],
+          image: 'https://images.unsplash.com/photo-1512054502232-10a0a035d672?w=300&h=200&fit=crop',
+          link: 'https://www.amazon.in/Nothing-Phone-2a-Smartphone/dp/B0CYK5QHPV',
           trending: true,
           availability: 'In Stock'
         },
         {
           id: '8',
           name: 'iPad Air M2',
-          description: 'Professional tablet with M2 chip, perfect for creative work and productivity in India.',
+          description: 'Professional tablet with M2 chip, perfect for creative work and productivity. Supports Apple Pencil and Face ID.',
           category: 'Tablet',
           brand: 'Apple',
-          price: 59900, // INR
+          price: 59900,
           rating: 4.8,
-          features: ['M2 Chip', 'Liquid Retina Display', 'Apple Pencil Support', 'Face ID'],
-          image: 'https://via.placeholder.com/300x200?text=iPad+Air+M2',
-          link: 'https://www.amazon.in/dp/B0D3J7FC1P',
+          features: ['M2 Chip', 'Liquid Retina Display', 'Apple Pencil Support', 'Face ID', '128GB Storage'],
+          image: 'https://images.unsplash.com/photo-1561154464-82e9adf32764?w=300&h=200&fit=crop',
+          link: 'https://www.amazon.in/Apple-iPad-Air-11-inch-M2/dp/B0D3J7FC1P',
           trending: false,
           availability: 'In Stock'
         },
         {
           id: '9',
-          name: 'Mi 11X Pro',
-          description: 'Flagship performance at mid-range price. Excellent value proposition for Indian consumers.',
+          name: 'Xiaomi 14',
+          description: 'Flagship smartphone with Snapdragon 8 Gen 3, Leica cameras, and premium build quality. Excellent value for Indian consumers.',
           category: 'Smartphone',
           brand: 'Xiaomi',
-          price: 29999, // INR
-          rating: 4.4,
-          features: ['Snapdragon 888', '108MP Camera', '120Hz AMOLED', '33W Fast Charging'],
-          image: 'https://via.placeholder.com/300x200?text=Mi+11X+Pro',
-          link: 'https://www.amazon.in/dp/B093G3BYRK',
+          price: 69999,
+          rating: 4.6,
+          features: ['Snapdragon 8 Gen 3', 'Leica Camera', '120Hz AMOLED', '90W Fast Charging', '256GB Storage'],
+          image: 'https://images.unsplash.com/photo-1598300042247-d088f8ab3a91?w=300&h=200&fit=crop',
+          link: 'https://www.amazon.in/Xiaomi-14-Smartphone-Snapdragon/dp/B0CQX2QC3K',
           trending: false,
           availability: 'Limited Stock'
+        },
+        {
+          id: '10',
+          name: 'Dell XPS 13',
+          description: 'Ultra-portable laptop with Intel 13th Gen processors and premium build quality. Perfect for professionals and students in India.',
+          category: 'Laptop',
+          brand: 'Dell',
+          price: 99990,
+          rating: 4.5,
+          features: ['Intel 13th Gen', '13.4" InfinityEdge', '16GB RAM', '512GB SSD', 'Windows 11'],
+          image: 'https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=300&h=200&fit=crop',
+          link: 'https://www.amazon.in/Dell-XPS-13-9315-Laptop/dp/B0BVJQ8KPQ',
+          trending: false,
+          availability: 'In Stock'
         }
       ];
 
@@ -408,7 +423,7 @@ const GadgetsTab = () => {
                   <Badge variant="outline" className="text-xs border-gray-300 dark:border-gray-600">
                     +{gadget.features.length - 3} more
                   </Badge>
-                ))}
+                )}
               </div>
 
               <Button 
