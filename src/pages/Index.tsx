@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
@@ -16,6 +15,8 @@ import HowItWorksSection from '@/components/HowItWorksSection';
 import ContactFloatingButtons from '@/components/ContactFloatingButtons';
 import AIAssistant from '@/components/AIAssistant';
 import Footer from '@/components/Footer';
+import ThemeToggle from '@/components/ThemeToggle';
+import DesignerProfile from '@/components/DesignerProfile';
 
 const floatingIcons = [
   { icon: Cloud, color: 'text-blue-500', size: 'h-8 w-8' },
@@ -85,7 +86,10 @@ const Index = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-background text-foreground transition-colors duration-300">
+      {/* Theme Toggle */}
+      <ThemeToggle />
+
       {/* Floating Icons - Only on landing page */}
       {showFloatingIcons && (
         <div className="fixed inset-0 pointer-events-none z-10">
@@ -100,7 +104,7 @@ const Index = () => {
       )}
 
       {/* Hero Section */}
-      <div className="relative overflow-hidden bg-white">
+      <div className="relative overflow-hidden bg-background">
         <div className="absolute inset-0 bg-gradient-to-r from-purple-600/10 via-blue-600/10 to-indigo-600/10"></div>
         
         <div className="relative z-10 container mx-auto px-4 py-20 text-center">
@@ -108,9 +112,9 @@ const Index = () => {
             <div className="relative">
               <div className="absolute inset-0 bg-gradient-to-r from-purple-600 to-blue-600 rounded-full blur-lg opacity-30 animate-pulse"></div>
               <img 
-                src="/lovable-uploads/60f33ce6-efaa-4f60-a11c-09517021a6ff.png" 
+                src="/lovable-uploads/422cbbb0-c4bc-4187-9a72-3357810c13df.png" 
                 alt="dKloud Tech Logo" 
-                className="relative h-24 w-24 mx-auto rounded-full border-4 border-white shadow-2xl"
+                className="relative h-24 w-24 mx-auto rounded-full border-4 border-white dark:border-gray-800 shadow-2xl transition-colors duration-300"
               />
             </div>
           </div>
@@ -119,17 +123,17 @@ const Index = () => {
             Decoding Knowledge
           </h1>
           
-          <p className="text-xl md:text-2xl font-medium mb-4 text-gray-600 animate-slide-up">
+          <p className="text-xl md:text-2xl font-medium mb-4 text-muted-foreground animate-slide-up">
             Library Of Unique Discoveries
           </p>
           
           <div className="mb-8 animate-scale-in">
-            <Badge variant="secondary" className="text-lg px-6 py-2 bg-gradient-to-r from-purple-100 to-blue-100 text-purple-800">
+            <Badge variant="secondary" className="text-lg px-6 py-2 bg-gradient-to-r from-purple-100 to-blue-100 dark:from-purple-900/50 dark:to-blue-900/50 text-purple-800 dark:text-purple-200">
               dKloud.in by dKloud Tech
             </Badge>
           </div>
 
-          <div className="max-w-4xl mx-auto space-y-6 text-lg text-gray-600 mb-12">
+          <div className="max-w-4xl mx-auto space-y-6 text-lg text-muted-foreground mb-12">
             <p className="animate-fade-in" style={{ animationDelay: '0.2s' }}>
               <span className="text-2xl font-semibold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
                 A passionate creative techy's knowledge space
@@ -168,13 +172,16 @@ const Index = () => {
         </div>
       </div>
 
+      {/* Designer Profile Section */}
+      <DesignerProfile />
+
       {/* How It Works Section */}
       <HowItWorksSection />
 
       {/* Main Content */}
-      <div className="container mx-auto px-4 py-8 bg-white">
+      <div className="container mx-auto px-4 py-8 bg-background">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-3 lg:grid-cols-7 mb-8 bg-white/90 backdrop-blur-sm border border-gray-200">
+          <TabsList className="grid w-full grid-cols-3 lg:grid-cols-7 mb-8 bg-card/90 backdrop-blur-sm border border-border">
             <TabsTrigger value="movies" className="text-sm">Movies & TV</TabsTrigger>
             <TabsTrigger value="youtube" className="text-sm">YouTube Picks</TabsTrigger>
             <TabsTrigger value="ai" className="text-sm">AI Tools</TabsTrigger>
