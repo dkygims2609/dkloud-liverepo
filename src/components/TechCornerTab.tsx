@@ -5,15 +5,17 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Wrench, ExternalLink, FileText, Download } from 'lucide-react';
+import { Wrench, ExternalLink, FileText, Download, Search, User } from 'lucide-react';
 import { toast } from "@/hooks/use-toast";
 
 interface TechResource {
   Title: string;
-  Category: string;
-  Type: string;
-  Link: string;
-  Description?: string;
+  Description: string;
+  FileLink: string;
+  Author?: string;
+  Tags?: string;
+  Category?: string;
+  Type?: string;
 }
 
 const TechCornerTab = () => {
@@ -30,6 +32,7 @@ const TechCornerTab = () => {
     try {
       const response = await fetch('https://script.google.com/macros/s/AKfycbw6hSBYLo33ze3aqiTzBszbfiTFVh2nHsrsop58d0DFWGOOwaOZIepb6kUjmqKwKcVr/exec');
       const data = await response.json();
+      console.log('Tech resources data:', data);
       setResources(data);
     } catch (error) {
       console.error('Error fetching tech resources:', error);
@@ -45,7 +48,8 @@ const TechCornerTab = () => {
 
   const filteredResources = resources.filter(resource => {
     const matchesSearch = resource.Title?.toLowerCase().includes(searchTerm.toLowerCase()) || 
-                         resource.Description?.toLowerCase().includes(searchTerm.toLowerCase());
+                         resource.Description?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         resource.Tags?.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesCategory = categoryFilter === 'all' || resource.Category === categoryFilter;
     
     return matchesSearch && matchesCategory;
@@ -63,13 +67,25 @@ const TechCornerTab = () => {
 
   return (
     <div className="space-y-6">
+      <div className="text-center mb-8">
+        <h2 className="text-3xl font-bold mb-4 bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
+          🔧 Tech Corner
+        </h2>
+        <p className="text-lg text-muted-foreground">
+          Technical resources and documentation
+        </p>
+      </div>
+
       <div className="flex flex-col sm:flex-row gap-4 mb-6">
-        <Input
-          placeholder="Search tech resources..."
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          className="flex-1"
-        />
+        <div className="relative flex-1">
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+          <Input
+            placeholder="Search tech resources..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="pl-10"
+          />
+        </div>
         <Select value={categoryFilter} onValueChange={setCategoryFilter}>
           <SelectTrigger className="w-full sm:w-48">
             <SelectValue placeholder="Filter by category" />
@@ -85,44 +101,70 @@ const TechCornerTab = () => {
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {filteredResources.map((resource, index) => (
-          <Card key={index} className="hover:shadow-lg transition-shadow duration-300">
-            <CardHeader>
+          <Card key={index} className="hover:shadow-lg transition-shadow duration-300 bg-gradient-to-br from-background to-indigo-50/20 dark:to-indigo-900/10 border-indigo-200/50 dark:border-indigo-800/50">
+            <CardHeader className="pb-3">
               <CardTitle className="text-lg mb-2 flex items-center gap-2">
-                <Wrench className="h-5 w-5 text-primary" />
-                {resource.Title}
+                <Wrench className="h-5 w-5 text-indigo-600" />
+                <span className="line-clamp-1">{resource.Title}</span>
               </CardTitle>
               <div className="flex flex-wrap gap-2 mb-2">
-                <Badge variant="secondary">{resource.Category}</Badge>
+                {resource.Category && (
+                  <Badge variant="secondary" className="bg-indigo-100 text-indigo-800 dark:bg-indigo-900 dark:text-indigo-200">
+                    {resource.Category}
+                  </Badge>
+                )}
                 {resource.Type && (
-                  <Badge variant="outline">{resource.Type}</Badge>
+                  <Badge variant="outline" className="border-purple-300 text-purple-700 dark:border-purple-700 dark:text-purple-300">
+                    {resource.Type}
+                  </Badge>
                 )}
               </div>
             </CardHeader>
-            <CardContent>
+            <CardContent className="pt-0">
               {resource.Description && (
-                <CardDescription className="mb-4">
+                <CardDescription className="mb-4 line-clamp-3">
                   {resource.Description}
                 </CardDescription>
               )}
-              {resource.Link && (
+              
+              {resource.Author && (
+                <div className="flex items-center gap-2 mb-3 text-sm text-muted-foreground">
+                  <User className="h-4 w-4" />
+                  By {resource.Author}
+                </div>
+              )}
+              
+              {resource.Tags && (
+                <div className="mb-4">
+                  <div className="flex flex-wrap gap-1">
+                    {resource.Tags.split(',').slice(0, 3).map((tag, tagIndex) => (
+                      <Badge key={tagIndex} variant="outline" className="text-xs border-blue-300 text-blue-700 dark:border-blue-700 dark:text-blue-300">
+                        {tag.trim()}
+                      </Badge>
+                    ))}
+                  </div>
+                </div>
+              )}
+              
+              {resource.FileLink && (
                 <Button 
                   variant="outline" 
                   size="sm" 
-                  className="w-full"
+                  className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white border-0 hover:from-indigo-700 hover:to-purple-700"
                   asChild
                 >
                   <a 
-                    href={resource.Link} 
+                    href={resource.FileLink} 
                     target="_blank" 
                     rel="noopener noreferrer"
                     className="flex items-center gap-2"
                   >
-                    {resource.Type === 'PDF' || resource.Type === 'DOCX' ? (
+                    {resource.FileLink.includes('drive.google.com') ? (
                       <Download className="h-4 w-4" />
                     ) : (
                       <ExternalLink className="h-4 w-4" />
                     )}
-                    {resource.Type === 'PDF' || resource.Type === 'DOCX' ? 'Download' : 'View Resource'}
+                    {resource.FileLink.includes('drive.google.com') ? 'Download' : 'View Resource'}
                   </a>
                 </Button>
               )}
