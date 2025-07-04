@@ -2,7 +2,7 @@
 import React from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Search } from 'lucide-react';
+import { Search, Menu, X } from 'lucide-react';
 
 interface HeaderProps {
   searchOpen: boolean;
@@ -13,53 +13,131 @@ interface HeaderProps {
   handleTabClick: (tabValue: string) => void;
 }
 
-const Header = ({ searchOpen, setSearchOpen, searchQuery, setSearchQuery, handleSearch, handleTabClick }: HeaderProps) => {
-  return (
-    <header className="w-full py-4 px-4 bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm border-b border-gray-100 dark:border-gray-800 sticky top-0 z-40">
-      <div className="container mx-auto flex justify-between items-center">
-        {/* Logo */}
-        <div className="flex items-center gap-3">
-          <div className="h-12 w-12 rounded-full bg-gradient-to-r from-purple-500 to-blue-500 flex items-center justify-center text-white font-bold text-lg shadow-lg">
-            dK
-          </div>
-          <div className="hidden sm:block">
-            <div className="text-xl font-bold text-gray-800 dark:text-white">dKloud Tech</div>
-            <div className="text-xs text-gray-500 dark:text-gray-400">Knowledge Hub</div>
-          </div>
-        </div>
-        
-        {/* Navigation Links */}
-        <nav className="hidden lg:flex items-center gap-6">
-          <button onClick={() => handleTabClick('movies')} className="text-sm font-medium hover:text-purple-600 dark:hover:text-purple-400 transition-colors">Movies</button>
-          <button onClick={() => handleTabClick('youtube')} className="text-sm font-medium hover:text-red-600 dark:hover:text-red-400 transition-colors">YouTube</button>
-          <button onClick={() => handleTabClick('ai')} className="text-sm font-medium hover:text-green-600 dark:hover:text-green-400 transition-colors">AI Tools</button>
-          <button onClick={() => handleTabClick('tech')} className="text-sm font-medium hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Tech</button>
-          <button onClick={() => handleTabClick('gadgets')} className="text-sm font-medium hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Gadgets</button>
-          <button onClick={() => handleTabClick('news')} className="text-sm font-medium hover:text-pink-600 dark:hover:text-pink-400 transition-colors">News</button>
-          <button onClick={() => handleTabClick('portfolio')} className="text-sm font-medium hover:text-teal-600 dark:hover:text-teal-400 transition-colors">Portfolio</button>
-        </nav>
+const Header = ({ 
+  searchOpen, 
+  setSearchOpen, 
+  searchQuery, 
+  setSearchQuery, 
+  handleSearch, 
+  handleTabClick 
+}: HeaderProps) => {
+  const [menuOpen, setMenuOpen] = React.useState(false);
 
-        {/* Search */}
-        <div className="flex items-center gap-2">
-          {searchOpen ? (
-            <form onSubmit={handleSearch} className="flex items-center gap-2">
-              <Input
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Search..."
-                className="w-32 sm:w-48"
-                autoFocus
-              />
-              <Button type="submit" size="sm" variant="ghost">
-                <Search className="h-4 w-4" />
+  const navItems = [
+    { label: "Movies", value: "movies" },
+    { label: "TV Series", value: "tv-series" },
+    { label: "AI Tools", value: "ai-tools" },
+    { label: "Tech Corner", value: "tech-corner" },
+    { label: "YouTube", value: "youtube-channels" },
+    { label: "Gadgets", value: "gadgets" },
+    { label: "Tech News", value: "tech-news" }
+  ];
+
+  return (
+    <header className="sticky top-0 z-40 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+      <div className="container mx-auto px-4 py-4">
+        <div className="flex items-center justify-between">
+          {/* Logo and Brand */}
+          <div className="flex items-center space-x-3">
+            <img 
+              src="/lovable-uploads/47dfee5e-0dc4-495e-b003-53a83aca36ad.png" 
+              alt="dKloud Logo" 
+              className="h-10 w-auto"
+            />
+            <div className="hidden sm:block">
+              <h1 className="text-xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                dKloud.in
+              </h1>
+              <p className="text-xs text-muted-foreground">Decoding Knowledge</p>
+            </div>
+          </div>
+
+          {/* Desktop Navigation */}
+          <nav className="hidden lg:flex items-center space-x-1">
+            {navItems.map((item) => (
+              <Button
+                key={item.value}
+                variant="ghost"
+                size="sm"
+                onClick={() => handleTabClick(item.value)}
+                className="text-sm hover:bg-accent hover:text-accent-foreground transition-all duration-200"
+              >
+                {item.label}
               </Button>
-            </form>
-          ) : (
-            <Button onClick={() => setSearchOpen(true)} size="sm" variant="ghost" className="hover:bg-purple-100 dark:hover:bg-purple-900/30">
-              <Search className="h-4 w-4" />
-            </Button>
-          )}
+            ))}
+          </nav>
+
+          {/* Search and Mobile Menu */}
+          <div className="flex items-center space-x-2">
+            {/* Search */}
+            <div className="relative">
+              {searchOpen ? (
+                <form onSubmit={handleSearch} className="flex items-center">
+                  <Input
+                    type="text"
+                    placeholder="Search content..."
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    className="w-48 sm:w-64 pr-10"
+                    autoFocus
+                  />
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => setSearchOpen(false)}
+                    className="absolute right-2 top-1/2 transform -translate-y-1/2"
+                  >
+                    <X className="h-4 w-4" />
+                  </Button>
+                </form>
+              ) : (
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => setSearchOpen(true)}
+                  className="p-2"
+                >
+                  <Search className="h-4 w-4" />
+                </Button>
+              )}
+            </div>
+
+            {/* Mobile Menu Button */}
+            <div className="lg:hidden">
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setMenuOpen(!menuOpen)}
+                className="p-2"
+              >
+                {menuOpen ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
+              </Button>
+            </div>
+          </div>
         </div>
+
+        {/* Mobile Navigation */}
+        {menuOpen && (
+          <div className="lg:hidden mt-4 pt-4 border-t">
+            <nav className="grid grid-cols-2 gap-2">
+              {navItems.map((item) => (
+                <Button
+                  key={item.value}
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => {
+                    handleTabClick(item.value);
+                    setMenuOpen(false);
+                  }}
+                  className="justify-start text-sm"
+                >
+                  {item.label}
+                </Button>
+              ))}
+            </nav>
+          </div>
+        )}
       </div>
     </header>
   );

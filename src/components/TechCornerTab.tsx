@@ -32,7 +32,15 @@ const TechCornerTab = () => {
       setError(null);
       console.log('Fetching from API:', API_URL);
       
-      const response = await fetch(API_URL);
+      const response = await fetch(API_URL, {
+        method: 'GET',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        },
+        mode: 'cors'
+      });
+      
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
@@ -68,6 +76,15 @@ const TechCornerTab = () => {
                          item.author.toLowerCase().includes(searchTerm.toLowerCase());
     return matchesSearch;
   });
+
+  const isValidUrl = (url: string) => {
+    try {
+      new URL(url);
+      return true;
+    } catch {
+      return false;
+    }
+  };
 
   if (loading) {
     return (
@@ -180,7 +197,7 @@ const TechCornerTab = () => {
                 {item.title}
               </CardTitle>
               
-              {item.author && (
+              {item.author && item.author !== 'Unknown Author' && (
                 <div className="flex items-center gap-1 text-sm text-gray-500 dark:text-gray-400">
                   <User className="h-3 w-3" />
                   <span>by {item.author}</span>
@@ -199,22 +216,33 @@ const TechCornerTab = () => {
                   <span className="text-xs text-gray-500 dark:text-gray-400">Documentation</span>
                 </div>
                 
-                <Button
-                  variant="default"
-                  size="sm"
-                  asChild
-                  className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white shadow-md hover:shadow-lg transition-all duration-200"
-                >
-                  <a
-                    href={item.cheatsheetlink}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center gap-2"
+                {isValidUrl(item.cheatsheetlink) && item.cheatsheetlink !== '#' ? (
+                  <Button
+                    variant="default"
+                    size="sm"
+                    asChild
+                    className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white shadow-md hover:shadow-lg transition-all duration-200"
                   >
-                    <span>View Resource</span>
-                    <ExternalLink className="h-3 w-3" />
-                  </a>
-                </Button>
+                    <a
+                      href={item.cheatsheetlink}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-2"
+                    >
+                      <span>View Resource</span>
+                      <ExternalLink className="h-3 w-3" />
+                    </a>
+                  </Button>
+                ) : (
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    disabled
+                    className="opacity-50"
+                  >
+                    <span>No Link Available</span>
+                  </Button>
+                )}
               </div>
             </CardContent>
           </Card>
