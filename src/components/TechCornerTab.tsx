@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { ExternalLink, Search, Filter, Code, Database, Cloud, Smartphone, Globe, Cpu, Shield, Zap, FileText, User } from 'lucide-react';
+import { ExternalLink, Search, Code, Database, Cloud, Smartphone, Globe, Cpu, Shield, Zap, FileText, User } from 'lucide-react';
 import { Input } from "@/components/ui/input";
 
 interface TechItem {
@@ -15,6 +15,7 @@ interface TechItem {
   category?: string;
   difficulty?: string;
   tags?: string;
+  [key: string]: any; // Allow for additional dynamic columns
 }
 
 const TechCornerTab = () => {
@@ -49,26 +50,39 @@ const TechCornerTab = () => {
       }
       
       const data = await response.json();
-      console.log('Tech Corner API Response:', data);
+      console.log('Tech Corner Raw API Response:', data);
       
       if (data && Array.isArray(data)) {
         const formattedItems = data.map((item: any, index: number) => {
-          // Handle all possible column variations
+          console.log(`Processing item ${index}:`, item);
+          
+          // Handle all possible column variations and fetch all available columns
           const formattedItem: TechItem = {
             id: `tech-${index}`,
             title: item.Title || item.title || item.Name || item.name || 'No Title',
             description: item.Description || item.description || item.Summary || item.summary || 'No description available',
             cheatsheetlink: item.Cheatsheetlink || item.cheatsheetlink || item.Link || item.link || item.URL || item.url || '#',
             author: item.Author || item.author || item.Creator || item.creator || 'Unknown Author',
-            category: item.Category || item.category || item.Type || item.type || '',
+            category: item.Category || item.category || item.Type || item.type || 'Resource',
             difficulty: item.Difficulty || item.difficulty || item.Level || item.level || '',
             tags: item.Tags || item.tags || item.Keywords || item.keywords || ''
           };
           
+          // Add any additional columns dynamically
+          Object.keys(item).forEach(key => {
+            if (!['Title', 'title', 'Name', 'name', 'Description', 'description', 'Summary', 'summary', 
+                  'Cheatsheetlink', 'cheatsheetlink', 'Link', 'link', 'URL', 'url', 'Author', 'author', 
+                  'Creator', 'creator', 'Category', 'category', 'Type', 'type', 'Difficulty', 'difficulty', 
+                  'Level', 'level', 'Tags', 'tags', 'Keywords', 'keywords'].includes(key)) {
+              formattedItem[key] = item[key];
+            }
+          });
+          
+          console.log(`Formatted item ${index}:`, formattedItem);
           return formattedItem;
         });
         
-        console.log('Formatted Tech Items:', formattedItems);
+        console.log('All Formatted Tech Items:', formattedItems);
         setTechItems(formattedItems);
       } else {
         console.error('Invalid data format from Tech Corner API:', data);
@@ -97,8 +111,16 @@ const TechCornerTab = () => {
       new URL(url);
       return true;
     } catch {
-      return false;
+      // Check if it's a relative URL or partial URL
+      return url.includes('.') && url.length > 3;
     }
+  };
+
+  const getFullUrl = (url: string) => {
+    if (!url) return '#';
+    if (url.startsWith('http://') || url.startsWith('https://')) return url;
+    if (url.startsWith('www.')) return `https://${url}`;
+    return url;
   };
 
   if (loading) {
@@ -136,7 +158,7 @@ const TechCornerTab = () => {
       {/* Enhanced Header */}
       <div className="text-center space-y-4 mb-12">
         <div className="inline-flex items-center gap-3 mb-4">
-          <div className="h-12 w-12 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
+          <div className="h-12 w-12 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center shadow-lg">
             <Code className="h-6 w-6 text-white" />
           </div>
           <h2 className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
@@ -171,7 +193,7 @@ const TechCornerTab = () => {
             placeholder="Search cheat sheets, tutorials, and tech resources..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="pl-12 py-3 text-base bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border-gray-200 dark:border-gray-700 rounded-xl focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400"
+            className="pl-12 py-3 text-base bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border-gray-200 dark:border-gray-700 rounded-xl focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 shadow-sm"
           />
         </div>
       </div>
@@ -196,13 +218,13 @@ const TechCornerTab = () => {
       {/* Enhanced Tech Items Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {filteredItems.map((item, index) => (
-          <Card key={item.id} className="group hover:shadow-xl transition-all duration-300 border-l-4 border-l-blue-500 hover:border-l-purple-500 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm hover:scale-[1.02]">
+          <Card key={item.id} className="group hover:shadow-xl transition-all duration-300 border-l-4 border-l-blue-500 hover:border-l-purple-500 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm hover:scale-[1.02] transform">
             <CardHeader className="space-y-3 pb-4">
               <div className="flex items-start justify-between">
                 <div className="flex items-center gap-2">
                   <Code className="h-5 w-5 text-blue-600 dark:text-blue-400" />
                   <Badge variant="outline" className="text-xs bg-blue-50 dark:bg-blue-900/30 border-blue-200 dark:border-blue-700">
-                    {item.category || 'Resource'}
+                    {item.category}
                   </Badge>
                 </div>
                 <div className="h-2 w-2 bg-green-500 rounded-full animate-pulse" title="Available"></div>
@@ -255,7 +277,7 @@ const TechCornerTab = () => {
                     className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white shadow-md hover:shadow-lg transition-all duration-200"
                   >
                     <a
-                      href={item.cheatsheetlink}
+                      href={getFullUrl(item.cheatsheetlink)}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="flex items-center gap-2"
