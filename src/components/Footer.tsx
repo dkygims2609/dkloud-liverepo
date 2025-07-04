@@ -141,16 +141,32 @@ const Footer = () => {
             <div className="space-y-2">
               <div className="flex items-center gap-2">
                 <Globe className="h-4 w-4 text-blue-600" />
-                <span className="text-sm text-gray-600">dKloud.in</span>
+                <a href="https://dkloud.in" target="_blank" rel="noopener noreferrer" className="text-sm text-gray-600 hover:text-purple-600 transition-colors">
+                  dKloud.in
+                </a>
               </div>
               <div className="flex items-center gap-2">
                 <Mail className="h-4 w-4 text-red-600" />
-                <span className="text-sm text-gray-600">info@dkloud.in</span>
+                <a href="mailto:dileepkryadav09@gmail.com" className="text-sm text-gray-600 hover:text-purple-600 transition-colors">
+                  dileepkryadav09@gmail.com
+                </a>
+              </div>
+              <div className="flex items-center gap-2">
+                <Phone className="h-4 w-4 text-green-600" />
+                <a href="https://wa.me/91817596960" target="_blank" rel="noopener noreferrer" className="text-sm text-gray-600 hover:text-purple-600 transition-colors">
+                  WhatsApp
+                </a>
               </div>
               <div className="flex items-center gap-2">
                 <Github className="h-4 w-4 text-gray-800" />
-                <a href="https://github.com" target="_blank" rel="noopener noreferrer" className="text-sm text-gray-600 hover:text-purple-600 transition-colors">
-                  Open Source
+                <a href="https://instagram.com/batbotdk09" target="_blank" rel="noopener noreferrer" className="text-sm text-gray-600 hover:text-purple-600 transition-colors">
+                  Instagram
+                </a>
+              </div>
+              <div className="flex items-center gap-2">
+                <Globe className="h-4 w-4 text-blue-700" />
+                <a href="https://www.linkedin.com/in/dileep-yadav-63500158" target="_blank" rel="noopener noreferrer" className="text-sm text-gray-600 hover:text-purple-600 transition-colors">
+                  LinkedIn
                 </a>
               </div>
             </div>
@@ -160,18 +176,39 @@ const Footer = () => {
         {/* Bottom Section */}
         <div className="border-t border-border mt-8 pt-6">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-            <div className="flex items-center gap-4 text-sm text-muted-foreground">
+            <div className="flex flex-col items-center md:items-start gap-2 text-sm text-muted-foreground">
               <span>© 2024 dKloud Tech. All rights reserved.</span>
+              <div className="flex flex-col sm:flex-row items-center gap-4">
+                <span>
+                  🧠 Built with ❤️ using{' '}
+                  <a 
+                    href="https://lovable.dev" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="text-purple-600 hover:text-purple-700 font-medium"
+                  >
+                    Lovable AI
+                  </a>
+                </span>
+                <span>
+                  🚀 Developed & Managed by{' '}
+                  <a 
+                    href="https://dkloud.in" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="text-blue-600 hover:text-blue-700 font-medium"
+                  >
+                    dKloud Tech
+                  </a>
+                </span>
+              </div>
             </div>
-            <div className="flex items-center gap-4">
+            <div className="flex flex-wrap items-center gap-2">
               <Badge variant="outline" className="text-xs">
                 🚀 Hosted on GitHub Pages
               </Badge>
               <Badge variant="outline" className="text-xs">
                 ⚡ Powered by Google Sheets
-              </Badge>
-              <Badge variant="outline" className="text-xs">
-                🎨 Built with Lovable
               </Badge>
             </div>
           </div>

@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -14,13 +13,13 @@ const PortfolioPage = () => {
       description: "A melodious composition about first love"
     },
     {
-      title: "Raghuwar Ram Aa Gaye",
+      title: "Raghuwar Ram Aa Gaye", 
       embedUrl: "https://www.youtube.com/embed/153sNf2Z3Qc",
       description: "A devotional composition"
     },
     {
       title: "Pyar Nahi Hai Khel Dear",
-      embedUrl: "https://www.youtube.com/embed/rgFtlUeXRqI",
+      embedUrl: "https://www.youtube.com/embed/rgFtlUeXRqI", 
       description: "A heartfelt song about love"
     },
     {
@@ -37,26 +36,26 @@ const PortfolioPage = () => {
 
   const services = [
     {
-      title: "AI-Generated Logos & Designs",
-      description: "Tailored, creative logos and digital brand visuals using AI tools — crafted to match each client's vision and story.",
+      title: "Custom AI-Generated Logos & Designs",
+      description: "A creative AI-powered logo design service tailored to your brand's identity. Personalized to fit the client's vision and brand story.",
       icon: <Palette className="h-6 w-6" />,
       color: "from-purple-500 to-pink-500"
     },
     {
-      title: "Custom Songs for Special Occasions",
-      description: "AI-assisted songs personalized for birthdays, weddings, proposals, and life moments — complete with user-submitted details.",
+      title: "Custom AI-Generated Songs for Occasions",
+      description: "Custom songs for birthdays, weddings, anniversaries, and more. Provide your preferences and receive a unique, personalized song.",
       icon: <Music className="h-6 w-6" />,
       color: "from-blue-500 to-cyan-500"
     },
     {
       title: "Music Composition & Songwriting",
-      description: "Original tracks in various genres (romantic, emotional, commercial) + lyric writing for brands, creators, and personal use.",
+      description: "Original music and lyrics for special events or projects. Wide variety of genres available to choose from.",
       icon: <Guitar className="h-6 w-6" />,
       color: "from-green-500 to-emerald-500"
     },
     {
-      title: "Poetry, Shayari & Diary Writing",
-      description: "Emotional and artistic writing — perfect for gifting, performances, or personal moments. Each piece is uniquely written.",
+      title: "Poetry & Shayari Writing",
+      description: "Personalized poetry, shayari, and diary writing for gifts, events, or personal use. Deeply personalized based on emotions or occasions.",
       icon: <PenTool className="h-6 w-6" />,
       color: "from-orange-500 to-red-500"
     },
@@ -67,20 +66,20 @@ const PortfolioPage = () => {
       color: "from-indigo-500 to-purple-500"
     },
     {
-      title: "Website Development",
-      description: "Creative, responsive websites for portfolios, blogs, and businesses — clean UI, mobile-first, fast loading.",
+      title: "Website Development Services",
+      description: "Personal blogs, portfolios, or business websites with sleek design and user-friendly functionality.",
       icon: <Code className="h-6 w-6" />,
       color: "from-teal-500 to-blue-500"
     },
     {
-      title: "Creative Classes & Workshops",
-      description: "Learn songwriting, AI-assisted design, music creation, and digital creativity — step-by-step guidance, project-based learning.",
+      title: "One-on-One Classes & Workshops",
+      description: "Music composition, AI design, songwriting, and other creative areas. Personalized instruction to gain valuable skills.",
       icon: <Lightbulb className="h-6 w-6" />,
       color: "from-yellow-500 to-orange-500"
     },
     {
       title: "Custom Digital Solutions",
-      description: "Visual content, branding packages, creative edits, and more. Fully tailored to unique project needs.",
+      description: "Branding, graphic design, video editing, and more. Versatile digital solutions for all your creative needs.",
       icon: <Palette className="h-6 w-6" />,
       color: "from-pink-500 to-rose-500"
     }
@@ -205,44 +204,36 @@ const PortfolioPage = () => {
                   <h3 className="text-2xl font-bold mb-4">Welcome to dKloud — where creativity meets technology</h3>
                   <div className="prose prose-lg max-w-4xl mx-auto text-muted-foreground leading-relaxed">
                     <p className="mb-4">
-                      I'm the founder: a passionate music composer, lyricist, and AI-powered digital creator. 
-                      I've had the privilege of working with established music director <strong>Arya Sharma</strong>, 
-                      and have released multiple original compositions in Hindi and other regional languages, 
-                      collaborating with renowned singers.
+                      Welcome to dKloud, a space where creativity meets technology. I am the founder, a passionate music composer 
+                      already working with established Music Director <strong>Arya Sharma</strong> and released multiple original 
+                      compositions with famous singers in Hindi and other regional languages, lyricist, and AI-driven design expert.
                     </p>
                     <p className="mb-4">
-                      Rooted in traditional musicianship — as a guitarist, pianist, and writer — my journey has 
-                      evolved into a creative fusion of emotional expression and cutting-edge AI tools. This combination 
-                      allows me to offer a unique range of services that deliver both heartfelt artistry and innovative digital design.
+                      My journey has been a fusion of traditional as guitarist, pianist, musician and writer artistry and cutting-edge 
+                      innovation, allowing me to offer a unique range of services that blend the human touch with AI capabilities.
                     </p>
                     <p className="mb-4">
-                      With years of experience in crafting songs, shayari, poetry, and compositions, I've expanded my 
-                      creative vision into digital spaces — designing AI-generated logos, custom music for any occasion, 
-                      and personalized visual storytelling.
+                      With years of experience in crafting original songs, compositions, and poetry, I've ventured into the world of 
+                      digital artistry, where I create personalized, AI-generated logos, design concepts, and custom songs for any occasion. 
+                      My expertise lies in fusing creativity with technology to deliver something extraordinary, whether it's a heartfelt 
+                      birthday song, a memorable wedding anthem, or a brand logo that speaks to your audience.
                     </p>
                     <p className="mb-4">
-                      Driven by the belief that art should be accessible, emotive, and modern, I aim to exceed expectations 
-                      with everything I deliver. Whether it's a song for your wedding, a logo for your brand, or a poem that 
-                      says what your heart feels, I'm here to bring it to life.
+                      I'm driven by the desire to make art accessible, dynamic, and meaningful in the digital world. Through my services, 
+                      I aim to not only meet your needs but to exceed your expectations, delivering projects that are deeply personal, 
+                      impactful, and of the highest quality.
+                    </p>
+                    <p className="mb-4">
+                      When you trust me with your projects, you're not just getting a service – you're gaining a partner dedicated to 
+                      bringing your vision to life. Let's create something extraordinary together. With my experience, knowledge, and 
+                      commitment, I can turn your ideas into something truly special.
                     </p>
                   </div>
                 </div>
 
-                <div className="bg-gradient-to-r from-purple-500/10 to-blue-500/10 p-6 rounded-lg border-l-4 border-primary">
-                  <h4 className="text-xl font-bold mb-3">Mission Statement</h4>
-                  <blockquote className="text-lg italic">
-                    "To blend human emotion with AI-powered tools and create art that resonates, educates, and inspires. 
-                    Driven by the belief that art should be accessible, emotive, and modern, I aim to exceed expectations 
-                    with everything I deliver."
-                  </blockquote>
-                </div>
-
                 <div className="text-center bg-gradient-to-r from-primary/5 to-blue-500/5 p-6 rounded-lg">
-                  <p className="text-lg mb-4">
-                    You're not just hiring a service — you're gaining a creative partner dedicated to making your vision real, personal, and extraordinary.
-                  </p>
                   <p className="text-xl font-semibold text-primary mb-6">
-                    Let's build something unforgettable. With trust, creativity, and collaboration — your idea becomes a masterpiece.
+                    Let's Create Something Extraordinary Together
                   </p>
                   <div className="flex flex-col sm:flex-row gap-4 justify-center mb-6">
                     <Button size="lg" className="bg-gradient-to-r from-primary to-blue-600">
@@ -256,25 +247,25 @@ const PortfolioPage = () => {
                   {/* Social Media Links */}
                   <div className="flex justify-center gap-4 pt-4 border-t">
                     <Button variant="outline" size="sm" asChild>
-                      <a href="mailto:contact@dkloud.in">
+                      <a href="mailto:dileepkryadav09@gmail.com">
                         <Mail className="h-4 w-4 mr-2" />
                         Email
                       </a>
                     </Button>
                     <Button variant="outline" size="sm" asChild>
-                      <a href="https://wa.me/your-number" target="_blank" rel="noopener noreferrer">
+                      <a href="https://wa.me/91817596960" target="_blank" rel="noopener noreferrer">
                         <MessageCircle className="h-4 w-4 mr-2" />
                         WhatsApp
                       </a>
                     </Button>
                     <Button variant="outline" size="sm" asChild>
-                      <a href="https://instagram.com/your-handle" target="_blank" rel="noopener noreferrer">
+                      <a href="https://instagram.com/batbotdk09" target="_blank" rel="noopener noreferrer">
                         <Instagram className="h-4 w-4 mr-2" />
                         Instagram
                       </a>
                     </Button>
                     <Button variant="outline" size="sm" asChild>
-                      <a href="https://linkedin.com/in/your-profile" target="_blank" rel="noopener noreferrer">
+                      <a href="https://www.linkedin.com/in/dileep-yadav-63500158" target="_blank" rel="noopener noreferrer">
                         <Linkedin className="h-4 w-4 mr-2" />
                         LinkedIn
                       </a>
@@ -308,24 +299,25 @@ const PortfolioPage = () => {
                     <CardDescription className="text-sm leading-relaxed">
                       {service.description}
                     </CardDescription>
-                    <div className="flex flex-col gap-2 pt-4 border-t">
-                      <Button size="sm" className="w-full bg-gradient-to-r from-primary to-blue-600 hover:from-primary/90 hover:to-blue-700">
-                        Get Started
-                      </Button>
+                    <div className="space-y-3 pt-4 border-t">
+                      <h4 className="font-semibold text-sm">Get in Touch:</h4>
                       <div className="grid grid-cols-2 gap-2">
                         <Button variant="outline" size="sm" asChild>
-                          <a href="mailto:contact@dkloud.in">
+                          <a href="mailto:dileepkryadav09@gmail.com">
                             <Mail className="h-3 w-3 mr-1" />
                             Email
                           </a>
                         </Button>
                         <Button variant="outline" size="sm" asChild>
-                          <a href="https://wa.me/your-number" target="_blank" rel="noopener noreferrer">
+                          <a href="https://wa.me/91817596960" target="_blank" rel="noopener noreferrer">
                             <MessageCircle className="h-3 w-3 mr-1" />
                             WhatsApp
                           </a>
                         </Button>
                       </div>
+                      <Button size="sm" className="w-full bg-gradient-to-r from-primary to-blue-600 hover:from-primary/90 hover:to-blue-700">
+                        Start Your Project
+                      </Button>
                     </div>
                   </CardContent>
                 </Card>
