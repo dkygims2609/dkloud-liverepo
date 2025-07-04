@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -19,10 +18,9 @@ const MoviesTab = () => {
   const [platformFilter, setPlatformFilter] = useState('all');
   const [ratingFilter, setRatingFilter] = useState('all');
   const [languageFilter, setLanguageFilter] = useState('all');
-  const [awardsFilter, setAwardsFilter] = useState('all');
   const [currentIndex, setCurrentIndex] = useState(0);
 
-  const itemsPerView = 6; // 2 rows x 3 columns
+  const itemsPerView = 6;
 
   useEffect(() => {
     fetchMoviesAndTvSeries();
@@ -78,31 +76,30 @@ const MoviesTab = () => {
       const name = item.Name || item.name || '';
       const genre = item.Genre || item.genre || '';
       const platform = item.Platform || item.platform || '';
-      const rating = item.DKcloudRating || item['Dkloud Rating'] || item.rating || '';
       const language = item.Language || item.language || '';
-      const awards = item.Awards || item.awards || '';
+      
+      // Only use dKloud rating - prioritize different column name variations
+      const dkloudRating = item['dKloud Rating'] || item.DKcloudRating || item['Dkloud Rating'] || item.dkloudRating || '';
 
       const matchesSearch = typeof name === 'string' && name.toLowerCase().includes(searchTerm.toLowerCase());
       const matchesGenre = genreFilter === 'all' || (typeof genre === 'string' && genre.toLowerCase().includes(genreFilter.toLowerCase()));
       const matchesPlatform = platformFilter === 'all' || (typeof platform === 'string' && platform.toLowerCase().includes(platformFilter.toLowerCase()));
-      const matchesRating = ratingFilter === 'all' || rating.toString() === ratingFilter;
+      const matchesRating = ratingFilter === 'all' || dkloudRating.toString() === ratingFilter;
       const matchesLanguage = languageFilter === 'all' || (typeof language === 'string' && language.toLowerCase().includes(languageFilter.toLowerCase()));
-      const matchesAwards = awardsFilter === 'all' || (typeof awards === 'string' && awards.toLowerCase().includes(awardsFilter.toLowerCase()));
 
-      return matchesSearch && matchesGenre && matchesPlatform && matchesRating && matchesLanguage && matchesAwards;
+      return matchesSearch && matchesGenre && matchesPlatform && matchesRating && matchesLanguage;
     });
 
     setCurrentFiltered(filtered);
     setCurrentIndex(0);
-  }, [movies, tvSeries, activeType, searchTerm, genreFilter, platformFilter, ratingFilter, languageFilter, awardsFilter]);
+  }, [movies, tvSeries, activeType, searchTerm, genreFilter, platformFilter, ratingFilter, languageFilter]);
 
-  // Extract unique values for filters
+  // Extract unique values for filters - only use dKloud ratings
   const currentData = activeType === 'movies' ? movies : tvSeries;
   const genres = [...new Set(currentData.map(item => item.Genre).filter(Boolean))];
   const platforms = [...new Set(currentData.map(item => item.Platform).filter(Boolean))];
-  const ratings = [...new Set(currentData.map(item => item.DKcloudRating || item['Dkloud Rating']).filter(Boolean))];
+  const dkloudRatings = [...new Set(currentData.map(item => item['dKloud Rating'] || item.DKcloudRating || item['Dkloud Rating'] || item.dkloudRating).filter(Boolean))];
   const languages = [...new Set(currentData.map(item => item.Language).filter(Boolean))];
-  const awards = [...new Set(currentData.map(item => item.Awards).filter(Boolean))];
 
   // Manual slider controls
   const nextSlide = () => {
@@ -137,7 +134,7 @@ const MoviesTab = () => {
         <h2 className="text-3xl font-bold mb-4 bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
           Movies & TV Series
         </h2>
-        <p className="text-muted-foreground">Curated collection of entertainment content</p>
+        <p className="text-muted-foreground">Curated collection of entertainment content with dKloud ratings</p>
       </div>
 
       {/* Search and Filters */}
@@ -159,7 +156,7 @@ const MoviesTab = () => {
             />
           </div>
           
-          <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             <Select value={genreFilter} onValueChange={setGenreFilter}>
               <SelectTrigger>
                 <SelectValue placeholder="Genre" />
@@ -186,12 +183,12 @@ const MoviesTab = () => {
 
             <Select value={ratingFilter} onValueChange={setRatingFilter}>
               <SelectTrigger>
-                <SelectValue placeholder="DKcloud Rating" />
+                <SelectValue placeholder="dKloud Rating" />
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">All Ratings</SelectItem>
-                {ratings.map(rating => (
-                  <SelectItem key={rating} value={rating.toString()}>{rating} Stars</SelectItem>
+                {dkloudRatings.map(rating => (
+                  <SelectItem key={rating} value={rating.toString()}>{rating}/10</SelectItem>
                 ))}
               </SelectContent>
             </Select>
@@ -204,18 +201,6 @@ const MoviesTab = () => {
                 <SelectItem value="all">All Languages</SelectItem>
                 {languages.map(language => (
                   <SelectItem key={language} value={language}>{language}</SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-
-            <Select value={awardsFilter} onValueChange={setAwardsFilter}>
-              <SelectTrigger>
-                <SelectValue placeholder="Awards" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">All</SelectItem>
-                {awards.map(award => (
-                  <SelectItem key={award} value={award}>{award}</SelectItem>
                 ))}
               </SelectContent>
             </Select>
@@ -260,7 +245,7 @@ const MoviesTab = () => {
           <Button 
             variant="outline" 
             size="sm" 
-            onClick={prevSlide} 
+            onClick={() => setCurrentIndex(Math.max(0, currentIndex - itemsPerView))} 
             disabled={!canGoPrev}
             className="h-8 w-8 p-0"
           >
@@ -269,7 +254,7 @@ const MoviesTab = () => {
           <Button 
             variant="outline" 
             size="sm" 
-            onClick={nextSlide} 
+            onClick={() => setCurrentIndex(currentIndex + itemsPerView)} 
             disabled={!canGoNext}
             className="h-8 w-8 p-0"
           >
@@ -278,73 +263,75 @@ const MoviesTab = () => {
         </div>
       </div>
 
-      {/* Content Grid - 2 rows x 3 columns */}
+      {/* Content Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-        {visibleItems.map((item, index) => (
-          <Card key={index} className="bg-white dark:bg-gray-800 shadow-sm border border-gray-200 dark:border-gray-700 hover:shadow-md transition-shadow">
-            <CardHeader>
-              <CardTitle className="text-lg text-gray-900 dark:text-white flex items-center gap-2">
-                {activeType === 'movies' ? <Film className="h-4 w-4" /> : <Tv className="h-4 w-4" />}
-                {item.Name || item.name || 'Untitled'}
-              </CardTitle>
-              <CardDescription className="line-clamp-3">
-                {item['Why to Watch'] || item.Description || item.description || 'No description available'}
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-3">
-              <div className="flex flex-wrap gap-2">
-                {item.Genre && (
-                  <Badge variant="secondary" className="bg-purple-100 dark:bg-purple-900 text-purple-700 dark:text-purple-300">
-                    {item.Genre}
-                  </Badge>
-                )}
-                {item.Platform && (
-                  <Badge variant="outline" className="border-blue-200 dark:border-blue-700 text-blue-700 dark:text-blue-300">
-                    <Globe className="h-3 w-3 mr-1" />
-                    {item.Platform}
-                  </Badge>
-                )}
-                {item.Language && (
-                  <Badge variant="outline" className="border-indigo-200 dark:border-indigo-700 text-indigo-700 dark:text-indigo-300">
-                    {item.Language}
-                  </Badge>
-                )}
-              </div>
+        {visibleItems.map((item, index) => {
+          // Only show dKloud rating
+          const dkloudRating = item['dKloud Rating'] || item.DKcloudRating || item['Dkloud Rating'] || item.dkloudRating;
+          
+          return (
+            <Card key={index} className="bg-white dark:bg-gray-800 shadow-sm border border-gray-200 dark:border-gray-700 hover:shadow-md transition-shadow">
+              <CardHeader>
+                <CardTitle className="text-lg text-gray-900 dark:text-white flex items-center gap-2">
+                  {activeType === 'movies' ? <Film className="h-4 w-4" /> : <Tv className="h-4 w-4" />}
+                  {item.Name || item.name || 'Untitled'}
+                </CardTitle>
+                <CardDescription className="line-clamp-3">
+                  {item['Why to Watch'] || item.Description || item.description || 'No description available'}
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-3">
+                <div className="flex flex-wrap gap-2">
+                  {item.Genre && (
+                    <Badge variant="secondary" className="bg-purple-100 dark:bg-purple-900 text-purple-700 dark:text-purple-300">
+                      {item.Genre}
+                    </Badge>
+                  )}
+                  {item.Platform && (
+                    <Badge variant="outline" className="border-blue-200 dark:border-blue-700 text-blue-700 dark:text-blue-300">
+                      <Globe className="h-3 w-3 mr-1" />
+                      {item.Platform}
+                    </Badge>
+                  )}
+                  {item.Language && (
+                    <Badge variant="outline" className="border-indigo-200 dark:border-indigo-700 text-indigo-700 dark:text-indigo-300">
+                      {item.Language}
+                    </Badge>
+                  )}
+                </div>
 
-              <div className="flex items-center justify-between">
-                {(item.DKcloudRating || item['Dkloud Rating']) && (
-                  <div className="flex items-center">
-                    <Star className="h-4 w-4 text-yellow-500 mr-1" />
-                    <span className="text-sm font-medium">{item.DKcloudRating || item['Dkloud Rating']}/5</span>
+                {/* Only show dKloud Rating */}
+                {dkloudRating && (
+                  <div className="flex items-center justify-center">
+                    <div className="flex items-center bg-gradient-to-r from-purple-100 to-blue-100 dark:from-purple-900/30 dark:to-blue-900/30 px-3 py-1 rounded-full">
+                      <Star className="h-4 w-4 text-purple-600 mr-1" />
+                      <span className="text-sm font-bold text-purple-700 dark:text-purple-300">
+                        dKloud: {dkloudRating}/10
+                      </span>
+                    </div>
                   </div>
                 )}
-                {item.Awards && (
-                  <div className="flex items-center">
-                    <Award className="h-4 w-4 text-yellow-500 mr-1" />
-                    <span className="text-xs text-muted-foreground">{item.Awards}</span>
-                  </div>
-                )}
-              </div>
 
-              {item['IMDb Link'] && (
-                <Button 
-                  variant="outline" 
-                  size="sm" 
-                  className="w-full border-purple-200 dark:border-purple-700 text-purple-700 dark:text-purple-300 hover:bg-purple-50 dark:hover:bg-purple-900/20"
-                  asChild
-                >
-                  <a href={item['IMDb Link']} target="_blank" rel="noopener noreferrer">
-                    <Play className="h-4 w-4 mr-2" />
-                    View on IMDb
-                  </a>
-                </Button>
-              )}
-            </CardContent>
-          </Card>
-        ))}
+                {item['IMDb Link'] && (
+                  <Button 
+                    variant="outline" 
+                    size="sm" 
+                    className="w-full border-purple-200 dark:border-purple-700 text-purple-700 dark:text-purple-300 hover:bg-purple-50 dark:hover:bg-purple-900/20"
+                    asChild
+                  >
+                    <a href={item['IMDb Link']} target="_blank" rel="noopener noreferrer">
+                      <Play className="h-4 w-4 mr-2" />
+                      View on IMDb
+                    </a>
+                  </Button>
+                )}
+              </CardContent>
+            </Card>
+          );
+        })}
       </div>
 
-      {currentData.length === 0 && !loading && (
+      {currentFilteredData.length === 0 && !loading && (
         <div className="text-center py-12">
           <p className="text-muted-foreground">
             No {activeType === 'movies' ? 'movies' : 'TV series'} found matching your criteria.
@@ -354,7 +341,7 @@ const MoviesTab = () => {
 
       {/* Pagination Info */}
       <div className="text-center text-sm text-muted-foreground">
-        Showing {currentIndex + 1}-{Math.min(currentIndex + itemsPerView, currentData.length)} of {currentData.length} items
+        Showing {currentIndex + 1}-{Math.min(currentIndex + itemsPerView, currentFilteredData.length)} of {currentFilteredData.length} items
       </div>
     </div>
   );

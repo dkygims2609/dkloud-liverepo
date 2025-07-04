@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { ArrowLeft, User, Music, FileText, Play, ExternalLink, Guitar, Palette, Code, PenTool, GraduationCap, Lightbulb, Mail, MessageCircle, Phone } from 'lucide-react';
+import { ArrowLeft, User, Music, FileText, Play, ExternalLink, Guitar, Palette, Code, PenTool, GraduationCap, Lightbulb, Mail, MessageCircle, Phone, Instagram, Linkedin } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 const PortfolioPage = () => {
@@ -204,21 +204,26 @@ const PortfolioPage = () => {
                 <div className="text-center">
                   <h3 className="text-2xl font-bold mb-4">Welcome to dKloud — where creativity meets technology</h3>
                   <div className="prose prose-lg max-w-4xl mx-auto text-muted-foreground leading-relaxed">
-                    <p>
+                    <p className="mb-4">
                       I'm the founder: a passionate music composer, lyricist, and AI-powered digital creator. 
                       I've had the privilege of working with established music director <strong>Arya Sharma</strong>, 
                       and have released multiple original compositions in Hindi and other regional languages, 
                       collaborating with renowned singers.
                     </p>
-                    <p>
+                    <p className="mb-4">
                       Rooted in traditional musicianship — as a guitarist, pianist, and writer — my journey has 
                       evolved into a creative fusion of emotional expression and cutting-edge AI tools. This combination 
                       allows me to offer a unique range of services that deliver both heartfelt artistry and innovative digital design.
                     </p>
-                    <p>
+                    <p className="mb-4">
                       With years of experience in crafting songs, shayari, poetry, and compositions, I've expanded my 
                       creative vision into digital spaces — designing AI-generated logos, custom music for any occasion, 
                       and personalized visual storytelling.
+                    </p>
+                    <p className="mb-4">
+                      Driven by the belief that art should be accessible, emotive, and modern, I aim to exceed expectations 
+                      with everything I deliver. Whether it's a song for your wedding, a logo for your brand, or a poem that 
+                      says what your heart feels, I'm here to bring it to life.
                     </p>
                   </div>
                 </div>
@@ -239,12 +244,40 @@ const PortfolioPage = () => {
                   <p className="text-xl font-semibold text-primary mb-6">
                     Let's build something unforgettable. With trust, creativity, and collaboration — your idea becomes a masterpiece.
                   </p>
-                  <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                  <div className="flex flex-col sm:flex-row gap-4 justify-center mb-6">
                     <Button size="lg" className="bg-gradient-to-r from-primary to-blue-600">
                       Start Your Project
                     </Button>
                     <Button variant="outline" size="lg">
                       Explore My Services
+                    </Button>
+                  </div>
+                  
+                  {/* Social Media Links */}
+                  <div className="flex justify-center gap-4 pt-4 border-t">
+                    <Button variant="outline" size="sm" asChild>
+                      <a href="mailto:contact@dkloud.in">
+                        <Mail className="h-4 w-4 mr-2" />
+                        Email
+                      </a>
+                    </Button>
+                    <Button variant="outline" size="sm" asChild>
+                      <a href="https://wa.me/your-number" target="_blank" rel="noopener noreferrer">
+                        <MessageCircle className="h-4 w-4 mr-2" />
+                        WhatsApp
+                      </a>
+                    </Button>
+                    <Button variant="outline" size="sm" asChild>
+                      <a href="https://instagram.com/your-handle" target="_blank" rel="noopener noreferrer">
+                        <Instagram className="h-4 w-4 mr-2" />
+                        Instagram
+                      </a>
+                    </Button>
+                    <Button variant="outline" size="sm" asChild>
+                      <a href="https://linkedin.com/in/your-profile" target="_blank" rel="noopener noreferrer">
+                        <Linkedin className="h-4 w-4 mr-2" />
+                        LinkedIn
+                      </a>
                     </Button>
                   </div>
                 </div>
@@ -262,9 +295,9 @@ const PortfolioPage = () => {
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {services.map((service, index) => (
-                <Card key={index} className="group hover:shadow-xl transition-all duration-300 hover:scale-[1.02]">
+                <Card key={index} className="group hover:shadow-xl transition-all duration-300 hover:scale-[1.02] border-l-4 border-l-transparent hover:border-l-primary">
                   <CardHeader>
-                    <div className={`w-12 h-12 rounded-lg bg-gradient-to-r ${service.color} flex items-center justify-center text-white mb-4`}>
+                    <div className={`w-12 h-12 rounded-lg bg-gradient-to-r ${service.color} flex items-center justify-center text-white mb-4 shadow-lg`}>
                       {service.icon}
                     </div>
                     <CardTitle className="text-lg group-hover:text-primary transition-colors">
@@ -276,17 +309,17 @@ const PortfolioPage = () => {
                       {service.description}
                     </CardDescription>
                     <div className="flex flex-col gap-2 pt-4 border-t">
-                      <Button size="sm" className="w-full">
+                      <Button size="sm" className="w-full bg-gradient-to-r from-primary to-blue-600 hover:from-primary/90 hover:to-blue-700">
                         Get Started
                       </Button>
-                      <div className="flex gap-2">
-                        <Button variant="outline" size="sm" className="flex-1" asChild>
+                      <div className="grid grid-cols-2 gap-2">
+                        <Button variant="outline" size="sm" asChild>
                           <a href="mailto:contact@dkloud.in">
                             <Mail className="h-3 w-3 mr-1" />
                             Email
                           </a>
                         </Button>
-                        <Button variant="outline" size="sm" className="flex-1" asChild>
+                        <Button variant="outline" size="sm" asChild>
                           <a href="https://wa.me/your-number" target="_blank" rel="noopener noreferrer">
                             <MessageCircle className="h-3 w-3 mr-1" />
                             WhatsApp

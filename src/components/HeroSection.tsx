@@ -40,24 +40,39 @@ const HeroSection = ({ scrollToContent }: HeroSectionProps) => {
           </p>
         </div>
 
-        {/* Highlights Section */}
-        <div className="max-w-6xl mx-auto mt-12">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 hero-highlights animate-scale-in">
-            <div className="bg-card/60 backdrop-blur-sm border rounded-lg p-4 hover-scale">
-              <h3 className="font-semibold text-blue-600 dark:text-blue-400">Movies & TV</h3>
-              <p className="text-sm text-muted-foreground">Curated recommendations</p>
+        {/* Seamless Highlights Section - No Card Boundaries */}
+        <div className="max-w-6xl mx-auto mt-16 mb-12">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 hero-highlights animate-scale-in">
+            <div className="text-center space-y-3 p-6 rounded-lg bg-gradient-to-br from-blue-50/50 to-blue-100/30 dark:from-blue-900/20 dark:to-blue-800/10 border-0 shadow-none hover:shadow-lg transition-all duration-300 hover:scale-105">
+              <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-blue-600 rounded-full flex items-center justify-center mx-auto">
+                <span className="text-white text-xl">☁️</span>
+              </div>
+              <h3 className="font-bold text-blue-700 dark:text-blue-400">Cloud Computing</h3>
+              <p className="text-sm text-muted-foreground">Modern infrastructure solutions</p>
             </div>
-            <div className="bg-card/60 backdrop-blur-sm border rounded-lg p-4 hover-scale">
-              <h3 className="font-semibold text-purple-600 dark:text-purple-400">AI Tools</h3>
-              <p className="text-sm text-muted-foreground">Latest innovations</p>
+
+            <div className="text-center space-y-3 p-6 rounded-lg bg-gradient-to-br from-purple-50/50 to-purple-100/30 dark:from-purple-900/20 dark:to-purple-800/10 border-0 shadow-none hover:shadow-lg transition-all duration-300 hover:scale-105">
+              <div className="w-12 h-12 bg-gradient-to-r from-purple-500 to-purple-600 rounded-full flex items-center justify-center mx-auto">
+                <span className="text-white text-xl">🎵</span>
+              </div>
+              <h3 className="font-bold text-purple-700 dark:text-purple-400">Music Composer</h3>
+              <p className="text-sm text-muted-foreground">Original compositions & melodies</p>
             </div>
-            <div className="bg-card/60 backdrop-blur-sm border rounded-lg p-4 hover-scale">
-              <h3 className="font-semibold text-green-600 dark:text-green-400">Tech Corner</h3>
-              <p className="text-sm text-muted-foreground">Developer resources</p>
+
+            <div className="text-center space-y-3 p-6 rounded-lg bg-gradient-to-br from-green-50/50 to-green-100/30 dark:from-green-900/20 dark:to-green-800/10 border-0 shadow-none hover:shadow-lg transition-all duration-300 hover:scale-105">
+              <div className="w-12 h-12 bg-gradient-to-r from-green-500 to-green-600 rounded-full flex items-center justify-center mx-auto">
+                <span className="text-white text-xl">📝</span>
+              </div>
+              <h3 className="font-bold text-green-700 dark:text-green-400">Content Creator</h3>
+              <p className="text-sm text-muted-foreground">Educational & creative content</p>
             </div>
-            <div className="bg-card/60 backdrop-blur-sm border rounded-lg p-4 hover-scale">
-              <h3 className="font-semibold text-orange-600 dark:text-orange-400">Creative Space</h3>
-              <p className="text-sm text-muted-foreground">Music & Poetry</p>
+
+            <div className="text-center space-y-3 p-6 rounded-lg bg-gradient-to-br from-orange-50/50 to-orange-100/30 dark:from-orange-900/20 dark:to-orange-800/10 border-0 shadow-none hover:shadow-lg transition-all duration-300 hover:scale-105">
+              <div className="w-12 h-12 bg-gradient-to-r from-orange-500 to-orange-600 rounded-full flex items-center justify-center mx-auto">
+                <span className="text-white text-xl">🚀</span>
+              </div>
+              <h3 className="font-bold text-orange-700 dark:text-orange-400">Creative Techy</h3>
+              <p className="text-sm text-muted-foreground">Innovation meets artistry</p>
             </div>
           </div>
         </div>

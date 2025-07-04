@@ -12,6 +12,9 @@ interface TechItem {
   description: string;
   cheatsheetlink: string;
   author: string;
+  category?: string;
+  difficulty?: string;
+  tags?: string;
 }
 
 const TechCornerTab = () => {
@@ -30,7 +33,7 @@ const TechCornerTab = () => {
     try {
       setLoading(true);
       setError(null);
-      console.log('Fetching from API:', API_URL);
+      console.log('Fetching Tech Corner data from:', API_URL);
       
       const response = await fetch(API_URL, {
         method: 'GET',
@@ -46,25 +49,34 @@ const TechCornerTab = () => {
       }
       
       const data = await response.json();
-      console.log('API Response:', data);
+      console.log('Tech Corner API Response:', data);
       
       if (data && Array.isArray(data)) {
-        const formattedItems = data.map((item: any, index: number) => ({
-          id: `tech-${index}`,
-          title: item.Title || item.title || 'No Title',
-          description: item.Description || item.description || 'No description available',
-          cheatsheetlink: item.Cheatsheetlink || item.cheatsheetlink || item.link || '#',
-          author: item.Author || item.author || 'Unknown Author'
-        }));
+        const formattedItems = data.map((item: any, index: number) => {
+          // Handle all possible column variations
+          const formattedItem: TechItem = {
+            id: `tech-${index}`,
+            title: item.Title || item.title || item.Name || item.name || 'No Title',
+            description: item.Description || item.description || item.Summary || item.summary || 'No description available',
+            cheatsheetlink: item.Cheatsheetlink || item.cheatsheetlink || item.Link || item.link || item.URL || item.url || '#',
+            author: item.Author || item.author || item.Creator || item.creator || 'Unknown Author',
+            category: item.Category || item.category || item.Type || item.type || '',
+            difficulty: item.Difficulty || item.difficulty || item.Level || item.level || '',
+            tags: item.Tags || item.tags || item.Keywords || item.keywords || ''
+          };
+          
+          return formattedItem;
+        });
         
-        console.log('Formatted Items:', formattedItems);
+        console.log('Formatted Tech Items:', formattedItems);
         setTechItems(formattedItems);
       } else {
+        console.error('Invalid data format from Tech Corner API:', data);
         throw new Error('Invalid data format received from API');
       }
     } catch (error) {
       console.error('Error fetching tech items:', error);
-      setError(error instanceof Error ? error.message : 'Failed to fetch data');
+      setError(error instanceof Error ? error.message : 'Failed to fetch tech resources');
     } finally {
       setLoading(false);
     }
@@ -73,11 +85,14 @@ const TechCornerTab = () => {
   const filteredItems = techItems.filter(item => {
     const matchesSearch = item.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          item.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         item.author.toLowerCase().includes(searchTerm.toLowerCase());
+                         item.author.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         (item.category && item.category.toLowerCase().includes(searchTerm.toLowerCase())) ||
+                         (item.tags && item.tags.toLowerCase().includes(searchTerm.toLowerCase()));
     return matchesSearch;
   });
 
   const isValidUrl = (url: string) => {
+    if (!url || url === '#') return false;
     try {
       new URL(url);
       return true;
@@ -187,7 +202,7 @@ const TechCornerTab = () => {
                 <div className="flex items-center gap-2">
                   <Code className="h-5 w-5 text-blue-600 dark:text-blue-400" />
                   <Badge variant="outline" className="text-xs bg-blue-50 dark:bg-blue-900/30 border-blue-200 dark:border-blue-700">
-                    Cheat Sheet
+                    {item.category || 'Resource'}
                   </Badge>
                 </div>
                 <div className="h-2 w-2 bg-green-500 rounded-full animate-pulse" title="Available"></div>
@@ -203,20 +218,36 @@ const TechCornerTab = () => {
                   <span>by {item.author}</span>
                 </div>
               )}
+
+              {item.difficulty && (
+                <Badge variant="secondary" className="text-xs w-fit">
+                  {item.difficulty}
+                </Badge>
+              )}
             </CardHeader>
             
             <CardContent className="space-y-4 pt-0">
               <CardDescription className="text-sm line-clamp-3 leading-relaxed text-gray-600 dark:text-gray-300">
                 {item.description}
               </CardDescription>
+
+              {item.tags && (
+                <div className="flex flex-wrap gap-1">
+                  {item.tags.split(',').slice(0, 3).map((tag, tagIndex) => (
+                    <Badge key={tagIndex} variant="outline" className="text-xs">
+                      {tag.trim()}
+                    </Badge>
+                  ))}
+                </div>
+              )}
               
               <div className="flex items-center justify-between pt-3 border-t border-gray-100 dark:border-gray-700">
                 <div className="flex items-center gap-2">
                   <FileText className="h-4 w-4 text-gray-400" />
-                  <span className="text-xs text-gray-500 dark:text-gray-400">Documentation</span>
+                  <span className="text-xs text-gray-500 dark:text-gray-400">Tech Resource</span>
                 </div>
                 
-                {isValidUrl(item.cheatsheetlink) && item.cheatsheetlink !== '#' ? (
+                {isValidUrl(item.cheatsheetlink) ? (
                   <Button
                     variant="default"
                     size="sm"
