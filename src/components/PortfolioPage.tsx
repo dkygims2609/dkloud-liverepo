@@ -183,7 +183,7 @@ const PortfolioPage = () => {
                 <div className="w-32 h-32 rounded-full overflow-hidden mx-auto mb-4 ring-4 ring-primary/20">
                   <img 
                     src="/lovable-uploads/60f33ce6-efaa-4f60-a11c-09517021a6ff.png" 
-                    alt="Dileep Yadav - Founder" 
+                    alt="Dileep Y - Founder" 
                     className="w-full h-full object-cover"
                     onError={(e) => {
                       e.currentTarget.src = "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=400&h=400";
