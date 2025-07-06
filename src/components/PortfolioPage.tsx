@@ -190,7 +190,7 @@ const PortfolioPage = () => {
                     }}
                   />
                 </div>
-                <CardTitle className="text-3xl">Dileep Yadav</CardTitle>
+                <CardTitle className="text-3xl">Dileep Y</CardTitle>
                 <CardDescription className="text-lg">Founder & Creative Director</CardDescription>
                 <div className="flex justify-center gap-2 mt-2">
                   <Badge className="bg-primary/10 text-primary">🎹 Pianist</Badge>
@@ -202,33 +202,31 @@ const PortfolioPage = () => {
               <CardContent className="space-y-6">
                 <div className="text-center">
                   <h3 className="text-2xl font-bold mb-4">Welcome to dKloud — where creativity meets technology</h3>
-                  <div className="prose prose-lg max-w-4xl mx-auto text-muted-foreground leading-relaxed">
-                    <p className="mb-4">
-                      Welcome to dKloud, a space where creativity meets technology. I am the founder, a passionate music composer 
-                      already working with established Music Director <strong>Arya Sharma</strong> and released multiple original 
-                      compositions with famous singers in Hindi and other regional languages, lyricist, and AI-driven design expert.
-                    </p>
-                    <p className="mb-4">
-                      My journey has been a fusion of traditional as guitarist, pianist, musician and writer artistry and cutting-edge 
-                      innovation, allowing me to offer a unique range of services that blend the human touch with AI capabilities.
-                    </p>
-                    <p className="mb-4">
-                      With years of experience in crafting original songs, compositions, and poetry, I've ventured into the world of 
-                      digital artistry, where I create personalized, AI-generated logos, design concepts, and custom songs for any occasion. 
-                      My expertise lies in fusing creativity with technology to deliver something extraordinary, whether it's a heartfelt 
-                      birthday song, a memorable wedding anthem, or a brand logo that speaks to your audience.
-                    </p>
-                    <p className="mb-4">
-                      I'm driven by the desire to make art accessible, dynamic, and meaningful in the digital world. Through my services, 
-                      I aim to not only meet your needs but to exceed your expectations, delivering projects that are deeply personal, 
-                      impactful, and of the highest quality.
-                    </p>
-                    <p className="mb-4">
-                      When you trust me with your projects, you're not just getting a service – you're gaining a partner dedicated to 
-                      bringing your vision to life. Let's create something extraordinary together. With my experience, knowledge, and 
-                      commitment, I can turn your ideas into something truly special.
-                    </p>
-                  </div>
+                   <div className="prose prose-lg max-w-4xl mx-auto text-muted-foreground leading-relaxed">
+                     <p className="mb-4">
+                       Welcome to dKloud, a space where creativity meets technology. I am the founder, a passionate music composer 
+                       already working with Established Music Director <strong>Arya Sharma</strong> and released multiple original 
+                       composions with famous singers in hindi and other regional languages, lyricist, and AI-driven design expert. 
+                       My journey has been a fusion of traditional as guitarist,pianist ,musician and writer artistry and cutting-edge 
+                       innovation, allowing me to offer a unique range of services that blend the human touch with AI capabilities.
+                     </p>
+                     <p className="mb-4">
+                       With years of experience in crafting original songs, compositions, and poetry, I've ventured into the world of 
+                       digital artistry, where I create personalized, AI-generated logos, design concepts, and custom songs for any occasion. 
+                       My expertise lies in fusing creativity with technology to deliver something extraordinary, whether it's a heartfelt 
+                       birthday song, a memorable wedding anthem, or a brand logo that speaks to your audience.
+                     </p>
+                     <p className="mb-4">
+                       I'm driven by the desire to make art accessible, dynamic, and meaningful in the digital world. Through my services, 
+                       I aim to not only meet your needs but to exceed your expectations, delivering projects that are deeply personal, 
+                       impactful, and of the highest quality. When you trust me with your projects, you're not just getting a service – 
+                       you're gaining a partner dedicated to bringing your vision to life.
+                     </p>
+                     <p className="mb-4">
+                       Let's create something extraordinary together. With my experience, knowledge, and commitment, I can turn your ideas 
+                       into something truly special.
+                     </p>
+                   </div>
                 </div>
 
                 <div className="text-center bg-gradient-to-r from-primary/5 to-blue-500/5 p-6 rounded-lg">
