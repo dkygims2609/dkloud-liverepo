@@ -30,7 +30,8 @@ const Header = ({
     { label: "Tech Corner", value: "tech-corner" },
     { label: "YouTube", value: "youtube-channels" },
     { label: "Gadgets", value: "gadgets" },
-    { label: "Tech News", value: "tech-news" }
+    { label: "Tech News", value: "tech-news" },
+    { label: "Services", value: "services" }
   ];
 
   return (

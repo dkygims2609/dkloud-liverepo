@@ -7,6 +7,7 @@ import AIToolsTab from '@/components/AIToolsTab';
 import TechCornerTab from '@/components/TechCornerTab';
 import GadgetsTab from '@/components/GadgetsTab';
 import TechNewsTab from '@/components/TechNewsTab';
+import ServicesTab from '@/components/ServicesTab';
 import PortfolioPage from '@/components/PortfolioPage';
 
 interface TabsSectionProps {
@@ -23,6 +24,7 @@ const TabsSection = ({ activeTab, setActiveTab }: TabsSectionProps) => {
       tech: 'data-[state=active]:bg-blue-100 dark:data-[state=active]:bg-blue-900/30 data-[state=active]:text-blue-800 dark:data-[state=active]:text-blue-200 data-[state=active]:shadow-lg data-[state=active]:shadow-blue-200/50 dark:data-[state=active]:shadow-blue-900/30',
       gadgets: 'data-[state=active]:bg-indigo-100 dark:data-[state=active]:bg-indigo-900/30 data-[state=active]:text-indigo-800 dark:data-[state=active]:text-indigo-200 data-[state=active]:shadow-lg data-[state=active]:shadow-indigo-200/50 dark:data-[state=active]:shadow-indigo-900/30',
       news: 'data-[state=active]:bg-pink-100 dark:data-[state=active]:bg-pink-900/30 data-[state=active]:text-pink-800 dark:data-[state=active]:text-pink-200 data-[state=active]:shadow-lg data-[state=active]:shadow-pink-200/50 dark:data-[state=active]:shadow-pink-900/30',
+      services: 'data-[state=active]:bg-amber-100 dark:data-[state=active]:bg-amber-900/30 data-[state=active]:text-amber-800 dark:data-[state=active]:text-amber-200 data-[state=active]:shadow-lg data-[state=active]:shadow-amber-200/50 dark:data-[state=active]:shadow-amber-900/30',
       portfolio: 'data-[state=active]:bg-teal-100 dark:data-[state=active]:bg-teal-900/30 data-[state=active]:text-teal-800 dark:data-[state=active]:text-teal-200 data-[state=active]:shadow-lg data-[state=active]:shadow-teal-200/50 dark:data-[state=active]:shadow-teal-900/30'
     };
     return colors[tabValue] || '';
@@ -31,7 +33,7 @@ const TabsSection = ({ activeTab, setActiveTab }: TabsSectionProps) => {
   return (
     <div id="main-content" className="container mx-auto px-4 py-12 bg-white dark:bg-gray-900">
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-        <TabsList className="grid w-full grid-cols-3 lg:grid-cols-7 mb-8 bg-gray-50/80 dark:bg-gray-800/80 backdrop-blur-sm border border-gray-200 dark:border-gray-700 shadow-xl rounded-xl p-1 transform hover:scale-[1.02] transition-all duration-200">
+        <TabsList className="grid w-full grid-cols-4 lg:grid-cols-8 mb-8 bg-gray-50/80 dark:bg-gray-800/80 backdrop-blur-sm border border-gray-200 dark:border-gray-700 shadow-xl rounded-xl p-1 transform hover:scale-[1.02] transition-all duration-200">
           <TabsTrigger value="movies" className={`text-xs sm:text-sm tab-trigger rounded-lg font-medium transition-all duration-300 hover:scale-105 ${getTabColor('movies')}`}>
             🎬 Movies & TV
           </TabsTrigger>
@@ -49,6 +51,9 @@ const TabsSection = ({ activeTab, setActiveTab }: TabsSectionProps) => {
           </TabsTrigger>
           <TabsTrigger value="news" className={`text-xs sm:text-sm tab-trigger rounded-lg font-medium transition-all duration-300 hover:scale-105 ${getTabColor('news')}`}>
             📰 Tech News
+          </TabsTrigger>
+          <TabsTrigger value="services" className={`text-xs sm:text-sm tab-trigger rounded-lg font-medium transition-all duration-300 hover:scale-105 ${getTabColor('services')}`}>
+            🛠️ Services
           </TabsTrigger>
           <TabsTrigger value="portfolio" className={`text-xs sm:text-sm tab-trigger rounded-lg font-medium transition-all duration-300 hover:scale-105 ${getTabColor('portfolio')}`}>
             👤 Portfolio
@@ -77,6 +82,10 @@ const TabsSection = ({ activeTab, setActiveTab }: TabsSectionProps) => {
 
         <TabsContent value="news" className="space-y-6">
           <TechNewsTab />
+        </TabsContent>
+
+        <TabsContent value="services" className="space-y-6">
+          <ServicesTab />
         </TabsContent>
 
         <TabsContent value="portfolio" className="space-y-6">
