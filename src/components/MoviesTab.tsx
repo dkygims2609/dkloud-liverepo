@@ -247,7 +247,7 @@ const MoviesTab = () => {
                 : 'text-gray-600 dark:text-gray-300 hover:text-blue-600'
             }`}
           >
-            🔥 Trending
+            🔥 Trending Now
           </button>
           <button
             onClick={() => setActiveSubTab('ultimate')}
