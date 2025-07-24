@@ -94,14 +94,6 @@ const Footer = () => {
               </li>
               <li>
                 <button 
-                  onClick={() => handleQuickLinkClick('news')}
-                  className="text-gray-600 hover:text-purple-600 transition-colors text-left"
-                >
-                  Tech News
-                </button>
-              </li>
-              <li>
-                <button 
                   onClick={() => handleQuickLinkClick('services')}
                   className="text-gray-600 hover:text-purple-600 transition-colors text-left"
                 >

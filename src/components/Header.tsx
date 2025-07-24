@@ -24,15 +24,15 @@ const Header = ({
   const [menuOpen, setMenuOpen] = React.useState(false);
 
   const navItems = [
-    { label: "Movies", value: "movies" },
-    { label: "TV Series", value: "tv-series" },
+    { label: "Movies & TV", value: "movies" },
     { label: "AI Tools", value: "ai-tools" },
     { label: "Tech Corner", value: "tech-corner" },
     { label: "YouTube", value: "youtube-channels" },
     { label: "Gadgets", value: "gadgets" },
-    { label: "Tech News", value: "tech-news" },
     { label: "Services", value: "services" }
   ];
+  
+  console.log('Header component loaded with navItems:', navItems);
 
   return (
     <header className="sticky top-0 z-40 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
