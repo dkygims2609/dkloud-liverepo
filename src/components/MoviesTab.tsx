@@ -13,6 +13,7 @@ const MoviesTab = () => {
   const [filteredTvSeries, setFilteredTvSeries] = useState([]);
   const [loading, setLoading] = useState(true);
   const [activeType, setActiveType] = useState('movies');
+  const [activeSubTab, setActiveSubTab] = useState('trending');
   const [searchTerm, setSearchTerm] = useState('');
   const [genreFilter, setGenreFilter] = useState('all');
   const [platformFilter, setPlatformFilter] = useState('all');
@@ -208,8 +209,9 @@ const MoviesTab = () => {
         </CardContent>
       </Card>
 
-      {/* Type Switcher */}
-      <div className="flex justify-center mb-6">
+      {/* Type and SubTab Switcher */}
+      <div className="flex flex-col items-center space-y-4 mb-6">
+        {/* Main Type Switcher */}
         <div className="flex bg-white dark:bg-gray-800 rounded-lg p-1 border border-gray-200 dark:border-gray-700 shadow-sm">
           <button
             onClick={() => setActiveType('movies')}
@@ -234,12 +236,38 @@ const MoviesTab = () => {
             TV Series ({tvSeries.length})
           </button>
         </div>
+
+        {/* Sub Tab Switcher */}
+        <div className="flex bg-white dark:bg-gray-800 rounded-lg p-1 border border-gray-200 dark:border-gray-700 shadow-sm">
+          <button
+            onClick={() => setActiveSubTab('trending')}
+            className={`px-4 py-2 rounded-md transition-colors ${
+              activeSubTab === 'trending' 
+                ? 'bg-blue-600 text-white' 
+                : 'text-gray-600 dark:text-gray-300 hover:text-blue-600'
+            }`}
+          >
+            🔥 Trending
+          </button>
+          <button
+            onClick={() => setActiveSubTab('ultimate')}
+            className={`px-4 py-2 rounded-md transition-colors ${
+              activeSubTab === 'ultimate' 
+                ? 'bg-blue-600 text-white' 
+                : 'text-gray-600 dark:text-gray-300 hover:text-blue-600'
+            }`}
+          >
+            ⭐ Ultimate List
+          </button>
+        </div>
       </div>
 
       {/* Slider Controls */}
       <div className="flex items-center justify-between mb-4">
         <h3 className="text-xl font-semibold text-gray-800 dark:text-white">
-          {activeType === 'movies' ? 'Featured Movies' : 'Featured TV Series'}
+          {activeSubTab === 'trending' 
+            ? `🔥 Trending ${activeType === 'movies' ? 'Movies' : 'TV Series'}` 
+            : `⭐ Ultimate ${activeType === 'movies' ? 'Movies' : 'TV Series'} List`}
         </h3>
         <div className="flex gap-2">
           <Button 
